@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Mac,Hexo,Next,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本文主要介绍在Mac环境下搭建hexo-theme-next的过程，以及其中遇到的问题的解决方法">
+<meta name="keywords" content="Mac,Hexo,Next">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Max下搭建hexo-next博客教程">
+<meta property="og:url" content="http://yoursite.com/2019/06/17/max-hexo-next/index.html">
+<meta property="og:site_name" content="风满楼">
+<meta property="og:description" content="本文主要介绍在Mac环境下搭建hexo-theme-next的过程，以及其中遇到的问题的解决方法">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-06-17T13:11:15.999Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Max下搭建hexo-next博客教程">
+<meta name="twitter:description" content="本文主要介绍在Mac环境下搭建hexo-theme-next的过程，以及其中遇到的问题的解决方法">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/06/17/max-hexo-next/">
+
+
+
+
+
+  <title>Max下搭建hexo-next博客教程 | 风满楼</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">风满楼</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">攻城狮</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-首页">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-标签">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tag"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-归档">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-分类">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-关于">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-about"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/17/max-hexo-next/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="风满楼">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="风满楼">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Max下搭建hexo-next博客教程</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-17T20:06:19+08:00">
+                2019-06-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/教程/" itemprop="url" rel="index">
+                    <span itemprop="name">教程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本文主要介绍在Mac环境下搭建hexo-theme-next的过程，以及其中遇到的问题的解决方法</p>
+<a id="more"></a>
+<h2 id="安装环境"><a href="#安装环境" class="headerlink" title="安装环境"></a>安装环境</h2><ol>
+<li>机器：MacBook Air</li>
+<li>OS: macOS HighSierra 10.13.2</li>
+</ol>
+<h2 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h2><h3 id="安装node"><a href="#安装node" class="headerlink" title="安装node"></a>安装node</h3><p><code>yum install node</code></p>
+<h3 id="安装hexo"><a href="#安装hexo" class="headerlink" title="安装hexo"></a>安装hexo</h3><p><code>sudo npm install -g hexo</code><br>安装报错，换个命令<br><code>sudo npm install --unsafe-perm --verbose -g hexo</code><br>验证是否安装成功<br><code>hexo -v</code></p>
+<h3 id="安装Next主题"><a href="#安装Next主题" class="headerlink" title="安装Next主题"></a>安装Next主题</h3><ol>
+<li>cd your-hexo-dir</li>
+<li>git clone <a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">https://github.com/iissnan/hexo-theme-next</a> themes/next</li>
+<li>修改站点_config.yml, <code>theme: next</code></li>
+</ol>
+<h3 id="启动server"><a href="#启动server" class="headerlink" title="启动server"></a>启动server</h3><p><code>hexo serve</code> OR <code>hexo s</code><br> 启动hexo，访问<a href="http://localhost:4000/" target="_blank" rel="noopener">http://localhost:4000/</a></p>
+<h3 id="自动部署git"><a href="#自动部署git" class="headerlink" title="自动部署git"></a>自动部署git</h3><p>官网安装教程 <a href="https://hexo.io/zh-cn/docs/deployment.html" target="_blank" rel="noopener">hexo deploy</a></p>
+<h3 id="如果hexo-deployer-git失败"><a href="#如果hexo-deployer-git失败" class="headerlink" title="如果hexo-deployer-git失败"></a>如果hexo-deployer-git失败</h3><p>试试这个命令<code>sudo npm install --unsafe-perm hexo-deployer-git --save</code></p>
+<h3 id="写博客"><a href="#写博客" class="headerlink" title="写博客"></a>写博客</h3><p>博客目录<code>source/_posts/</code><br>先写草稿<code>hexo new draft xxx</code>，完成后发布文章 <code>hexo publish xxx</code><br>也可以直接写发布文章<code>hexo new xxx</code></p>
+<h3 id="博客列表展示博客摘要的方法"><a href="#博客列表展示博客摘要的方法" class="headerlink" title="博客列表展示博客摘要的方法"></a>博客列表展示博客摘要的方法</h3><p>在首页显示文章的摘录并显示 阅读全文 按钮，可以通过以下方法：</p>
+<ol>
+<li>在文章中使用 <!-- more --> 手动进行截断，Hexo 提供的方式荐</li>
+<li>在文章的 front-matter 中添加 description，并提供文章摘录</li>
+<li>自动形成摘要，在 主题配置文件 中添加：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">auto_excerpt:</span><br><span class="line">  enable: true</span><br><span class="line">  length: 150</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>默认截取的长度为 150 字符，可以根据需要自行设定</p>
+<h3 id="在博文中添加图片"><a href="#在博文中添加图片" class="headerlink" title="在博文中添加图片"></a>在博文中添加图片</h3><ol>
+<li>在hexo目录下，安装插件：<br><code>npm install hexo-asset-image --save</code></li>
+<li>在hexo\source 目录下新建一个img文件夹，把图片放置在里面；</li>
+<li>在xxx.md文件中引用图片：<br><code>![header]( img/header.jpg)</code></li>
+</ol>
+<h3 id="发布新文章"><a href="#发布新文章" class="headerlink" title="发布新文章"></a>发布新文章</h3><p><code>hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</code></p>
+<blockquote>
+<p><code>hexo g = hexo generate</code><br><code>hexo d = hexo deploy</code></p>
+</blockquote>
+<h3 id="新建标签页面"><a href="#新建标签页面" class="headerlink" title="新建标签页面"></a>新建标签页面</h3><p><code>hexo new page tags</code></p>
+<h3 id="新建分类页面"><a href="#新建分类页面" class="headerlink" title="新建分类页面"></a>新建分类页面</h3><p><code>hexo new page categories</code></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Mac/" rel="tag"># Mac</a>
+          
+            <a href="/tags/Hexo/" rel="tag"># Hexo</a>
+          
+            <a href="/tags/Next/" rel="tag"># Next</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpeg" alt="风满楼">
+            
+              <p class="site-author-name" itemprop="name">风满楼</p>
+              <p class="site-description motion-element" itemprop="description">西二旗民工</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装环境"><span class="nav-number">1.</span> <span class="nav-text">安装环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装步骤"><span class="nav-number">2.</span> <span class="nav-text">安装步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装node"><span class="nav-number">2.1.</span> <span class="nav-text">安装node</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装hexo"><span class="nav-number">2.2.</span> <span class="nav-text">安装hexo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Next主题"><span class="nav-number">2.3.</span> <span class="nav-text">安装Next主题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动server"><span class="nav-number">2.4.</span> <span class="nav-text">启动server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自动部署git"><span class="nav-number">2.5.</span> <span class="nav-text">自动部署git</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如果hexo-deployer-git失败"><span class="nav-number">2.6.</span> <span class="nav-text">如果hexo-deployer-git失败</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#写博客"><span class="nav-number">2.7.</span> <span class="nav-text">写博客</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#博客列表展示博客摘要的方法"><span class="nav-number">2.8.</span> <span class="nav-text">博客列表展示博客摘要的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在博文中添加图片"><span class="nav-number">2.9.</span> <span class="nav-text">在博文中添加图片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#发布新文章"><span class="nav-number">2.10.</span> <span class="nav-text">发布新文章</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#新建标签页面"><span class="nav-number">2.11.</span> <span class="nav-text">新建标签页面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#新建分类页面"><span class="nav-number">2.12.</span> <span class="nav-text">新建分类页面</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">风满楼</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
