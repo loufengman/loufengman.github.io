@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="风满楼">
 <meta property="og:description" content="本文主要介绍在Mac环境下搭建hexo-theme-next的过程，以及其中遇到的问题的解决方法">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-06-17T13:11:15.999Z">
+<meta property="og:updated_time" content="2019-06-18T02:24:18.413Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Max下搭建hexo-next博客教程">
 <meta name="twitter:description" content="本文主要介绍在Mac环境下搭建hexo-theme-next的过程，以及其中遇到的问题的解决方法">
@@ -181,7 +181,7 @@
     <ul id="menu" class="menu">
       
         
-        <li class="menu-item menu-item-首页">
+        <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
@@ -191,7 +191,7 @@
         </li>
       
         
-        <li class="menu-item menu-item-标签">
+        <li class="menu-item menu-item-tags">
           <a href="/tags/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-tag"></i> <br>
@@ -201,7 +201,7 @@
         </li>
       
         
-        <li class="menu-item menu-item-归档">
+        <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
@@ -211,22 +211,12 @@
         </li>
       
         
-        <li class="menu-item menu-item-分类">
+        <li class="menu-item menu-item-categories">
           <a href="/categories/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
             
             分类
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-关于">
-          <a href="/about/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-about"></i> <br>
-            
-            关于
           </a>
         </li>
       
@@ -358,7 +348,8 @@
 <li>机器：MacBook Air</li>
 <li>OS: macOS HighSierra 10.13.2</li>
 </ol>
-<h2 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h2><h3 id="安装node"><a href="#安装node" class="headerlink" title="安装node"></a>安装node</h3><p><code>yum install node</code></p>
+<h2 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h2><h3 id="安装git"><a href="#安装git" class="headerlink" title="安装git"></a>安装git</h3><p><code>brew install git</code></p>
+<h3 id="安装node"><a href="#安装node" class="headerlink" title="安装node"></a>安装node</h3><p><code>brew install node</code></p>
 <h3 id="安装hexo"><a href="#安装hexo" class="headerlink" title="安装hexo"></a>安装hexo</h3><p><code>sudo npm install -g hexo</code><br>安装报错，换个命令<br><code>sudo npm install --unsafe-perm --verbose -g hexo</code><br>验证是否安装成功<br><code>hexo -v</code></p>
 <h3 id="安装Next主题"><a href="#安装Next主题" class="headerlink" title="安装Next主题"></a>安装Next主题</h3><ol>
 <li>cd your-hexo-dir</li>
@@ -368,10 +359,15 @@
 <h3 id="启动server"><a href="#启动server" class="headerlink" title="启动server"></a>启动server</h3><p><code>hexo serve</code> OR <code>hexo s</code><br> 启动hexo，访问<a href="http://localhost:4000/" target="_blank" rel="noopener">http://localhost:4000/</a></p>
 <h3 id="自动部署git"><a href="#自动部署git" class="headerlink" title="自动部署git"></a>自动部署git</h3><p>官网安装教程 <a href="https://hexo.io/zh-cn/docs/deployment.html" target="_blank" rel="noopener">hexo deploy</a></p>
 <h3 id="如果hexo-deployer-git失败"><a href="#如果hexo-deployer-git失败" class="headerlink" title="如果hexo-deployer-git失败"></a>如果hexo-deployer-git失败</h3><p>试试这个命令<code>sudo npm install --unsafe-perm hexo-deployer-git --save</code></p>
-<h3 id="写博客"><a href="#写博客" class="headerlink" title="写博客"></a>写博客</h3><p>博客目录<code>source/_posts/</code><br>先写草稿<code>hexo new draft xxx</code>，完成后发布文章 <code>hexo publish xxx</code><br>也可以直接写发布文章<code>hexo new xxx</code></p>
+<h2 id="主题个性化设置"><a href="#主题个性化设置" class="headerlink" title="主题个性化设置"></a>主题个性化设置</h2><h3 id="汉化"><a href="#汉化" class="headerlink" title="汉化"></a>汉化</h3><p>在站点设置下的<code>&lt;b&gt;_config.yml&lt;/b&gt;</code>，设置<code>language: en-Hans</code></p>
+<h3 id="新建标签页面"><a href="#新建标签页面" class="headerlink" title="新建标签页面"></a>新建标签页面</h3><p><code>hexo new page tags</code><br>设置type类型为tags，<code>type: tags</code></p>
+<h3 id="新建分类页面"><a href="#新建分类页面" class="headerlink" title="新建分类页面"></a>新建分类页面</h3><p><code>hexo new page categories</code><br>设置type类型为categories，<code>type: categories:</code></p>
+<h3 id="新建关于页面"><a href="#新建关于页面" class="headerlink" title="新建关于页面"></a>新建关于页面</h3><p><code>hexo new page about</code><br>设置type类型为about，<code>type: about</code></p>
+<h2 id="写博客"><a href="#写博客" class="headerlink" title="写博客"></a>写博客</h2><p>博客目录<code>source/_posts/</code></p>
+<h3 id="新建博客"><a href="#新建博客" class="headerlink" title="新建博客"></a>新建博客</h3><p>先写草稿<code>hexo new draft xxx</code>，完成后发布文章 <code>hexo publish xxx</code><br>也可以直接写发布文章<code>hexo new xxx</code></p>
 <h3 id="博客列表展示博客摘要的方法"><a href="#博客列表展示博客摘要的方法" class="headerlink" title="博客列表展示博客摘要的方法"></a>博客列表展示博客摘要的方法</h3><p>在首页显示文章的摘录并显示 阅读全文 按钮，可以通过以下方法：</p>
 <ol>
-<li>在文章中使用 <!-- more --> 手动进行截断，Hexo 提供的方式荐</li>
+<li>在文章中使用 <code>&lt;!-- more --&gt;</code> 手动进行截断，Hexo 提供的方式，推荐使用</li>
 <li>在文章的 front-matter 中添加 description，并提供文章摘录</li>
 <li>自动形成摘要，在 主题配置文件 中添加：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">auto_excerpt:</span><br><span class="line">  enable: true</span><br><span class="line">  length: 150</span><br></pre></td></tr></table></figure>
 
@@ -387,8 +383,6 @@
 <blockquote>
 <p><code>hexo g = hexo generate</code><br><code>hexo d = hexo deploy</code></p>
 </blockquote>
-<h3 id="新建标签页面"><a href="#新建标签页面" class="headerlink" title="新建标签页面"></a>新建标签页面</h3><p><code>hexo new page tags</code></p>
-<h3 id="新建分类页面"><a href="#新建分类页面" class="headerlink" title="新建分类页面"></a>新建分类页面</h3><p><code>hexo new page categories</code></p>
 
       
     </div>
@@ -492,7 +486,7 @@
             
               <div class="site-state-item site-state-posts">
               
-                <a href="/archives">
+                <a href="/archives/">
               
                   <span class="site-state-item-count">1</span>
                   <span class="site-state-item-name">日志</span>
@@ -549,7 +543,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装环境"><span class="nav-number">1.</span> <span class="nav-text">安装环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装步骤"><span class="nav-number">2.</span> <span class="nav-text">安装步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装node"><span class="nav-number">2.1.</span> <span class="nav-text">安装node</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装hexo"><span class="nav-number">2.2.</span> <span class="nav-text">安装hexo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Next主题"><span class="nav-number">2.3.</span> <span class="nav-text">安装Next主题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动server"><span class="nav-number">2.4.</span> <span class="nav-text">启动server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自动部署git"><span class="nav-number">2.5.</span> <span class="nav-text">自动部署git</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如果hexo-deployer-git失败"><span class="nav-number">2.6.</span> <span class="nav-text">如果hexo-deployer-git失败</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#写博客"><span class="nav-number">2.7.</span> <span class="nav-text">写博客</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#博客列表展示博客摘要的方法"><span class="nav-number">2.8.</span> <span class="nav-text">博客列表展示博客摘要的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在博文中添加图片"><span class="nav-number">2.9.</span> <span class="nav-text">在博文中添加图片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#发布新文章"><span class="nav-number">2.10.</span> <span class="nav-text">发布新文章</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#新建标签页面"><span class="nav-number">2.11.</span> <span class="nav-text">新建标签页面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#新建分类页面"><span class="nav-number">2.12.</span> <span class="nav-text">新建分类页面</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装环境"><span class="nav-number">1.</span> <span class="nav-text">安装环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装步骤"><span class="nav-number">2.</span> <span class="nav-text">安装步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装git"><span class="nav-number">2.1.</span> <span class="nav-text">安装git</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装node"><span class="nav-number">2.2.</span> <span class="nav-text">安装node</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装hexo"><span class="nav-number">2.3.</span> <span class="nav-text">安装hexo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Next主题"><span class="nav-number">2.4.</span> <span class="nav-text">安装Next主题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动server"><span class="nav-number">2.5.</span> <span class="nav-text">启动server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自动部署git"><span class="nav-number">2.6.</span> <span class="nav-text">自动部署git</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如果hexo-deployer-git失败"><span class="nav-number">2.7.</span> <span class="nav-text">如果hexo-deployer-git失败</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#主题个性化设置"><span class="nav-number">3.</span> <span class="nav-text">主题个性化设置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#汉化"><span class="nav-number">3.1.</span> <span class="nav-text">汉化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#新建标签页面"><span class="nav-number">3.2.</span> <span class="nav-text">新建标签页面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#新建分类页面"><span class="nav-number">3.3.</span> <span class="nav-text">新建分类页面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#新建关于页面"><span class="nav-number">3.4.</span> <span class="nav-text">新建关于页面</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#写博客"><span class="nav-number">4.</span> <span class="nav-text">写博客</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#新建博客"><span class="nav-number">4.1.</span> <span class="nav-text">新建博客</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#博客列表展示博客摘要的方法"><span class="nav-number">4.2.</span> <span class="nav-text">博客列表展示博客摘要的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在博文中添加图片"><span class="nav-number">4.3.</span> <span class="nav-text">在博文中添加图片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#发布新文章"><span class="nav-number">4.4.</span> <span class="nav-text">发布新文章</span></a></li></ol></li></ol></div>
             
 
           </div>
