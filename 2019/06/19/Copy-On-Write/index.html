@@ -87,10 +87,14 @@
 <meta property="og:site_name" content="杂记">
 <meta property="og:description" content="本文主要介绍Copy-On-Write的基本思想已经应用场景。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-06-19T13:32:08.902Z">
+<meta property="og:image" content="http://yoursite.com/2019/06/19/Copy-On-Write/img_cow_1.png">
+<meta property="og:image" content="http://yoursite.com/2019/06/19/Copy-On-Write/img_cow_2.png">
+<meta property="og:image" content="http://yoursite.com/2019/06/19/Copy-On-Write/img_cow_3.png">
+<meta property="og:updated_time" content="2019-06-19T13:41:07.419Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入理解Copy-On-Write机制">
 <meta name="twitter:description" content="本文主要介绍Copy-On-Write的基本思想已经应用场景。">
+<meta name="twitter:image" content="http://yoursite.com/2019/06/19/Copy-On-Write/img_cow_1.png">
 
 
 
@@ -361,14 +365,11 @@
 <h2 id="情景分析"><a href="#情景分析" class="headerlink" title="情景分析"></a>情景分析</h2><p>1、<code>$b = $a</code>变量赋值的时候内存占用并没有翻倍 </p>
 <p>2、修改变量<code>$a</code>的值的时候，内存占用升高</p>
 <h2 id="原理解析"><a href="#原理解析" class="headerlink" title="原理解析"></a>原理解析</h2><p>1、创建变量$a，为$a申请内存</p>
- <center> ![](/images/img_cow_1.png) </center>
-
+<p><img src="/2019/06/19/Copy-On-Write/img_cow_1.png" alt> </p>
 <p>2、创建变量$b，并将$a的值复制给$b，这时候其实并没有为$b申请新的内存空间</p>
-<center> ![](/images/img_cow_2.png) </center>
-
+<p> <img src="/2019/06/19/Copy-On-Write/img_cow_2.png" alt></p>
 <p>3、修改变量$a的值后，这时候会为$a重新申请内存</p>
-<center> ![](/images/img_cow_3.png) </center>
-
+<p> <img src="/2019/06/19/Copy-On-Write/img_cow_3.png" alt>&gt;</p>
 <h2 id="PHP的坑"><a href="#PHP的坑" class="headerlink" title="PHP的坑"></a>PHP的坑</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$a = <span class="number">10</span>;</span><br><span class="line">$b = &amp;$a;</span><br><span class="line"><span class="keyword">unset</span>($b);</span><br><span class="line"><span class="keyword">echo</span> $a; <span class="comment">//10</span></span><br></pre></td></tr></table></figure>
 
 <p><code>unset($b)</code>只是删掉了$b指向内存的指针（引用计数减1），并没有实际销毁内存</p>
