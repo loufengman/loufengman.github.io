@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="杂记">
 <meta property="og:description" content="本文主要介绍Copy-On-Write的基本思想已经应用场景。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-06-19T10:07:09.253Z">
+<meta property="og:updated_time" content="2019-06-19T12:59:51.723Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入理解Copy-On-Write机制">
 <meta name="twitter:description" content="本文主要介绍Copy-On-Write的基本思想已经应用场景。">
@@ -360,19 +360,18 @@
 <h2 id="情景分析"><a href="#情景分析" class="headerlink" title="情景分析"></a>情景分析</h2><p>1、<code>$b = $a</code>变量赋值的时候内存占用并没有翻倍 </p>
 <p>2、修改变量<code>$a</code>的值的时候，内存占用升高</p>
 <h2 id="原理解析"><a href="#原理解析" class="headerlink" title="原理解析"></a>原理解析</h2><p>1、创建变量$a，为$a申请内存</p>
- <center> ![变量$a][img_cow_1] </center>
+ <center> ![变量$a](/images/img_cow_1.png) </center>
 
 <p>2、创建变量$b，并将$a的值复制给$b，这时候其实并没有为$b申请新的内存空间</p>
-<center> ![变量$b][img_cow_2] </center>
+<center> ![变量$b](/images/img_cow_2.png) </center>
 
 <p>3、修改变量$a的值后，这时候会为$a重新申请内存</p>
-<center> ![修改$a后][img_cow_3] </center>
+<center> ![修改$a后](/images/img_cow_3.png) </center>
 
 <h2 id="PHP的坑"><a href="#PHP的坑" class="headerlink" title="PHP的坑"></a>PHP的坑</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$a = <span class="number">10</span>;</span><br><span class="line">$b = &amp;$a;</span><br><span class="line"><span class="keyword">unset</span>($b);</span><br><span class="line"><span class="keyword">echo</span> $a; <span class="comment">//10</span></span><br></pre></td></tr></table></figure>
 
 <p><code>unset($b)</code>只是删掉了$b指向内存的指针（引用计数减1），并没有实际销毁内存</p>
-<p>## </p>
-
+<h2 id="COW的典型应用"><a href="#COW的典型应用" class="headerlink" title="COW的典型应用"></a>COW的典型应用</h2><h3 id="fork"><a href="#fork" class="headerlink" title="fork"></a>fork</h3>
       
     </div>
     
@@ -548,7 +547,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#名词解释"><span class="nav-number">1.</span> <span class="nav-text">名词解释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例"><span class="nav-number">2.</span> <span class="nav-text">示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#情景分析"><span class="nav-number">3.</span> <span class="nav-text">情景分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原理解析"><span class="nav-number">4.</span> <span class="nav-text">原理解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PHP的坑"><span class="nav-number">5.</span> <span class="nav-text">PHP的坑</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#名词解释"><span class="nav-number">1.</span> <span class="nav-text">名词解释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例"><span class="nav-number">2.</span> <span class="nav-text">示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#情景分析"><span class="nav-number">3.</span> <span class="nav-text">情景分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原理解析"><span class="nav-number">4.</span> <span class="nav-text">原理解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PHP的坑"><span class="nav-number">5.</span> <span class="nav-text">PHP的坑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#COW的典型应用"><span class="nav-number">6.</span> <span class="nav-text">COW的典型应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#fork"><span class="nav-number">6.1.</span> <span class="nav-text">fork</span></a></li></ol></li></ol></div>
             
 
           </div>
