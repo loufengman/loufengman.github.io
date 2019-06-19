@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="杂记">
 <meta property="og:description" content="本文主要介绍Copy-On-Write的基本思想已经应用场景。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-06-19T09:59:30.683Z">
+<meta property="og:updated_time" content="2019-06-19T10:07:09.253Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入理解Copy-On-Write机制">
 <meta name="twitter:description" content="本文主要介绍Copy-On-Write的基本思想已经应用场景。">
@@ -315,30 +315,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PHP/" itemprop="url" rel="index">
-                    <span itemprop="name">PHP</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PHP/Linux/" itemprop="url" rel="index">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
                     <span itemprop="name">Linux</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PHP/Linux/Fork/" itemprop="url" rel="index">
-                    <span itemprop="name">Fork</span>
                   </a>
                 </span>
 
@@ -393,6 +371,7 @@
 <h2 id="PHP的坑"><a href="#PHP的坑" class="headerlink" title="PHP的坑"></a>PHP的坑</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$a = <span class="number">10</span>;</span><br><span class="line">$b = &amp;$a;</span><br><span class="line"><span class="keyword">unset</span>($b);</span><br><span class="line"><span class="keyword">echo</span> $a; <span class="comment">//10</span></span><br></pre></td></tr></table></figure>
 
 <p><code>unset($b)</code>只是删掉了$b指向内存的指针（引用计数减1），并没有实际销毁内存</p>
+<p>## </p>
 
       
     </div>
@@ -525,7 +504,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
