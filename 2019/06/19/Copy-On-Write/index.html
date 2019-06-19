@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="本文主要介绍Copy-On-Write的基本思想已经应用场景。 名词解释COW是Copy On Write的缩写，意为写时复制 示例1234567891011121314151617181920&amp;lt;?php//Step 1echo memory_get_usage();echo &quot;\n&quot;;//输出：352072//Step 2$a = &apos;fasdfadfadasdfasdfadadafqowe">
+<meta name="description" content="本文主要介绍Copy-On-Write的基本思想已经应用场景。">
 <meta name="keywords" content="COW,copy on write,fork">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深入理解Copy-On-Write机制">
 <meta property="og:url" content="http://yoursite.com/2019/06/19/Copy-On-Write/index.html">
 <meta property="og:site_name" content="杂记">
-<meta property="og:description" content="本文主要介绍Copy-On-Write的基本思想已经应用场景。 名词解释COW是Copy On Write的缩写，意为写时复制 示例1234567891011121314151617181920&amp;lt;?php//Step 1echo memory_get_usage();echo &quot;\n&quot;;//输出：352072//Step 2$a = &apos;fasdfadfadasdfasdfadadafqowe">
+<meta property="og:description" content="本文主要介绍Copy-On-Write的基本思想已经应用场景。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-06-19T13:12:36.011Z">
+<meta property="og:updated_time" content="2019-06-19T13:13:29.293Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入理解Copy-On-Write机制">
-<meta name="twitter:description" content="本文主要介绍Copy-On-Write的基本思想已经应用场景。 名词解释COW是Copy On Write的缩写，意为写时复制 示例1234567891011121314151617181920&amp;lt;?php//Step 1echo memory_get_usage();echo &quot;\n&quot;;//输出：352072//Step 2$a = &apos;fasdfadfadasdfasdfadadafqowe">
+<meta name="twitter:description" content="本文主要介绍Copy-On-Write的基本思想已经应用场景。">
 
 
 
@@ -353,6 +353,8 @@
 
       
         <p>本文主要介绍Copy-On-Write的基本思想已经应用场景。</p>
+<a id="more"></a>
+
 <h2 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h2><p>COW是Copy On Write的缩写，意为<strong>写时复制</strong></p>
 <h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">//Step 1</span></span><br><span class="line"><span class="keyword">echo</span> memory_get_usage();</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"\n"</span>;</span><br><span class="line"><span class="comment">//输出：352072</span></span><br><span class="line"><span class="comment">//Step 2</span></span><br><span class="line">$a = <span class="string">'fasdfadfadasdfasdfadadafqoweuhfoquhfasjdajdfoquwehfhoqjdfajdnoqwuehfoqwudfadjfnlasjdfqowuefoquwefadbflasjdfoqjfoquwfqofqiuwfqowufdfqijfqjewpqifpqwfqdfn23u9qwey82934r7803yr10423701710374047hfjnvmxcbvbxcvmnxcnvlcnvlamnv.anvlaksdvnaldjavnv.cvnbvbvcnzbv,cnvz.cvncvz.cvn,cv.zv'</span>;</span><br><span class="line"><span class="keyword">echo</span> memory_get_usage();</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"\n"</span>;</span><br><span class="line"><span class="comment">//输出：352104</span></span><br><span class="line"><span class="comment">//Step 3</span></span><br><span class="line">$b = $a;</span><br><span class="line"><span class="keyword">echo</span> memory_get_usage();</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"\n"</span>;</span><br><span class="line"><span class="comment">//输出：352104</span></span><br><span class="line"><span class="comment">//Step 4</span></span><br><span class="line">$a = substr($a, <span class="number">0</span>, strlen($a)<span class="number">-2</span>);</span><br><span class="line"><span class="keyword">echo</span> memory_get_usage();</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"\n"</span>;</span><br><span class="line"><span class="comment">//输出：352424</span></span><br></pre></td></tr></table></figure>
 
