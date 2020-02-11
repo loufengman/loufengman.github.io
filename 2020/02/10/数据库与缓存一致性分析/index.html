@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Mac,Hexo,Next,Blog,">
+  <meta name="keywords" content="Mysql,Cache,一致性,">
 
 
 
@@ -79,18 +79,20 @@
 
 
 
-<meta name="description" content="本文主要介绍在Mac环境下搭建hexo-theme-next的过程，以及其中遇到的问题的解决方法">
-<meta name="keywords" content="Mac,Hexo,Next,Blog">
+<meta name="description" content="缓存是目前解决高并发场景下的主流解决方案必不可少的工具之一。在高并发或者多线程的情况下,如何保证缓存和持久化存储的数据一致是业界面临的一个普遍问题。本文针对几种常见的数据库、缓存更新方式，分析一下并发场景下存在的问题。">
+<meta name="keywords" content="Mysql,Cache,一致性">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Mac下搭建hexo-next博客教程">
-<meta property="og:url" content="http://yoursite.com/2019/06/17/max-hexo-next/index.html">
+<meta property="og:title" content="数据库与缓存一致性分析">
+<meta property="og:url" content="http://yoursite.com/2020/02/10/数据库与缓存一致性分析/index.html">
 <meta property="og:site_name" content="杂记">
-<meta property="og:description" content="本文主要介绍在Mac环境下搭建hexo-theme-next的过程，以及其中遇到的问题的解决方法">
+<meta property="og:description" content="缓存是目前解决高并发场景下的主流解决方案必不可少的工具之一。在高并发或者多线程的情况下,如何保证缓存和持久化存储的数据一致是业界面临的一个普遍问题。本文针对几种常见的数据库、缓存更新方式，分析一下并发场景下存在的问题。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-06-19T13:49:02.332Z">
+<meta property="og:image" content="http://yoursite.com/2020/02/10/数据库与缓存一致性分析/%E7%BC%93%E5%AD%98%E6%9B%B4%E6%96%B0%E6%96%B9%E6%A1%88.png">
+<meta property="og:updated_time" content="2020-02-11T03:38:42.955Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Mac下搭建hexo-next博客教程">
-<meta name="twitter:description" content="本文主要介绍在Mac环境下搭建hexo-theme-next的过程，以及其中遇到的问题的解决方法">
+<meta name="twitter:title" content="数据库与缓存一致性分析">
+<meta name="twitter:description" content="缓存是目前解决高并发场景下的主流解决方案必不可少的工具之一。在高并发或者多线程的情况下,如何保证缓存和持久化存储的数据一致是业界面临的一个普遍问题。本文针对几种常见的数据库、缓存更新方式，分析一下并发场景下存在的问题。">
+<meta name="twitter:image" content="http://yoursite.com/2020/02/10/数据库与缓存一致性分析/%E7%BC%93%E5%AD%98%E6%9B%B4%E6%96%B0%E6%96%B9%E6%A1%88.png">
 
 
 
@@ -120,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/06/17/max-hexo-next/">
+  <link rel="canonical" href="http://yoursite.com/2020/02/10/数据库与缓存一致性分析/">
 
 
 
 
 
-  <title>Mac下搭建hexo-next博客教程 | 杂记</title>
+  <title>数据库与缓存一致性分析 | 杂记</title>
   
 
 
@@ -263,7 +265,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/17/max-hexo-next/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/10/数据库与缓存一致性分析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="风满楼">
@@ -280,7 +282,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Mac下搭建hexo-next博客教程</h1>
+          <h1 class="post-title" itemprop="name headline">数据库与缓存一致性分析</h1>
         
 
         <div class="post-meta">
@@ -292,8 +294,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-17T20:06:19+08:00">
-                2019-06-17
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-10T11:20:00+08:00">
+                2020-02-10
               </time>
             
 
@@ -315,8 +317,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/教程/" itemprop="url" rel="index">
-                    <span itemprop="name">教程</span>
+                  <a href="/categories/缓存/" itemprop="url" rel="index">
+                    <span itemprop="name">缓存</span>
                   </a>
                 </span>
 
@@ -352,50 +354,64 @@
       
 
       
-        <p>本文主要介绍在Mac环境下搭建hexo-theme-next的过程，以及其中遇到的问题的解决方法</p>
+        <p>缓存是目前解决高并发场景下的主流解决方案必不可少的工具之一。<br>在高并发或者多线程的情况下,如何保证缓存和持久化存储的数据一致是业界面临的一个普遍问题。<br>本文针对几种常见的数据库、缓存更新方式，分析一下并发场景下存在的问题。</p>
 <a id="more"></a>
-<h2 id="安装环境"><a href="#安装环境" class="headerlink" title="安装环境"></a>安装环境</h2><ol>
-<li>机器：MacBook Air</li>
-<li>OS: macOS HighSierra 10.13.2</li>
-</ol>
-<h2 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h2><h3 id="安装git"><a href="#安装git" class="headerlink" title="安装git"></a>安装git</h3><p><code>brew install git</code></p>
-<h3 id="安装node"><a href="#安装node" class="headerlink" title="安装node"></a>安装node</h3><p><code>brew install node</code></p>
-<h3 id="安装hexo"><a href="#安装hexo" class="headerlink" title="安装hexo"></a>安装hexo</h3><p><code>sudo npm install -g hexo</code><br>安装报错，换个命令<br><code>sudo npm install --unsafe-perm --verbose -g hexo</code><br>验证是否安装成功<br><code>hexo -v</code></p>
-<h3 id="安装Next主题"><a href="#安装Next主题" class="headerlink" title="安装Next主题"></a>安装Next主题</h3><ol>
-<li>cd your-hexo-dir</li>
-<li>git clone <a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">https://github.com/iissnan/hexo-theme-next</a> themes/next</li>
-<li>修改站点_config.yml, <code>theme: next</code></li>
-</ol>
-<h3 id="启动server"><a href="#启动server" class="headerlink" title="启动server"></a>启动server</h3><p><code>hexo serve</code> OR <code>hexo s</code><br> 启动hexo，访问<a href="http://localhost:4000/" target="_blank" rel="noopener">http://localhost:4000/</a></p>
-<h3 id="自动部署git"><a href="#自动部署git" class="headerlink" title="自动部署git"></a>自动部署git</h3><p>官网安装教程 <a href="https://hexo.io/zh-cn/docs/deployment.html" target="_blank" rel="noopener">hexo deploy</a></p>
-<h3 id="如果hexo-deployer-git失败"><a href="#如果hexo-deployer-git失败" class="headerlink" title="如果hexo-deployer-git失败"></a>如果hexo-deployer-git失败</h3><p>试试这个命令<code>sudo npm install --unsafe-perm hexo-deployer-git --save</code></p>
-<h2 id="主题个性化设置"><a href="#主题个性化设置" class="headerlink" title="主题个性化设置"></a>主题个性化设置</h2><h3 id="汉化"><a href="#汉化" class="headerlink" title="汉化"></a>汉化</h3><p>在站点设置下的<code>&lt;b&gt;_config.yml&lt;/b&gt;</code>，设置<code>language: en-Hans</code></p>
-<h3 id="新建标签页面"><a href="#新建标签页面" class="headerlink" title="新建标签页面"></a>新建标签页面</h3><p><code>hexo new page tags</code><br>设置type类型为tags，<code>type: tags</code></p>
-<h3 id="新建分类页面"><a href="#新建分类页面" class="headerlink" title="新建分类页面"></a>新建分类页面</h3><p><code>hexo new page categories</code><br>设置type类型为categories，<code>type: categories:</code></p>
-<h3 id="新建关于页面"><a href="#新建关于页面" class="headerlink" title="新建关于页面"></a>新建关于页面</h3><p><code>hexo new page about</code><br>设置type类型为about，<code>type: about</code></p>
-<h2 id="写博客"><a href="#写博客" class="headerlink" title="写博客"></a>写博客</h2><p>博客目录<code>source/_posts/</code></p>
-<h3 id="新建博客"><a href="#新建博客" class="headerlink" title="新建博客"></a>新建博客</h3><p>先写草稿<code>hexo new draft xxx</code>，完成后发布文章 <code>hexo publish xxx</code><br>也可以直接写发布文章<code>hexo new xxx</code></p>
-<h3 id="博客列表展示博客摘要的方法"><a href="#博客列表展示博客摘要的方法" class="headerlink" title="博客列表展示博客摘要的方法"></a>博客列表展示博客摘要的方法</h3><p>在首页显示文章的摘录并显示 阅读全文 按钮，可以通过以下方法：</p>
-<ol>
-<li>在文章中使用 <code>&lt;!-- more --&gt;</code> 手动进行截断，Hexo 提供的方式，推荐使用</li>
-<li>在文章的 front-matter 中添加 description，并提供文章摘录</li>
-<li>自动形成摘要，在 主题配置文件 中添加：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">auto_excerpt:</span><br><span class="line">  enable: true</span><br><span class="line">  length: 150</span><br></pre></td></tr></table></figure>
 
-</li>
+<h2 id="缓存数据库更新的几种常见方式"><a href="#缓存数据库更新的几种常见方式" class="headerlink" title="缓存数据库更新的几种常见方式"></a>缓存数据库更新的几种常见方式</h2><ol>
+<li>先更新缓存，后更新数据库</li>
+<li>先更新数据库，后更新缓存</li>
+<li>先删除缓存，后更新数据库</li>
+<li>先更新数据库，后删除缓存</li>
 </ol>
-<p>默认截取的长度为 150 字符，可以根据需要自行设定</p>
-<h3 id="在博文中添加图片"><a href="#在博文中添加图片" class="headerlink" title="在博文中添加图片"></a>在博文中添加图片</h3><ol>
-<li>在hexo目录下，安装插件：<br><code>npm install hexo-asset-image --save</code></li>
-<li>在hexo\source 目录下新建一个img文件夹，把图片放置在里面；</li>
-<li>在xxx.md文件中引用图片：<br><code>![header]( img/header.jpg)</code></li>
+<p>我们考虑一下这种场景。假设有并发请求A和B，按一下情况顺序执行。然后我们依次说明。</p>
+<h3 id="第一种情况"><a href="#第一种情况" class="headerlink" title="第一种情况"></a>第一种情况</h3><p><code>先更新缓存，后更新数据库</code></p>
+<p>考虑A/B执行顺序如下：</p>
+<ul>
+<li>A更新缓存</li>
+<li>B更新缓存</li>
+<li>B更新数据库</li>
+<li>A更新数据库</li>
+</ul>
+<p>最终导致的结果就是：缓存里是B的结果，但数据库里是A的结果，二者不一致。</p>
+<h3 id="第二种情况"><a href="#第二种情况" class="headerlink" title="第二种情况"></a>第二种情况</h3><p><code>先更新数据库，后更新缓存</code></p>
+<p>考虑A/B执行顺序如下：</p>
+<ul>
+<li>A更新数据库</li>
+<li>B更新数据库</li>
+<li>B更新缓存</li>
+<li>A更新缓存</li>
+</ul>
+<p>最终导致的结果就是：缓存里是A的结果，但数据库是B的结果，二者不一致。</p>
+<h3 id="第三种情况"><a href="#第三种情况" class="headerlink" title="第三种情况"></a>第三种情况</h3><p><code>先删除缓存，后更新数据库</code></p>
+<p>考虑A/B执行顺序如下：</p>
+<ul>
+<li>A删除缓存</li>
+<li>B查询不到缓存</li>
+<li>B从数据库中取出旧值</li>
+<li>B将旧值写入缓存</li>
+<li>A更新数据库</li>
+</ul>
+<p>最终导致的结果就是：缓存里是旧值，但数据库是A更新后的新值，二者不一致。</p>
+<p>那么这种情况有没有<strong>解决方案</strong>呢？</p>
+<p>既然最后写入的就是最新的值，那么可以在写入新值后再次删除缓存里的旧值来解决。那再次删除缓存的时机就显得比较重要了，必须得在B将旧值写入缓存之后，可以取一次请求时间加上写入缓存的时间和作为延迟删除缓存的时间。</p>
+<p>如果有数据库主从架构，需要考虑主从同步时间。</p>
+<h3 id="第四种情况"><a href="#第四种情况" class="headerlink" title="第四种情况"></a>第四种情况</h3><p><code>先更新数据库，后删除缓存</code></p>
+<p><strong><font color="red" size="5">大厂推荐</font></strong>(<a href="https://www.usenix.org/system/files/conference/nsdi13/nsdi13-final170_update.pdf" target="_blank" rel="noopener">facebook论文</a>)</p>
+<p>考虑A/B执行顺序如下：</p>
+<ol>
+<li>缓存刚好失效</li>
+<li>请求A查询数据库，得一个旧值</li>
+<li>请求B将新值写入数据库</li>
+<li>请求B删除缓存</li>
+<li>请求A将查到的旧值写入缓存</li>
 </ol>
-<h3 id="发布新文章"><a href="#发布新文章" class="headerlink" title="发布新文章"></a>发布新文章</h3><p><code>hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</code></p>
-<blockquote>
-<p><code>hexo g = hexo generate</code><br><code>hexo d = hexo deploy</code></p>
-</blockquote>
-<h3 id="插入图片"><a href="#插入图片" class="headerlink" title="插入图片"></a>插入图片</h3><blockquote>
-<p>方式一<br>图片放在<code>source/images</code>目录下，在正文中通过<code>![](/images/avatar.jpeg)</code>引入图片<br>方式二<br>修改<code>_config.yml</code>站点配置，设置<code>post_asset_folder: true</code>，安装<code>npm install https://github.com/CodeFalling/hexo-asset-image --save</code>，新建博客<code>hexo new xxx</code>时，Hexo<br>会自动建立一个与文章同名的文件夹；以前的文章也可以自己手动创建同名文件夹。然后通过<code>![](xxx/logo.jpg)</code>引入图片</p>
-</blockquote>
+<p>我们发现这种情况下还是会产生数据的不一致。<br>这种情况发生的一个前提就是步骤3比步骤2的执行时间更长，从而导致步骤4比步骤5先执行。<br>但现实情况是，大概率情况下读比写要快，所以这种情况出现的概率较小。</p>
+<p>另外，需要考虑的情况就是，删除缓存失败怎么办？</p>
+<p>推荐方案：<br><img src="/2020/02/10/数据库与缓存一致性分析/%E7%BC%93%E5%AD%98%E6%9B%B4%E6%96%B0%E6%96%B9%E6%A1%88.png" alt></p>
+<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><ol>
+<li><a href="https://www.cnblogs.com/rjzheng/p/9041659.html" target="_blank" rel="noopener">https://www.cnblogs.com/rjzheng/p/9041659.html</a></li>
+<li><a href="https://blog.csdn.net/chenyiminnanjing/article/details/82763928" target="_blank" rel="noopener">https://blog.csdn.net/chenyiminnanjing/article/details/82763928</a></li>
+</ol>
 
       
     </div>
@@ -413,13 +429,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Mac/" rel="tag"># Mac</a>
+            <a href="/tags/Mysql/" rel="tag"># Mysql</a>
           
-            <a href="/tags/Hexo/" rel="tag"># Hexo</a>
+            <a href="/tags/Cache/" rel="tag"># Cache</a>
           
-            <a href="/tags/Next/" rel="tag"># Next</a>
-          
-            <a href="/tags/Blog/" rel="tag"># Blog</a>
+            <a href="/tags/一致性/" rel="tag"># 一致性</a>
           
         </div>
       
@@ -432,15 +446,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2019/11/25/四层负载均衡/" rel="next" title="四层负载均衡和七层负载均衡">
+                <i class="fa fa-chevron-left"></i> 四层负载均衡和七层负载均衡
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/06/19/Copy-On-Write/" rel="prev" title="深入理解Copy-On-Write机制">
-                深入理解Copy-On-Write机制 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -574,7 +588,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装环境"><span class="nav-number">1.</span> <span class="nav-text">安装环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装步骤"><span class="nav-number">2.</span> <span class="nav-text">安装步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装git"><span class="nav-number">2.1.</span> <span class="nav-text">安装git</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装node"><span class="nav-number">2.2.</span> <span class="nav-text">安装node</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装hexo"><span class="nav-number">2.3.</span> <span class="nav-text">安装hexo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Next主题"><span class="nav-number">2.4.</span> <span class="nav-text">安装Next主题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动server"><span class="nav-number">2.5.</span> <span class="nav-text">启动server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自动部署git"><span class="nav-number">2.6.</span> <span class="nav-text">自动部署git</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如果hexo-deployer-git失败"><span class="nav-number">2.7.</span> <span class="nav-text">如果hexo-deployer-git失败</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#主题个性化设置"><span class="nav-number">3.</span> <span class="nav-text">主题个性化设置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#汉化"><span class="nav-number">3.1.</span> <span class="nav-text">汉化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#新建标签页面"><span class="nav-number">3.2.</span> <span class="nav-text">新建标签页面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#新建分类页面"><span class="nav-number">3.3.</span> <span class="nav-text">新建分类页面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#新建关于页面"><span class="nav-number">3.4.</span> <span class="nav-text">新建关于页面</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#写博客"><span class="nav-number">4.</span> <span class="nav-text">写博客</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#新建博客"><span class="nav-number">4.1.</span> <span class="nav-text">新建博客</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#博客列表展示博客摘要的方法"><span class="nav-number">4.2.</span> <span class="nav-text">博客列表展示博客摘要的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在博文中添加图片"><span class="nav-number">4.3.</span> <span class="nav-text">在博文中添加图片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#发布新文章"><span class="nav-number">4.4.</span> <span class="nav-text">发布新文章</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插入图片"><span class="nav-number">4.5.</span> <span class="nav-text">插入图片</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#缓存数据库更新的几种常见方式"><span class="nav-number">1.</span> <span class="nav-text">缓存数据库更新的几种常见方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一种情况"><span class="nav-number">1.1.</span> <span class="nav-text">第一种情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二种情况"><span class="nav-number">1.2.</span> <span class="nav-text">第二种情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第三种情况"><span class="nav-number">1.3.</span> <span class="nav-text">第三种情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第四种情况"><span class="nav-number">1.4.</span> <span class="nav-text">第四种情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考文献"><span class="nav-number">1.5.</span> <span class="nav-text">参考文献</span></a></li></ol></li></ol></div>
             
 
           </div>
