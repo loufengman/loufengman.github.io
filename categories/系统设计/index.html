@@ -82,14 +82,13 @@
 <meta name="description" content="山雨欲来风满楼">
 <meta name="keywords" content="IT，互联网">
 <meta property="og:type" content="website">
-<meta property="og:title" content="标签">
-<meta property="og:url" content="http://yoursite.com/tags/index.html">
+<meta property="og:title" content="杂记">
+<meta property="og:url" content="http://yoursite.com/categories/系统设计/index.html">
 <meta property="og:site_name" content="杂记">
 <meta property="og:description" content="山雨欲来风满楼">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-06-17T13:11:16.001Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="标签">
+<meta name="twitter:title" content="杂记">
 <meta name="twitter:description" content="山雨欲来风满楼">
 
 
@@ -120,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/tags/">
+  <link rel="canonical" href="http://yoursite.com/categories/系统设计/">
 
 
 
 
 
-  <title>标签 | 杂记</title>
+  <title>分类: 系统设计 | 杂记</title>
   
 
 
@@ -145,7 +144,7 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -249,53 +248,61 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-expand">
-    
-    
-    
-    <div class="post-block page">
-      <header class="post-header">
+  
+  
+  
+  <div class="post-block category">
 
-	<h1 class="post-title" itemprop="name headline">标签</h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
-        
-        
-          <div class="tag-cloud">
-            <div class="tag-cloud-title">
-                目前共计 13 个标签
-            </div>
-            <div class="tag-cloud-tags">
-              <a href="/tags/Blog/" style="font-size: 12px; color: #ccc">Blog</a> <a href="/tags/COW/" style="font-size: 12px; color: #ccc">COW</a> <a href="/tags/Cache/" style="font-size: 12px; color: #ccc">Cache</a> <a href="/tags/Hexo/" style="font-size: 12px; color: #ccc">Hexo</a> <a href="/tags/Mac/" style="font-size: 12px; color: #ccc">Mac</a> <a href="/tags/Mysql/" style="font-size: 12px; color: #ccc">Mysql</a> <a href="/tags/Next/" style="font-size: 12px; color: #ccc">Next</a> <a href="/tags/TCP/" style="font-size: 12px; color: #ccc">TCP</a> <a href="/tags/UDP/" style="font-size: 12px; color: #ccc">UDP</a> <a href="/tags/copy-on-write/" style="font-size: 12px; color: #ccc">copy on write</a> <a href="/tags/fork/" style="font-size: 12px; color: #ccc">fork</a> <a href="/tags/缓存一致性/" style="font-size: 12px; color: #ccc">缓存一致性</a> <a href="/tags/网络/" style="font-size: 12px; color: #ccc">网络</a>
-            </div>
-          </div>
-        
+    <div id="posts" class="posts-collapse">
+      <div class="collection-title">
+        <h1>系统设计<small>分类</small>
+        </h1>
       </div>
+
       
-      
+        
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <h2 class="post-title">
+        
+            <a class="post-title-link" href="/2020/02/10/数据库与缓存一致性分析/" itemprop="url">
+              
+                <span itemprop="name">数据库与缓存一致性分析</span>
+              
+            </a>
+        
+      </h2>
+
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated" datetime="2020-02-10T11:20:00+08:00" content="2020-02-10">
+          02-10
+        </time>
+      </div>
+
+    </header>
+  </article>
+
+
       
     </div>
-    
-    
-    
+
   </div>
-
-
-          </div>
-          
-
-
-          
+  
+  
+  
 
   
 
+
+
+          </div>
+          
+
+
+          
+  <div id="gitalk-container"></div>
 
 
         </div>
@@ -520,10 +527,6 @@
 
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
-
 
   
 
@@ -564,22 +567,6 @@
 
 
 
-
-  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
-  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
-  <div id="gitalk-container"></div>
-  <script type="text/javascript">
-    var gitalk = new Gitalk({
-      clientID: '4abbba92d1956c944d8c',
-      clientSecret: '6cd6a5c5f2cd8fd5ff3c523add22625c73022929',
-      repo: 'discuss',
-      owner: 'loufengman',
-      admin: ['loufengman'],
-      id: location.pathname,
-      distractionFreeMode: 'false'
-    })
-    gitalk.render('gitalk-container')
-  </script>
 
 
 

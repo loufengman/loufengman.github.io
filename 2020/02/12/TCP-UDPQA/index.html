@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="网络,TCP,UDP,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="TCP（传输控制协议）提供数据可靠传输，包括数据流传送、可靠性、有效流控、全双工操作和多路复用。通过面向连接、端到端和可靠的数据包发送。只支持1对1的通讯。 UDP（用户数据报协议）是一个简单的面向数据报的传输层协议。提供的是非面向连接的、不可靠的数据流传输。UDP不提供可靠性，也不提供报文到达确认、排序以及流量控制等功能。支持多对多的通讯。 另外，TCP建立连接需要三次握手，断开连接需要四次握手">
+<meta name="keywords" content="网络,TCP,UDP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TCP&amp;UDPQA">
+<meta property="og:url" content="http://yoursite.com/2020/02/12/TCP-UDPQA/index.html">
+<meta property="og:site_name" content="杂记">
+<meta property="og:description" content="TCP（传输控制协议）提供数据可靠传输，包括数据流传送、可靠性、有效流控、全双工操作和多路复用。通过面向连接、端到端和可靠的数据包发送。只支持1对1的通讯。 UDP（用户数据报协议）是一个简单的面向数据报的传输层协议。提供的是非面向连接的、不可靠的数据流传输。UDP不提供可靠性，也不提供报文到达确认、排序以及流量控制等功能。支持多对多的通讯。 另外，TCP建立连接需要三次握手，断开连接需要四次握手">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2020/02/12/TCP-UDPQA/TCP%E6%8F%A1%E6%89%8B">
+<meta property="og:image" content="http://yoursite.com/2020/02/12/TCP-UDPQA/tcp%E6%8A%A5%E6%96%87%E8%AF%A6%E8%A7%A3.jpg">
+<meta property="og:updated_time" content="2020-02-14T04:27:13.560Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="TCP&amp;UDPQA">
+<meta name="twitter:description" content="TCP（传输控制协议）提供数据可靠传输，包括数据流传送、可靠性、有效流控、全双工操作和多路复用。通过面向连接、端到端和可靠的数据包发送。只支持1对1的通讯。 UDP（用户数据报协议）是一个简单的面向数据报的传输层协议。提供的是非面向连接的、不可靠的数据流传输。UDP不提供可靠性，也不提供报文到达确认、排序以及流量控制等功能。支持多对多的通讯。 另外，TCP建立连接需要三次握手，断开连接需要四次握手">
+<meta name="twitter:image" content="http://yoursite.com/2020/02/12/TCP-UDPQA/TCP%E6%8F%A1%E6%89%8B">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/02/12/TCP-UDPQA/">
+
+
+
+
+
+  <title>TCP&UDPQA | 杂记</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">杂记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">攻城狮</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tag"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-about"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/12/TCP-UDPQA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="风满楼">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杂记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">TCP&UDPQA</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-12T11:31:00+08:00">
+                2020-02-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/网络/" itemprop="url" rel="index">
+                    <span itemprop="name">网络</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/网络/通讯协议/" itemprop="url" rel="index">
+                    <span itemprop="name">通讯协议</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/网络/通讯协议/面试/" itemprop="url" rel="index">
+                    <span itemprop="name">面试</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>TCP（传输控制协议）提供数据可靠传输，包括数据流传送、可靠性、有效流控、全双工操作和多路复用。通过面向连接、端到端和可靠的数据包发送。只支持1对1的通讯。</p>
+<p>UDP（用户数据报协议）是一个简单的面向数据报的传输层协议。提供的是非面向连接的、不可靠的数据流传输。UDP不提供可靠性，也不提供报文到达确认、排序以及流量控制等功能。支持多对多的通讯。</p>
+<p>另外，TCP建立连接需要三次握手，断开连接需要四次握手。</p>
+<p>相信有网络基础的同学都已经掌握了，但对于那些参加面试的同学来说，掌握这些还不够。面试过程中常常遇到一些直击灵魂的问题？比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. TCP为什么会是三次握手？二次或四次行不行？</span><br><span class="line">2. SYN攻击的原理是什么？</span><br><span class="line">3. Seq序号为什么要随机？</span><br><span class="line">4. TCP如何保证数据有序的？</span><br><span class="line">5. time_wait出现在什么时候？为什么要等待2ML后结束？</span><br></pre></td></tr></table></figure>
+
+<p>本文尝试按自己的理解来回答这些问题？</p>
+<p><font color="red">声明：本文不保证答案正确，仅代表个人理解，仅供交流参考。</font></p>
+<a id="more"></a>
+
+<p>先来看下正常的三次握手、四次挥手图解。</p>
+<p><img src="/2020/02/12/TCP-UDPQA/TCP%E6%8F%A1%E6%89%8B" alt></p>
+<h3 id="灵魂第一击"><a href="#灵魂第一击" class="headerlink" title="灵魂第一击"></a>灵魂第一击</h3><p><font size="5"><code>建立TCP连接为什么需要三次握手？ 两次或四次是否可行</code></font></p>
+<p>显然四次及以上都是可以的，但三次是达到可靠交互的最小握手次数。超过次数可以通过合并、剔除多余握手来解决。</p>
+<p>那么两次可以吗？会存在什么问题呢？</p>
+<p>从三次握手的交互来看，实质是相互交换Seq序列号并确认的过程。显然第一次和第二次握手不能省略（各自发送自己的序列号，同时服务端还对客户端的请求完成了确认）。</p>
+<p>那么假设没有第三次握手，也就是客户端不对服务端的握手确认，这会导致什么情况呢？</p>
+<p>书本回答是防止已失效连接请求报文段突然到达服务端而产生错误</p>
+<blockquote>
+<p>“已失效的连接请求报文段” 的产生在这样一种情况下：client 发出的第一个连接请求报文段并没有丢失，而是在某个网络结点长时间的滞留了，以致延误到连接释放以后的某个时间才到达 server。本来这是一个早已失效的报文段。但 server 收到此失效的连接请求报文段后，就误认为是 client 再次发出的一个新的连接请求。于是就向 client 发出确认报文段，同意建立连接。假设不采用 “三次握手”，那么只要 server 发出确认，新的连接就建立了。由于现在 client 并没有发出建立连接的请求，因此不会理睬 server 的确认，也不会向 server 发送数据。但 server 却以为新的运输连接已经建立，并一直等待 client 发来数据。这样，server 的很多资源就白白浪费掉了。采用 “三次握手” 的办法可以防止上述现象发生。例如刚才那种情况，client 不会向 server 的确认发出确认。server 由于收不到确认，就知道 client 并没有要求建立连接。”</p>
+</blockquote>
+<p><strong>简单理解就是，客户端发送错误的连接请求，服务端也会确认并简历一个连接，而不需要客户端确认是否有效。</strong></p>
+<p>##第二击</p>
+<p><font size="5"><code>SYN洪水攻击的原理？如何预防？</code> </font></p>
+<p>SYN Flood是当前最流行的DoS(拒绝服务攻击)与DDoS(分布式拒绝服务攻击)的方式之一，它是利用TCP协议缺陷，发送大量伪造的TCP连接请求，从而使得被攻击方资源耗尽(CPU满负荷或内存不足)的攻击方式，最终导致系统或服务器宕机。</p>
+<h4 id="原理解析"><a href="#原理解析" class="headerlink" title="原理解析"></a>原理解析</h4><p>要理解SYN洪水攻击还是不得不提建立连接时的三次握手。</p>
+<p>客户端发起连接请求（SYN+Seq)，服务端确认并发送序列号（ACK+Seq),这时形成一个半连接队列在服务端，当客户端第三次握手确认以后，会把连接从半连接队列里删除，移到全连接队列里。</p>
+<p>对于半连接队列里的请求，服务端在规定的时间内收不到ACK，会重试发送ACK+Seq，在设定时间内得不到响应，连接删除。</p>
+<p>那么问题来了，如果攻击者在<code>设定时间内</code>发送大量连接请求，会导致短时间内服务端半连接队列溢出，正常的连接无法建立，服务端不停的重试确认，进而导致宕机。</p>
+<h4 id="预防"><a href="#预防" class="headerlink" title="预防"></a>预防</h4><p>目前业界尚没有很好的监测和防御方法。</p>
+<p>我们可以从攻击的原理方面着手思考：</p>
+<ul>
+<li>增大半连接队列长度</li>
+<li>减少服务端超时重试次数</li>
+<li>合理设置超时时间</li>
+</ul>
+<p>后验防范：</p>
+<ul>
+<li>及时保存现场，提取目标IP，加入黑名单</li>
+</ul>
+<h2 id="第三击"><a href="#第三击" class="headerlink" title="第三击"></a>第三击</h2><p><font size="5"><code>Seq序号的作用是什么？初始值为什么要随机？</code> </font></p>
+<p>理解这个问题，我们先看下一个tcp包都包含哪些字段。<br><img src="/2020/02/12/TCP-UDPQA/tcp%E6%8A%A5%E6%96%87%E8%AF%A6%E8%A7%A3.jpg" alt></p>
+<p>SYN表示建立连接，</p>
+<p>FIN表示关闭连接，</p>
+<p>ACK表示响应，</p>
+<p>PSH表示有 DATA数据传输，</p>
+<p>RST表示连接重置。</p>
+<p>其中，ACK是可能与SYN，FIN等同时使用的，比如SYN和ACK可能同时为1，它表示的就是建立连接之后的响应</p>
+<p>Seq序号的作用是什么？ 我们知道TCP协议保证数据包按顺序接收，在不可靠信道中怎么来保证顺序到达呢，这就是Seq序列号的作用。</p>
+<p>RFC793指出ISN（初始序列号）可以看作是一个32bit的计数器，每4ms加1，这样选择序号的目的在于防止在网络中被延迟的分组在以后被重复传输，而导致某个连接的一端对它作错误的判断。</p>
+<p>TCP握手采用随机序列号（不完全随机，而是随着时间流逝而线性增长，到了2^32尽头再回滚），为的就是让攻击者更难以猜测sequence number，因为伪造的sequence number不在合法范围内，而被接收方丢弃，增加安全性。</p>
+<h2 id="第四问"><a href="#第四问" class="headerlink" title="第四问"></a>第四问</h2><p><font size="5"><code>TCP如何保证数据有序的？</code> </font></p>
+<p>显然，客户端和服务端是通过seq序号来排列数据包的顺序的。</p>
+<blockquote>
+<p>主机每次发送数据时，TCP就给每个数据包分配一个序列号并且在一个特定的时间内等待接收主机对分配的这个序列号进行确认，如果发送主机在一个特定时间内没有收到接收主机的确认，则发送主机会重传此数据包。接收主机利用序列号对接收的数据进行确认，以便检测对方发送的数据是否有丢失或者乱序等，接收主机一旦收到已经顺序化的数据，它就将这些数据按正确的顺序重组成数据流并传递到高层进行处理。</p>
+<p>具体步骤如下：</p>
+</blockquote>
+<blockquote>
+<p>（1）为了保证数据包的可靠传递，发送方必须把已发送的数据包保留在缓冲区；</p>
+</blockquote>
+<blockquote>
+<p>（2）并为每个已发送的数据包启动一个超时定时器；</p>
+</blockquote>
+<blockquote>
+<p>（3）如在定时器超时之前收到了对方发来的应答信息（可能是对本包的应答，也可以是对本包后续包的应答），则释放该数据包占用的缓冲区;</p>
+</blockquote>
+<blockquote>
+<p>（4）否则，重传该数据包，直到收到应答或重传次数超过规定的最大次数为止。</p>
+</blockquote>
+<blockquote>
+<p>（5）接收方收到数据包后，先进行CRC循环冗余校验(Cyclic Redundancy Check, CRC)校验，如果正确则把数据交给上层协议，然后给发送方发送一个累计应答包，表明该数据已收到，如果接收方正好也有数据要发给发送方，应答包也可方在数据包中捎带过去。</p>
+</blockquote>
+<h2 id="第五问"><a href="#第五问" class="headerlink" title="第五问"></a>第五问</h2><p><font size="5"><code>time_wait出现在什么时候？为什么要等待2ML后结束？</code> </font></p>
+<p>由图可知，客户端接收到服务端发送的结束信号（FIN）并发送确认信号后进入time_wait状态。</p>
+<p>那为什么客户端要等待2ML后才结束呢？能不能立即结束呢？</p>
+<blockquote>
+<p>注：MSL是指Max Segment Lifetime，即数据包在网络中的最大生存时间。每种TCP协议的实现方法均要指定一个合适的MSL值，如RFC1122给出的建议值为2分钟，又如Berkeley体系的TCP实现通常选择30秒作为MSL值。这意味着TIME_WAIT的典型持续时间为1-4分钟。</p>
+</blockquote>
+<p>个人认为等待2ML结束的原因有两个：<br>1、经过1个ML之后，服务端发送的所有的数据包都已经失效，避免错失延迟包<br>2、服务端在接收不到ACK时，会重新发送FIN，而客户端接收到这个重新发送的FIN的最大时间其实就是2ML（1次ACK到达服务端，1次服务端重试FIN到达客户端）。</p>
+<p>##参考资料</p>
+<ol>
+<li><a href="https://www.zhihu.com/question/24853633" target="_blank" rel="noopener">https://www.zhihu.com/question/24853633</a></li>
+<li><a href="https://blog.csdn.net/u014774781/article/details/48579107" target="_blank" rel="noopener">https://blog.csdn.net/u014774781/article/details/48579107</a></li>
+<li><a href="https://blog.csdn.net/kernel_jim_wu/article/details/7447377" target="_blank" rel="noopener">https://blog.csdn.net/kernel_jim_wu/article/details/7447377</a></li>
+<li><a href="https://www.cnblogs.com/jianqingwang/p/11450992.html" target="_blank" rel="noopener">https://www.cnblogs.com/jianqingwang/p/11450992.html</a></li>
+<li><a href="https://blog.51cto.com/11859650/1917938" target="_blank" rel="noopener">https://blog.51cto.com/11859650/1917938</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/网络/" rel="tag"># 网络</a>
+          
+            <a href="/tags/TCP/" rel="tag"># TCP</a>
+          
+            <a href="/tags/UDP/" rel="tag"># UDP</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/02/10/数据库与缓存一致性分析/" rel="next" title="数据库与缓存一致性分析">
+                <i class="fa fa-chevron-left"></i> 数据库与缓存一致性分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpeg" alt="风满楼">
+            
+              <p class="site-author-name" itemprop="name">风满楼</p>
+              <p class="site-description motion-element" itemprop="description">山雨欲来风满楼</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#灵魂第一击"><span class="nav-number">1.</span> <span class="nav-text">灵魂第一击</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#原理解析"><span class="nav-number">1.1.</span> <span class="nav-text">原理解析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#预防"><span class="nav-number">1.2.</span> <span class="nav-text">预防</span></a></li></ol></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#第三击"><span class="nav-number"></span> <span class="nav-text">第三击</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第四问"><span class="nav-number"></span> <span class="nav-text">第四问</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第五问"><span class="nav-number"></span> <span class="nav-text">第五问</span></a></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">风满楼</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '4abbba92d1956c944d8c',
+      clientSecret: '6cd6a5c5f2cd8fd5ff3c523add22625c73022929',
+      repo: 'discuss',
+      owner: 'loufengman',
+      admin: ['loufengman'],
+      id: location.pathname,
+      distractionFreeMode: 'false'
+    })
+    gitalk.render('gitalk-container')
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
