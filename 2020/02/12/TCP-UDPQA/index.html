@@ -89,7 +89,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2020/02/12/TCP-UDPQA/TCP%E6%8F%A1%E6%89%8B">
 <meta property="og:image" content="http://yoursite.com/2020/02/12/TCP-UDPQA/tcp%E6%8A%A5%E6%96%87%E8%AF%A6%E8%A7%A3.jpg">
-<meta property="og:updated_time" content="2020-02-14T04:27:13.560Z">
+<meta property="og:updated_time" content="2020-02-14T04:31:18.622Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TCP&amp;UDPQA">
 <meta name="twitter:description" content="TCP（传输控制协议）提供数据可靠传输，包括数据流传送、可靠性、有效流控、全双工操作和多路复用。通过面向连接、端到端和可靠的数据包发送。只支持1对1的通讯。 UDP（用户数据报协议）是一个简单的面向数据报的传输层协议。提供的是非面向连接的、不可靠的数据流传输。UDP不提供可靠性，也不提供报文到达确认、排序以及流量控制等功能。支持多对多的通讯。 另外，TCP建立连接需要三次握手，断开连接需要四次握手">
@@ -399,8 +399,7 @@
 <p>“已失效的连接请求报文段” 的产生在这样一种情况下：client 发出的第一个连接请求报文段并没有丢失，而是在某个网络结点长时间的滞留了，以致延误到连接释放以后的某个时间才到达 server。本来这是一个早已失效的报文段。但 server 收到此失效的连接请求报文段后，就误认为是 client 再次发出的一个新的连接请求。于是就向 client 发出确认报文段，同意建立连接。假设不采用 “三次握手”，那么只要 server 发出确认，新的连接就建立了。由于现在 client 并没有发出建立连接的请求，因此不会理睬 server 的确认，也不会向 server 发送数据。但 server 却以为新的运输连接已经建立，并一直等待 client 发来数据。这样，server 的很多资源就白白浪费掉了。采用 “三次握手” 的办法可以防止上述现象发生。例如刚才那种情况，client 不会向 server 的确认发出确认。server 由于收不到确认，就知道 client 并没有要求建立连接。”</p>
 </blockquote>
 <p><strong>简单理解就是，客户端发送错误的连接请求，服务端也会确认并简历一个连接，而不需要客户端确认是否有效。</strong></p>
-<p>##第二击</p>
-<p><font size="5"><code>SYN洪水攻击的原理？如何预防？</code> </font></p>
+<h2 id="第二击"><a href="#第二击" class="headerlink" title="第二击"></a>第二击</h2><p><font size="5"><code>SYN洪水攻击的原理？如何预防？</code> </font></p>
 <p>SYN Flood是当前最流行的DoS(拒绝服务攻击)与DDoS(分布式拒绝服务攻击)的方式之一，它是利用TCP协议缺陷，发送大量伪造的TCP连接请求，从而使得被攻击方资源耗尽(CPU满负荷或内存不足)的攻击方式，最终导致系统或服务器宕机。</p>
 <h4 id="原理解析"><a href="#原理解析" class="headerlink" title="原理解析"></a>原理解析</h4><p>要理解SYN洪水攻击还是不得不提建立连接时的三次握手。</p>
 <p>客户端发起连接请求（SYN+Seq)，服务端确认并发送序列号（ACK+Seq),这时形成一个半连接队列在服务端，当客户端第三次握手确认以后，会把连接从半连接队列里删除，移到全连接队列里。</p>
@@ -640,7 +639,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#灵魂第一击"><span class="nav-number">1.</span> <span class="nav-text">灵魂第一击</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#原理解析"><span class="nav-number">1.1.</span> <span class="nav-text">原理解析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#预防"><span class="nav-number">1.2.</span> <span class="nav-text">预防</span></a></li></ol></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#第三击"><span class="nav-number"></span> <span class="nav-text">第三击</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第四问"><span class="nav-number"></span> <span class="nav-text">第四问</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第五问"><span class="nav-number"></span> <span class="nav-text">第五问</span></a></li></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#灵魂第一击"><span class="nav-number">1.</span> <span class="nav-text">灵魂第一击</span></a></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#第二击"><span class="nav-number"></span> <span class="nav-text">第二击</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#原理解析"><span class="nav-number">0.1.</span> <span class="nav-text">原理解析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#预防"><span class="nav-number">0.2.</span> <span class="nav-text">预防</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第三击"><span class="nav-number"></span> <span class="nav-text">第三击</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第四问"><span class="nav-number"></span> <span class="nav-text">第四问</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第五问"><span class="nav-number"></span> <span class="nav-text">第五问</span></a></li></div>
             
 
           </div>
