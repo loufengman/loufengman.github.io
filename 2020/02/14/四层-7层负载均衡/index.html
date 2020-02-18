@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo,Next,博客搭建,">
+  <meta name="keywords" content="负载均衡,四层,7层,">
 
 
 
@@ -79,18 +79,21 @@
 
 
 
-<meta name="description" content="本文主要介绍在Mac环境下搭建hexo-theme-next的过程，以及其中遇到的问题的解决方法">
-<meta name="keywords" content="Hexo,Next,博客搭建">
+<meta name="description" content="正在埋头写代码的兴头上，突然企微故障群不停地闪动，提示有人@。  A: xxx，你负责的服务不可用了，七层Nginx疯狂报警，赶快看一下日志。   我：挠头！7层是什么鬼？我命名在6层办公啊！   这时老大来了，丢下一句。   老大：‘你可以收拾东西回家了’。   我：卧槽！我真在6层办公。   。。。。。。">
+<meta name="keywords" content="负载均衡,四层,7层">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Mac下搭建hexo-next博客教程">
-<meta property="og:url" content="http://yoursite.com/2019/06/17/max-hexo-next/index.html">
+<meta property="og:title" content="四层&amp;7层负载均衡">
+<meta property="og:url" content="http://yoursite.com/2020/02/14/四层-7层负载均衡/index.html">
 <meta property="og:site_name" content="西北玄天一片云">
-<meta property="og:description" content="本文主要介绍在Mac环境下搭建hexo-theme-next的过程，以及其中遇到的问题的解决方法">
+<meta property="og:description" content="正在埋头写代码的兴头上，突然企微故障群不停地闪动，提示有人@。  A: xxx，你负责的服务不可用了，七层Nginx疯狂报警，赶快看一下日志。   我：挠头！7层是什么鬼？我命名在6层办公啊！   这时老大来了，丢下一句。   老大：‘你可以收拾东西回家了’。   我：卧槽！我真在6层办公。   。。。。。。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-02-14T09:29:08.026Z">
+<meta property="og:image" content="http://yoursite.com/2020/02/14/四层-7层负载均衡/%E5%8D%8F%E8%AE%AE%E6%A8%A1%E5%9E%8B.jpeg">
+<meta property="og:image" content="http://yoursite.com/2020/02/14/四层-7层负载均衡/OSI%E4%B8%83%E5%B1%82%E5%8D%8F%E8%AE%AE.jpg">
+<meta property="og:updated_time" content="2020-02-18T02:06:11.442Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Mac下搭建hexo-next博客教程">
-<meta name="twitter:description" content="本文主要介绍在Mac环境下搭建hexo-theme-next的过程，以及其中遇到的问题的解决方法">
+<meta name="twitter:title" content="四层&amp;7层负载均衡">
+<meta name="twitter:description" content="正在埋头写代码的兴头上，突然企微故障群不停地闪动，提示有人@。  A: xxx，你负责的服务不可用了，七层Nginx疯狂报警，赶快看一下日志。   我：挠头！7层是什么鬼？我命名在6层办公啊！   这时老大来了，丢下一句。   老大：‘你可以收拾东西回家了’。   我：卧槽！我真在6层办公。   。。。。。。">
+<meta name="twitter:image" content="http://yoursite.com/2020/02/14/四层-7层负载均衡/%E5%8D%8F%E8%AE%AE%E6%A8%A1%E5%9E%8B.jpeg">
 
 
 
@@ -120,13 +123,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/06/17/max-hexo-next/">
+  <link rel="canonical" href="http://yoursite.com/2020/02/14/四层-7层负载均衡/">
 
 
 
 
 
-  <title>Mac下搭建hexo-next博客教程 | 西北玄天一片云</title>
+  <title>四层&7层负载均衡 | 西北玄天一片云</title>
   
 
 
@@ -263,7 +266,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/17/max-hexo-next/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/14/四层-7层负载均衡/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="风满楼">
@@ -280,7 +283,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Mac下搭建hexo-next博客教程</h1>
+          <h1 class="post-title" itemprop="name headline">四层&7层负载均衡</h1>
         
 
         <div class="post-meta">
@@ -292,8 +295,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-17T20:06:19+08:00">
-                2019-06-17
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-14T17:44:00+08:00">
+                2020-02-14
               </time>
             
 
@@ -315,8 +318,30 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/工具/" itemprop="url" rel="index">
-                    <span itemprop="name">工具</span>
+                  <a href="/categories/TCP-IP/" itemprop="url" rel="index">
+                    <span itemprop="name">TCP&IP</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/TCP-IP/七层协议栈/" itemprop="url" rel="index">
+                    <span itemprop="name">七层协议栈</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/TCP-IP/七层协议栈/负载均衡/" itemprop="url" rel="index">
+                    <span itemprop="name">负载均衡</span>
                   </a>
                 </span>
 
@@ -352,50 +377,84 @@
       
 
       
-        <p>本文主要介绍在Mac环境下搭建hexo-theme-next的过程，以及其中遇到的问题的解决方法</p>
-<a id="more"></a>
-<h2 id="安装环境"><a href="#安装环境" class="headerlink" title="安装环境"></a>安装环境</h2><ol>
-<li>机器：MacBook Air</li>
-<li>OS: macOS HighSierra 10.13.2</li>
-</ol>
-<h2 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h2><h3 id="安装git"><a href="#安装git" class="headerlink" title="安装git"></a>安装git</h3><p><code>brew install git</code></p>
-<h3 id="安装node"><a href="#安装node" class="headerlink" title="安装node"></a>安装node</h3><p><code>brew install node</code></p>
-<h3 id="安装hexo"><a href="#安装hexo" class="headerlink" title="安装hexo"></a>安装hexo</h3><p><code>sudo npm install -g hexo</code><br>安装报错，换个命令<br><code>sudo npm install --unsafe-perm --verbose -g hexo</code><br>验证是否安装成功<br><code>hexo -v</code></p>
-<h3 id="安装Next主题"><a href="#安装Next主题" class="headerlink" title="安装Next主题"></a>安装Next主题</h3><ol>
-<li>cd your-hexo-dir</li>
-<li>git clone <a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">https://github.com/iissnan/hexo-theme-next</a> themes/next</li>
-<li>修改站点_config.yml, <code>theme: next</code></li>
-</ol>
-<h3 id="启动server"><a href="#启动server" class="headerlink" title="启动server"></a>启动server</h3><p><code>hexo serve</code> OR <code>hexo s</code><br> 启动hexo，访问<a href="http://localhost:4000/" target="_blank" rel="noopener">http://localhost:4000/</a></p>
-<h3 id="自动部署git"><a href="#自动部署git" class="headerlink" title="自动部署git"></a>自动部署git</h3><p>官网安装教程 <a href="https://hexo.io/zh-cn/docs/deployment.html" target="_blank" rel="noopener">hexo deploy</a></p>
-<h3 id="如果hexo-deployer-git失败"><a href="#如果hexo-deployer-git失败" class="headerlink" title="如果hexo-deployer-git失败"></a>如果hexo-deployer-git失败</h3><p>试试这个命令<code>sudo npm install --unsafe-perm hexo-deployer-git --save</code></p>
-<h2 id="主题个性化设置"><a href="#主题个性化设置" class="headerlink" title="主题个性化设置"></a>主题个性化设置</h2><h3 id="汉化"><a href="#汉化" class="headerlink" title="汉化"></a>汉化</h3><p>在站点设置下的<code>&lt;b&gt;_config.yml&lt;/b&gt;</code>，设置<code>language: en-Hans</code></p>
-<h3 id="新建标签页面"><a href="#新建标签页面" class="headerlink" title="新建标签页面"></a>新建标签页面</h3><p><code>hexo new page tags</code><br>设置type类型为tags，<code>type: tags</code></p>
-<h3 id="新建分类页面"><a href="#新建分类页面" class="headerlink" title="新建分类页面"></a>新建分类页面</h3><p><code>hexo new page categories</code><br>设置type类型为categories，<code>type: categories:</code></p>
-<h3 id="新建关于页面"><a href="#新建关于页面" class="headerlink" title="新建关于页面"></a>新建关于页面</h3><p><code>hexo new page about</code><br>设置type类型为about，<code>type: about</code></p>
-<h2 id="写博客"><a href="#写博客" class="headerlink" title="写博客"></a>写博客</h2><p>博客目录<code>source/_posts/</code></p>
-<h3 id="新建博客"><a href="#新建博客" class="headerlink" title="新建博客"></a>新建博客</h3><p>先写草稿<code>hexo new draft xxx</code>，完成后发布文章 <code>hexo publish xxx</code><br>也可以直接写发布文章<code>hexo new xxx</code></p>
-<h3 id="博客列表展示博客摘要的方法"><a href="#博客列表展示博客摘要的方法" class="headerlink" title="博客列表展示博客摘要的方法"></a>博客列表展示博客摘要的方法</h3><p>在首页显示文章的摘录并显示 阅读全文 按钮，可以通过以下方法：</p>
-<ol>
-<li>在文章中使用 <code>&lt;!-- more --&gt;</code> 手动进行截断，Hexo 提供的方式，推荐使用</li>
-<li>在文章的 front-matter 中添加 description，并提供文章摘录</li>
-<li>自动形成摘要，在 主题配置文件 中添加：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">auto_excerpt:</span><br><span class="line">  enable: true</span><br><span class="line">  length: 150</span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-<p>默认截取的长度为 150 字符，可以根据需要自行设定</p>
-<h3 id="在博文中添加图片"><a href="#在博文中添加图片" class="headerlink" title="在博文中添加图片"></a>在博文中添加图片</h3><ol>
-<li>在hexo目录下，安装插件：<br><code>npm install hexo-asset-image --save</code></li>
-<li>在hexo\source 目录下新建一个img文件夹，把图片放置在里面；</li>
-<li>在xxx.md文件中引用图片：<br><code>![header]( img/header.jpg)</code></li>
-</ol>
-<h3 id="发布新文章"><a href="#发布新文章" class="headerlink" title="发布新文章"></a>发布新文章</h3><p><code>hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</code></p>
+        <p>正在埋头写代码的兴头上，突然企微故障群不停地闪动，提示有人@。</p>
 <blockquote>
-<p><code>hexo g = hexo generate</code><br><code>hexo d = hexo deploy</code></p>
+<p>A: <code>xxx，你负责的服务不可用了，七层Nginx疯狂报警，赶快看一下日志</code>。</p>
 </blockquote>
-<h3 id="插入图片"><a href="#插入图片" class="headerlink" title="插入图片"></a>插入图片</h3><blockquote>
-<p>方式一<br>图片放在<code>source/images</code>目录下，在正文中通过<code>![](/images/avatar.jpeg)</code>引入图片<br>方式二<br>修改<code>_config.yml</code>站点配置，设置<code>post_asset_folder: true</code>，安装<code>npm install https://github.com/CodeFalling/hexo-asset-image --save</code>，新建博客<code>hexo new xxx</code>时，Hexo<br>会自动建立一个与文章同名的文件夹；以前的文章也可以自己手动创建同名文件夹。然后通过<code>![](xxx/logo.jpg)</code>引入图片</p>
+<blockquote>
+<p>我：挠头！7层是什么鬼？我命名在6层办公啊！</p>
 </blockquote>
+<blockquote>
+<p>这时老大来了，丢下一句。</p>
+</blockquote>
+<blockquote>
+<p>老大：‘你可以收拾东西回家了’。</p>
+</blockquote>
+<blockquote>
+<p>我：卧槽！我真在6层办公。</p>
+</blockquote>
+<blockquote>
+<p>。。。。。。</p>
+</blockquote>
+<a id="more"></a>
+
+<p>回家赶快google一下，哦，原来是7层协议的七层啊，不是楼层数啊。泪崩。。。</p>
+<h2 id="协议模型"><a href="#协议模型" class="headerlink" title="协议模型"></a>协议模型</h2><h3 id="OSI"><a href="#OSI" class="headerlink" title="OSI"></a>OSI</h3><p><img src="/2020/02/14/四层-7层负载均衡/%E5%8D%8F%E8%AE%AE%E6%A8%A1%E5%9E%8B.jpeg" alt> </p>
+<h3 id="TCP-IP模型"><a href="#TCP-IP模型" class="headerlink" title="TCP/IP模型"></a>TCP/IP模型</h3><p><img src="/2020/02/14/四层-7层负载均衡/OSI%E4%B8%83%E5%B1%82%E5%8D%8F%E8%AE%AE.jpg" alt></p>
+<h2 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h2><p>常见的负载均衡主要是四层负载均衡和七层负载均衡。</p>
+<blockquote>
+<p>负载均衡器通常称为四层交换机或七层交换机。四层交换机主要分析IP层及TCP/UDP层，实现四层流量负载均衡。七层交换机除了支持四层负载均衡以外，还有分析应用层的信息，如HTTP协议URI或Cookie信息。</p>
+</blockquote>
+<blockquote>
+<p>所谓四层就是基于IP+端口的负载均衡;</p>
+</blockquote>
+<blockquote>
+<p>七层就是基于URL等应用层信息的负载均衡;</p>
+<p>同理，还有基于MAC地址的二层负载均衡和基于IP地址的三层负载均衡。</p>
+</blockquote>
+<h3 id="区别与应用"><a href="#区别与应用" class="headerlink" title="区别与应用"></a>区别与应用</h3><table>
+<thead>
+<tr>
+<th>区别</th>
+<th align="center">四层负载均衡</th>
+<th align="center">七层负载均衡</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>作用层</td>
+<td align="center">TCP</td>
+<td align="center">HTTP</td>
+</tr>
+<tr>
+<td>原理</td>
+<td align="center">IP+端口</td>
+<td align="center">可根据七层的URL、浏览器类别、语言来决定是否要进行负载均衡</td>
+</tr>
+<tr>
+<td>应用</td>
+<td align="center">范围广，效率高，适合最前端</td>
+<td align="center">比如基于url、session、动静分离等</td>
+</tr>
+<tr>
+<td>软件</td>
+<td align="center">LVS，F5 等</td>
+<td align="center">Nginx，haproxy，MySQL Proxy等</td>
+</tr>
+<tr>
+<td>优点</td>
+<td align="center">效率高，服务无侵入</td>
+<td align="center">使得网络智能化，支持更细粒度的转发</td>
+</tr>
+<tr>
+<td>缺点</td>
+<td align="center">不识别应用层服务细节，不支持应用层转发</td>
+<td align="center">并发性能相对四层较低</td>
+</tr>
+</tbody></table>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li><a href="https://cloud.tencent.com/developer/news/97649" target="_blank" rel="noopener">https://cloud.tencent.com/developer/news/97649</a></li>
+<li><a href="https://www.cnblogs.com/zhaiyf/p/9051694.html" target="_blank" rel="noopener">https://www.cnblogs.com/zhaiyf/p/9051694.html</a></li>
+</ol>
 
       
     </div>
@@ -413,11 +472,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Hexo/" rel="tag"># Hexo</a>
+            <a href="/tags/负载均衡/" rel="tag"># 负载均衡</a>
           
-            <a href="/tags/Next/" rel="tag"># Next</a>
+            <a href="/tags/四层/" rel="tag"># 四层</a>
           
-            <a href="/tags/博客搭建/" rel="tag"># 博客搭建</a>
+            <a href="/tags/7层/" rel="tag"># 7层</a>
           
         </div>
       
@@ -430,15 +489,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2020/02/12/TCP-UDPQA/" rel="next" title="TCP&UDPQA">
+                <i class="fa fa-chevron-left"></i> TCP&UDPQA
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/06/19/Copy-On-Write/" rel="prev" title="深入理解Copy-On-Write机制">
-                深入理解Copy-On-Write机制 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -572,7 +631,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装环境"><span class="nav-number">1.</span> <span class="nav-text">安装环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装步骤"><span class="nav-number">2.</span> <span class="nav-text">安装步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装git"><span class="nav-number">2.1.</span> <span class="nav-text">安装git</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装node"><span class="nav-number">2.2.</span> <span class="nav-text">安装node</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装hexo"><span class="nav-number">2.3.</span> <span class="nav-text">安装hexo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Next主题"><span class="nav-number">2.4.</span> <span class="nav-text">安装Next主题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动server"><span class="nav-number">2.5.</span> <span class="nav-text">启动server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自动部署git"><span class="nav-number">2.6.</span> <span class="nav-text">自动部署git</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如果hexo-deployer-git失败"><span class="nav-number">2.7.</span> <span class="nav-text">如果hexo-deployer-git失败</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#主题个性化设置"><span class="nav-number">3.</span> <span class="nav-text">主题个性化设置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#汉化"><span class="nav-number">3.1.</span> <span class="nav-text">汉化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#新建标签页面"><span class="nav-number">3.2.</span> <span class="nav-text">新建标签页面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#新建分类页面"><span class="nav-number">3.3.</span> <span class="nav-text">新建分类页面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#新建关于页面"><span class="nav-number">3.4.</span> <span class="nav-text">新建关于页面</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#写博客"><span class="nav-number">4.</span> <span class="nav-text">写博客</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#新建博客"><span class="nav-number">4.1.</span> <span class="nav-text">新建博客</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#博客列表展示博客摘要的方法"><span class="nav-number">4.2.</span> <span class="nav-text">博客列表展示博客摘要的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在博文中添加图片"><span class="nav-number">4.3.</span> <span class="nav-text">在博文中添加图片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#发布新文章"><span class="nav-number">4.4.</span> <span class="nav-text">发布新文章</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插入图片"><span class="nav-number">4.5.</span> <span class="nav-text">插入图片</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#协议模型"><span class="nav-number">1.</span> <span class="nav-text">协议模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#OSI"><span class="nav-number">1.1.</span> <span class="nav-text">OSI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP-IP模型"><span class="nav-number">1.2.</span> <span class="nav-text">TCP/IP模型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#负载均衡"><span class="nav-number">2.</span> <span class="nav-text">负载均衡</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#区别与应用"><span class="nav-number">2.1.</span> <span class="nav-text">区别与应用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
 
           </div>
