@@ -82,18 +82,18 @@
 <meta name="description" content="正在埋头写代码的兴头上，突然企微故障群不停地闪动，提示有人@。  A: xxx，你负责的服务不可用了，七层Nginx疯狂报警，赶快看一下日志。   我：挠头！7层是什么鬼？我命名在6层办公啊！   这时老大来了，丢下一句。   老大：‘你可以收拾东西回家了’。   我：卧槽！我真在6层办公。   。。。。。。">
 <meta name="keywords" content="负载均衡,四层,7层">
 <meta property="og:type" content="article">
-<meta property="og:title" content="四层&amp;7层负载均衡">
-<meta property="og:url" content="http://yoursite.com/2020/02/14/四层-7层负载均衡/index.html">
+<meta property="og:title" content="负载均衡解读">
+<meta property="og:url" content="http://yoursite.com/2020/02/14/load_balence/index.html">
 <meta property="og:site_name" content="西北玄天一片云">
 <meta property="og:description" content="正在埋头写代码的兴头上，突然企微故障群不停地闪动，提示有人@。  A: xxx，你负责的服务不可用了，七层Nginx疯狂报警，赶快看一下日志。   我：挠头！7层是什么鬼？我命名在6层办公啊！   这时老大来了，丢下一句。   老大：‘你可以收拾东西回家了’。   我：卧槽！我真在6层办公。   。。。。。。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/2020/02/14/四层-7层负载均衡/%E5%8D%8F%E8%AE%AE%E6%A8%A1%E5%9E%8B.jpeg">
-<meta property="og:image" content="http://yoursite.com/2020/02/14/四层-7层负载均衡/OSI%E4%B8%83%E5%B1%82%E5%8D%8F%E8%AE%AE.jpg">
-<meta property="og:updated_time" content="2020-02-18T02:06:11.442Z">
+<meta property="og:image" content="http://yoursite.com/2020/02/14/load_balence/%E5%8D%8F%E8%AE%AE%E6%A8%A1%E5%9E%8B.jpeg">
+<meta property="og:image" content="http://yoursite.com/2020/02/14/load_balence/OSI%E4%B8%83%E5%B1%82%E5%8D%8F%E8%AE%AE.jpg">
+<meta property="og:updated_time" content="2020-02-18T02:22:31.029Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="四层&amp;7层负载均衡">
+<meta name="twitter:title" content="负载均衡解读">
 <meta name="twitter:description" content="正在埋头写代码的兴头上，突然企微故障群不停地闪动，提示有人@。  A: xxx，你负责的服务不可用了，七层Nginx疯狂报警，赶快看一下日志。   我：挠头！7层是什么鬼？我命名在6层办公啊！   这时老大来了，丢下一句。   老大：‘你可以收拾东西回家了’。   我：卧槽！我真在6层办公。   。。。。。。">
-<meta name="twitter:image" content="http://yoursite.com/2020/02/14/四层-7层负载均衡/%E5%8D%8F%E8%AE%AE%E6%A8%A1%E5%9E%8B.jpeg">
+<meta name="twitter:image" content="http://yoursite.com/2020/02/14/load_balence/%E5%8D%8F%E8%AE%AE%E6%A8%A1%E5%9E%8B.jpeg">
 
 
 
@@ -123,13 +123,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2020/02/14/四层-7层负载均衡/">
+  <link rel="canonical" href="http://yoursite.com/2020/02/14/load_balence/">
 
 
 
 
 
-  <title>四层&7层负载均衡 | 西北玄天一片云</title>
+  <title>负载均衡解读 | 西北玄天一片云</title>
   
 
 
@@ -266,7 +266,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/14/四层-7层负载均衡/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/14/load_balence/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="风满楼">
@@ -283,7 +283,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">四层&7层负载均衡</h1>
+          <h1 class="post-title" itemprop="name headline">负载均衡解读</h1>
         
 
         <div class="post-meta">
@@ -399,8 +399,8 @@
 <a id="more"></a>
 
 <p>回家赶快google一下，哦，原来是7层协议的七层啊，不是楼层数啊。泪崩。。。</p>
-<h2 id="协议模型"><a href="#协议模型" class="headerlink" title="协议模型"></a>协议模型</h2><h3 id="OSI"><a href="#OSI" class="headerlink" title="OSI"></a>OSI</h3><p><img src="/2020/02/14/四层-7层负载均衡/%E5%8D%8F%E8%AE%AE%E6%A8%A1%E5%9E%8B.jpeg" alt> </p>
-<h3 id="TCP-IP模型"><a href="#TCP-IP模型" class="headerlink" title="TCP/IP模型"></a>TCP/IP模型</h3><p><img src="/2020/02/14/四层-7层负载均衡/OSI%E4%B8%83%E5%B1%82%E5%8D%8F%E8%AE%AE.jpg" alt></p>
+<h2 id="协议模型"><a href="#协议模型" class="headerlink" title="协议模型"></a>协议模型</h2><h3 id="OSI"><a href="#OSI" class="headerlink" title="OSI"></a>OSI</h3><p><img src="/2020/02/14/load_balence/%E5%8D%8F%E8%AE%AE%E6%A8%A1%E5%9E%8B.jpeg" alt> </p>
+<h3 id="TCP-IP模型"><a href="#TCP-IP模型" class="headerlink" title="TCP/IP模型"></a>TCP/IP模型</h3><p><img src="/2020/02/14/load_balence/OSI%E4%B8%83%E5%B1%82%E5%8D%8F%E8%AE%AE.jpg" alt></p>
 <h2 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h2><p>常见的负载均衡主要是四层负载均衡和七层负载均衡。</p>
 <blockquote>
 <p>负载均衡器通常称为四层交换机或七层交换机。四层交换机主要分析IP层及TCP/UDP层，实现四层流量负载均衡。七层交换机除了支持四层负载均衡以外，还有分析应用层的信息，如HTTP协议URI或Cookie信息。</p>
