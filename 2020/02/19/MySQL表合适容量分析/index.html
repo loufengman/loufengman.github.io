@@ -88,8 +88,8 @@
 <meta property="og:description" content="大家应该都知道 ，MySQL单表过大，查询性能会直线下降，这时候就需要通过分库分表的方式来对单表划分多个小表，依此来提高性能。 那么问题来了，Mysql单表过大为什么查询性能会下降？MySQL单表过大的标准是多少？500W?2000W？ 本文将来着这些问题来一探究竟。由于大部分业务生产环境的引擎使用的InnoDB，本文所有观点皆基于InnoDB引擎来阐述。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2020/02/19/MySQL表合适容量分析/MySQL%E6%9F%A5%E8%AF%A2%E8%BF%87%E7%A8%8B.png">
-<meta property="og:image" content="http://yoursite.com/2020/02/19/MySQL表合适容量分析/innoDB%E6%9F%A5%E8%AF%A2.png">
-<meta property="og:updated_time" content="2020-02-19T09:45:37.710Z">
+<meta property="og:image" content="http://yoursite.com/2020/02/19/MySQL表合适容量分析/InnoDB%E6%9F%A5%E8%AF%A2.png">
+<meta property="og:updated_time" content="2020-02-19T10:12:12.713Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL表合适容量分析">
 <meta name="twitter:description" content="大家应该都知道 ，MySQL单表过大，查询性能会直线下降，这时候就需要通过分库分表的方式来对单表划分多个小表，依此来提高性能。 那么问题来了，Mysql单表过大为什么查询性能会下降？MySQL单表过大的标准是多少？500W?2000W？ 本文将来着这些问题来一探究竟。由于大部分业务生产环境的引擎使用的InnoDB，本文所有观点皆基于InnoDB引擎来阐述。">
@@ -402,7 +402,7 @@
 <li><p>如果是&lt; 非聚集索引 &gt;，那么就是找到相关的非聚集索引了，通过索引字段查到对应的主键，然后拿着主键去拿聚集索引拿数据。</p>
 </li>
 </ul>
-<p><img src="/2020/02/19/MySQL表合适容量分析/innoDB%E6%9F%A5%E8%AF%A2.png" alt></p>
+<p><img src="/2020/02/19/MySQL表合适容量分析/InnoDB%E6%9F%A5%E8%AF%A2.png" alt></p>
 <h3 id="SQL查询过程中的磁盘IO次数"><a href="#SQL查询过程中的磁盘IO次数" class="headerlink" title="SQL查询过程中的磁盘IO次数"></a>SQL查询过程中的磁盘IO次数</h3><p>最差情况下的查询过程：</p>
 <ol>
 <li>从innodb_buffer_pool中取出第一层节点数据，节点在内存中，不需要磁盘IO；</li>
