@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Binlog,Redo log,Binlog与Redolog一致性,Mysql,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="我们都知道，Binlog是用来做主从同步的，redolog确保了事务的持久化特性。 那么MySQL到底是先写Binlog呢？还是先写的Redolog?  在不可靠的环境中怎么保证二者一致的呢？ 我们带着这两个问题开始一探究竟。">
+<meta name="keywords" content="Binlog,Redo log,Binlog与Redolog一致性,Mysql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Binlog与Redolog一致性">
+<meta property="og:url" content="http://yoursite.com/2020/02/19/Binlog与Redolog一致性/index.html">
+<meta property="og:site_name" content="西北玄天一片云">
+<meta property="og:description" content="我们都知道，Binlog是用来做主从同步的，redolog确保了事务的持久化特性。 那么MySQL到底是先写Binlog呢？还是先写的Redolog?  在不可靠的环境中怎么保证二者一致的呢？ 我们带着这两个问题开始一探究竟。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2020/02/19/Binlog与Redolog一致性/MySQL%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E5%9B%BE.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/02/19/Binlog与Redolog一致性/pic1.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/19/Binlog与Redolog一致性/pic2.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/19/Binlog与Redolog一致性/pic3.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/19/Binlog与Redolog一致性/pic4.png">
+<meta property="og:updated_time" content="2020-02-19T11:06:00.501Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Binlog与Redolog一致性">
+<meta name="twitter:description" content="我们都知道，Binlog是用来做主从同步的，redolog确保了事务的持久化特性。 那么MySQL到底是先写Binlog呢？还是先写的Redolog?  在不可靠的环境中怎么保证二者一致的呢？ 我们带着这两个问题开始一探究竟。">
+<meta name="twitter:image" content="http://yoursite.com/2020/02/19/Binlog与Redolog一致性/MySQL%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E5%9B%BE.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/02/19/Binlog与Redolog一致性/">
+
+
+
+
+
+  <title>Binlog与Redolog一致性 | 西北玄天一片云</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">西北玄天一片云</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Ctl+C, Ctl+V</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tag"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-about"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/19/Binlog与Redolog一致性/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="风满楼">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="西北玄天一片云">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Binlog与Redolog一致性</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-19T18:36:00+08:00">
+                2020-02-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>我们都知道，Binlog是用来做主从同步的，redolog确保了事务的持久化特性。</p>
+<p>那么MySQL到底是先写Binlog呢？还是先写的Redolog? </p>
+<p>在不可靠的环境中怎么保证二者一致的呢？</p>
+<p>我们带着这两个问题开始一探究竟。</p>
+<a id="more"></a>
+
+<h2 id="MySQL体系结构"><a href="#MySQL体系结构" class="headerlink" title="MySQL体系结构"></a>MySQL体系结构</h2><p>废话不多说，直接上图。（图片来源于网络）</p>
+<p><img src="/2020/02/19/Binlog与Redolog一致性/MySQL%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E5%9B%BE.jpg" alt></p>
+<ul>
+<li>Binlog是MySQL Server层的日志，一旦开启，任何存储引擎都会写Binlog日志</li>
+<li>Redolog是存储引擎层的日志，即InnoDB的日志</li>
+</ul>
+<p>从这个层次结构上来说，我们可以得出第一个问题的答案：<br><strong><font color="red">Binlog写先于Redolog</font></strong></p>
+<h2 id="Binlog与Redolog一致性分析"><a href="#Binlog与Redolog一致性分析" class="headerlink" title="Binlog与Redolog一致性分析"></a>Binlog与Redolog一致性分析</h2><p>注： 为了避免转述不准确，接下来的内容copy自网络，见参考资料。</p>
+<h3 id="MySQL没有开启Binary-log的情况下？"><a href="#MySQL没有开启Binary-log的情况下？" class="headerlink" title="MySQL没有开启Binary log的情况下？"></a>MySQL没有开启Binary log的情况下？</h3><p>首先看一下什么是CrashSafe？CrashSafe指MySQL服务器宕机重启后，能够保证：</p>
+<p>– 所有已经提交的事务的数据仍然存在。</p>
+<p>– 所有没有提交的事务的数据自动回滚。</p>
+<p>Innodb通过Redo Log和Undo Log可以保证以上两点。为了保证严格的CrashSafe，必须要在每个事务提交的时候，将Redo Log写入硬件存储。这样做会牺牲一些性能，但是可靠性最好。为了平衡两者，InnoDB提供了一个innodb_flush_log_at_trx_commit系统变量，用户可以根据应用的需求自行调整。</p>
+<blockquote>
+<p>innodb_flush_log_at_trx_commit = 0|1|2</p>
+</blockquote>
+<blockquote>
+<p>0 – 每N秒将Redo Log Buffer的记录写入Redo Log文件，并且将文件刷入硬件存储1次。N由innodb_flush_log_at_timeout控制。</p>
+</blockquote>
+<blockquote>
+<p>1 – 每个事务提交时，将记录从Redo Log Buffer写入Redo Log文件，并且将文件刷入硬件存储。</p>
+</blockquote>
+<blockquote>
+<p>2 – 每个事务提交时，仅将记录从Redo Log Buffer写入Redo Log文件。Redo Log何时刷入硬件存储由操作系统和innodb_flush_log_at_timeout决定。这个选项可以保证在MySQL宕机，而操作系统正常工作时，数据的完整性。</p>
+</blockquote>
+<p>通过redo日志将所有已经在存储引擎内部提交的事务应用redo log恢复，所有已经prepare但是没有commit的transactions将会应用undo log做rollback。然后客户端连接时就能看到已经提交的数据存在数据库内，未提交被回滚地数据需要重新执行。</p>
+<h3 id="MySQL开启Binary-log的情况下？"><a href="#MySQL开启Binary-log的情况下？" class="headerlink" title="MySQL开启Binary log的情况下？"></a>MySQL开启Binary log的情况下？</h3><p>MySQL为了保证master和slave的数据一致性，就必须保证binlog和InnoDB redo日志的一致性（因为备库通过二进制日志重放主库提交的事务，而主库binlog写入在commit之前，如果写完binlog主库crash，再次启动时会回滚事务。但此时从库已经执行，则会造成主备数据不一致）。</p>
+<p>所以在开启Binlog后，如何保证binlog和InnoDB redo日志的一致性呢？为此，MySQL引入二阶段提交（two phase commit or 2pc），MySQL内部会自动将普通事务当做一个XA事务（内部分布式事物）来处理：</p>
+<blockquote>
+<p>– 自动为每个事务分配一个唯一的ID（XID）。</p>
+</blockquote>
+<blockquote>
+<p>– COMMIT会被自动的分成Prepare和Commit两个阶段。</p>
+</blockquote>
+<blockquote>
+<p>– Binlog会被当做事务协调者(Transaction Coordinator)，Binlog Event会被当做协调者日志。</p>
+</blockquote>
+<p>想了解2PC，可以参考文档：<a href="https://en.wikipedia.org/wiki/Two-phase_commit_protocol" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Two-phase_commit_protocol</a></p>
+<p>Binlog在2PC中充当了事务的协调者（Transaction Coordinator）。由Binlog来通知InnoDB引擎来执行prepare，commit或者rollback的步骤。事务提交的整个过程如下：<br><img src="/2020/02/19/Binlog与Redolog一致性/pic1.png" alt><br>MySQL中Redo与Binlog顺序一致性问题？</p>
+<p>以上的图片中可以看到，事务的提交主要分为两个主要步骤：</p>
+<h4 id="准备阶段（Storage-Engine（InnoDB）-Transaction-Prepare-Phase）"><a href="#准备阶段（Storage-Engine（InnoDB）-Transaction-Prepare-Phase）" class="headerlink" title="准备阶段（Storage Engine（InnoDB） Transaction Prepare Phase）"></a>准备阶段（Storage Engine（InnoDB） Transaction Prepare Phase）</h4><p>此时SQL已经成功执行，并生成xid信息及redo和undo的内存日志。然后调用prepare方法完成第一阶段，papare方法实际上什么也没做，将事务状态设为TRX_PREPARED，并将redo log刷磁盘。</p>
+<h4 id="提交阶段-Storage-Engine（InnoDB）Commit-Phase"><a href="#提交阶段-Storage-Engine（InnoDB）Commit-Phase" class="headerlink" title="提交阶段(Storage Engine（InnoDB）Commit Phase)"></a>提交阶段(Storage Engine（InnoDB）Commit Phase)</h4><h5 id="记录协调者日志，即Binlog日志。"><a href="#记录协调者日志，即Binlog日志。" class="headerlink" title="记录协调者日志，即Binlog日志。"></a>记录协调者日志，即Binlog日志。</h5><p>如果事务涉及的所有存储引擎的prepare都执行成功，则调用TC_LOG_BINLOG::log_xid方法将SQL语句写到binlog（write()将binary log内存日志数据写入文件系统缓存，fsync()将binary log文件系统缓存日志数据永久写入磁盘）。此时，事务已经铁定要提交了。否则，调用ha_rollback_trans方法回滚事务，而SQL语句实际上也不会写到binlog。</p>
+<h5 id="告诉引擎做commit。"><a href="#告诉引擎做commit。" class="headerlink" title="告诉引擎做commit。"></a>告诉引擎做commit。</h5><p>最后，调用引擎的commit完成事务的提交。会清除undo信息，刷redo日志，将事务设为TRX_NOT_STARTED状态。</p>
+<p>PS：记录Binlog是在InnoDB引擎Prepare（即Redo Log写入磁盘）之后，这点至关重要。</p>
+<p>由上面的二阶段提交流程可以看出，一旦步骤2中的操作完成，就确保了事务的提交，即使在执行步骤3时数据库发送了宕机。此外需要注意的是，每个步骤都需要进行一次fsync操作才能保证上下两层数据的一致性。步骤2的fsync参数由sync_binlog=1控制，步骤3的fsync由参数innodb_flush_log_at_trx_commit=1控制，俗称“双1”，是保证CrashSafe的根本。</p>
+<p>参数说明如下：</p>
+<blockquote>
+<p>innodb_flush_log_at_trx_commit（redo）</p>
+</blockquote>
+<blockquote>
+<p>0： log buffer每秒一次地写入log file中，且进行flush操作。InnoDB日志刷新频率由控制 innodb_flush_log_at_timeout，它允许你将日志刷新频率设置为N秒（其中N是1 … 2700，默认值为1）。<br>1：每次事务提交时都会把log buffer的数据写入log file，并进行flush操作。<br>2：每次事务提交时MySQL都会把log buffer的数据写入log file，不进行flush操作。<br>sync_binlog （binlog）</p>
+</blockquote>
+<p>0：刷新binlog_cache中的信息到磁盘由os决定。<br>N：每N次事务提交刷新binlog_cache中的信息到磁盘。</p>
+<p>事务的两阶段提交协议保证了无论在任何情况下，事务要么同时存在于存储引擎和binlog中，要么两个里面都不存在，这就保证了主库与从库之间数据的一致性。如果数据库系统发生崩溃，当数据库系统重新启动时会进行崩溃恢复操作，存储引擎中处于prepare状态的事务会去查询该事务是否也同时存在于binlog中，如果存在就在存储引擎内部提交该事务（因为此时从库可能已经获取了对应的binlog内容），如果binlog中没有该事务，就回滚该事务。</p>
+<p>例如：当崩溃发生在第一步和第二步之间时，明显处于prepare状态的事务还没来得及写入到binlog中，所以该事务会在存储引擎内部进行回滚，这样该事务在存储引擎和binlog中都不会存在；当崩溃发生在第二步和第三步之间时，处于prepare状态的事务存在于binlog中，那么该事务会在存储引擎内部进行提交，这样该事务就同时存在于存储引擎和binlog中。</p>
+<p>为了保证数据的安全性，以上列出的3个步骤都需要调用fsync将数据持久化到磁盘。由于在引擎内部prepare好的事务可以通过binlog恢复，所以通常情况下第三个fsync是可以省略的。</p>
+<p>另外，MySQL内部两阶段提交需要开启innodb_support_xa=true，默认开启。这个参数就是支持分布式事务两段式事务提交。redo和binlog数据一致性就是靠这个两段式提交来完成的，如果关闭会造成事务数据的丢失。</p>
+<h4 id="为了保障主从复制安全，故障恢复是如何做的？"><a href="#为了保障主从复制安全，故障恢复是如何做的？" class="headerlink" title="为了保障主从复制安全，故障恢复是如何做的？"></a>为了保障主从复制安全，故障恢复是如何做的？</h4><p>开启Binary log的MySQL在crash recovery时：MySQL在prepare阶段会生成xid，然后会在commit阶段写入到binlog中。在进行恢复时事务要提交还是回滚，是由Binlog来决定的。</p>
+<p>– 事务的Xid_log_event存在，就要提交。</p>
+<p>– 事务的Xid_log_event不存在，就要回滚。</p>
+<p>恢复的过程非常简单：</p>
+<p>– 从Binlog中读出所有的Xid_log_event</p>
+<p>– 告诉InnoDB提交这些XID的事务</p>
+<p>– InnoDB回滚其它的事务</p>
+<p>总结一下，基本顶多会出现下面是几种情况：</p>
+<font color="red">
+`当事务在prepare阶段crash，数据库recovery的时候该事务未写入Binary log并且存储引擎未提交，将该事务rollback。`
+
+<p><code>当事务在binlog阶段crash，此时日志还没有成功写入到磁盘中，启动时会rollback此事务。</code></p>
+<p><code>当事务在binlog日志已经fsync()到磁盘后crash，但是InnoDB没有来得及commit，此时MySQL数据库recovery的时候将会读出二进制日志的Xid_log_event，然后告诉InnoDB提交这些XID的事务，InnoDB提交完这些事务后会回滚其它的事务，使存储引擎和二进制日志始终保持一致。</code></p>
+<p><code>总结起来说就是如果一个事务在prepare阶段中落盘成功，并在MySQL Server层中的binlog也写入成功，那这个事务必定commit成功。</code><br></p></font><p></p>
+<h4 id="为什么需要保证二进制日志的写入顺序和InnoDB层事务提交顺序一致性呢？"><a href="#为什么需要保证二进制日志的写入顺序和InnoDB层事务提交顺序一致性呢？" class="headerlink" title="为什么需要保证二进制日志的写入顺序和InnoDB层事务提交顺序一致性呢？"></a>为什么需要保证二进制日志的写入顺序和InnoDB层事务提交顺序一致性呢？</h4><p>上面提到单个事务的二阶段提交过程，能够保证存储引擎和binary log日志保持一致，但是在并发的情况下怎么保证InnoDB层事务日志和MySQL数据库二进制日志的提交的顺序一致？当多个事务并发提交的情况，如果Binary Log和存储引擎顺序不一致会造成什么影响？</p>
+<p>这是因为备份及恢复需要，例如通过xtrabackup或ibbackup这种物理备份工具进行备份时，并使用备份来建立复制，如下图：<br><img src="/2020/02/19/Binlog与Redolog一致性/pic2.png" alt></p>
+<h4 id="MySQL中Redo与Binlog顺序一致性问题？"><a href="#MySQL中Redo与Binlog顺序一致性问题？" class="headerlink" title="MySQL中Redo与Binlog顺序一致性问题？"></a>MySQL中Redo与Binlog顺序一致性问题？</h4><p>如上图，事务按照T1、T2、T3顺序开始执行，将二进制日志（按照T1、T2、T3顺序）写入日志文件系统缓冲，调用fsync()进行一次group commit将日志文件永久写入磁盘，但是存储引擎提交的顺序为T2、T3、T1。当T2、T3提交事务之后，若通过在线物理备份进行数据库恢复来建立复制时，因为在InnoDB存储引擎层会检测事务T3在上下两层都完成了事务提交，不需要在进行恢复了，此时主备数据不一致（搭建Slave时，change master to的日志偏移量记录T3在事务位置之后）。</p>
+<p>为了解决以上问题，在早期的MySQL 5.6版本之前，通过prepare_commit_mutex锁以串行的方式来保证MySQL数据库上层二进制日志和Innodb存储引擎层的事务提交顺序一致，然后会导致组提交（group commit）特性无法生效。为了满足数据的持久化需求，一个完整事务的提交最多会导致3次fsync操作。为了提高MySQL在开启binlog的情况下单位时间内的事务提交数，就必须减少每个事务提交过程中导致的fsync的调用次数。所以，MySQL从5.6版本开始加入了binlog group commit技术（MariaDB 5.3版本开始引入）。</p>
+<p>MySQL数据库内部在prepare redo阶段获取prepare_commit_mutex锁，一次只能有一个事务可获取该mutex。通过这个臭名昭著prepare_commit_mutex锁，将redo log和binlog刷盘串行化，串行化的目的也仅仅是为了保证redo log和Binlog一致，继而无法实现group commit，牺牲了性能。整个过程如下图：<br><img src="/2020/02/19/Binlog与Redolog一致性/pic3.png" alt></p>
+<h4 id="MySQL中Redo与Binlog顺序一致性问题？-1"><a href="#MySQL中Redo与Binlog顺序一致性问题？-1" class="headerlink" title="MySQL中Redo与Binlog顺序一致性问题？"></a>MySQL中Redo与Binlog顺序一致性问题？</h4><p>上图可以看出在prepare_commit_mutex，只有当上一个事务commit后释放锁，下一个事务才可以进行prepare操作，并且在每个事务过程中Binary log没有fsync()的调用。由于内存数据写入磁盘的开销很大，如果频繁fsync()把日志数据永久写入磁盘数据库的性能将会急剧下降。此时MySQL数据库提供sync_binlog参数来设置多少个binlog日志产生的时候调用一次fsync()把二进制日志刷入磁盘来提高整体性能。</p>
+<p>上图所示MySQL开启Binary log时使用prepare_commit_mutex和sync_log保证二进制日志和存储引擎顺序保持一致，prepare_commit_mutex的锁机制造成高并发提交事务的时候性能非常差而且二进制日志也无法group commit。</p>
+<p>这个问题早在2010年的MySQL数据库大会中提出，Facebook MySQL技术组，Percona公司都提出过解决方案，最后由MariaDB数据库的开发人员Kristian Nielsen完成了最终的”完美”解决方案。在这种情况下，不但MySQL数据库上层二进制日志写入是group commit的，InnoDB存储引擎层也是group commit的。此外还移除了原先的锁prepare_commit_mutex，从而大大提高了数据库的整体性。MySQL 5.6采用了类似的实现方式，并将其称为BLGC（Binary Log Group Commit），并把事务提交过程分成三个阶段，Flush stage、Sync stage、Commit stage。</p>
+<h4 id="BLGC（Binary-Log-Group-Commit）"><a href="#BLGC（Binary-Log-Group-Commit）" class="headerlink" title="BLGC（Binary Log Group Commit）"></a>BLGC（Binary Log Group Commit）</h4><p>组提交后如何保证事务记录到binlog的顺序和 事务提交到存储引擎的一致性呢？<br>MySQL 5.6 BLGC技术出现后，在这种情况下，不但MySQL数据库上层二进制日志写入是group commit的，InnoDB存储引擎层也是group commit的。此外还移除了原先的锁prepare_commit_mutex，从而大大提高了数据库的整体性。其事务的提交（commit）过程分成三个阶段，Flush stage、Sync stage、Commit stage。如下图：<br><img src="/2020/02/19/Binlog与Redolog一致性/pic4.png" alt></p>
+<h5 id="MySQL-Group-Commit"><a href="#MySQL-Group-Commit" class="headerlink" title="MySQL Group Commit"></a>MySQL Group Commit</h5><p>Binlog组提交的基本思想是，引入队列机制保证Innodb commit顺序与binlog落盘顺序一致，并将事务分组，组内的binlog刷盘动作交给一个事务进行，实现组提交目的。在MySQL数据库上层进行提交时首先按顺序将其放入一个队列中，队列中的第一个事务称为leader，其他事务称为follow，leader控制着follow的行为。</p>
+<p>从上图可以看出，每个阶段都有一个队列，每个队列有一个mutex保护，约定进入队列第一个线程为leader，其他线程为follower，所有事情交由leader去做，leader做完所有动作后，通知follower刷盘结束。BLGC就是将事务提交分为了3个阶段，FLUSH阶段，SYNC阶段和COMMIT阶段。</p>
+<h5 id="Flush-Stage"><a href="#Flush-Stage" class="headerlink" title="Flush Stage"></a>Flush Stage</h5><p>将每个事务的二进制日志写入内存中。</p>
+<p>1) 持有Lock_log mutex [leader持有，follower等待]。</p>
+<p>2) 获取队列中的一组binlog(队列中的所有事务)。</p>
+<p>3) 将binlog buffer到I/O cache。</p>
+<p>4) 通知dump线程dump binlog。</p>
+<h5 id="Sync-Stage"><a href="#Sync-Stage" class="headerlink" title="Sync Stage"></a>Sync Stage</h5><p>将内存中的二进制日志刷新到磁盘，若队列中有多个事务，那么仅一次fsync操作就完成了二进制日志的写入，这就是BLGC。</p>
+<p>1) 释放Lock_log mutex，持有Lock_sync mutex[leader持有，follower等待]。</p>
+<p>2) 将一组binlog 落盘(sync动作，最耗时，假设sync_binlog为1)。</p>
+<h5 id="Commit-Stage"><a href="#Commit-Stage" class="headerlink" title="Commit Stage"></a>Commit Stage</h5><p>leader根据顺序调用存储引擎层事务的提交，Innodb本身就支持group commit，因此修复了原先由于锁prepare_commit_mutex导致group commit失效的问题。</p>
+<ol>
+<li><p>释放Lock_sync mutex，持有Lock_commit mutex[leader持有，follower等待]。</p>
+</li>
+<li><p>遍历队列中的事务，逐一进行innodb commit。</p>
+</li>
+<li><p>释放Lock_commit mutex。</p>
+</li>
+<li><p>唤醒队列中等待的线程。</p>
+</li>
+</ol>
+<p>说明：由于有多个队列，每个队列各自有mutex保护，队列之间是顺序的，约定进入队列的一个线程为leader，因此FLUSH阶段的leader可能是SYNC阶段的follower，但是follower永远是follower。</p>
+<p>当有一组事务在进行commit阶段时，其他新事物可以进行Flush阶段，从而使group commit不断生效。当然group commit的效果由队列中事务的数量决定，若每次队列中仅有一个事务，那么可能效果和之前差不多，甚至会更差。但当提交的事务越多时，group commit的效果越明显，数据库性能的提升也就越大。</p>
+<p>MySQL提供了一个参数binlog_max_flush_queue_time（MySQL 5.7.9版本失效），默认值为0，用来控制MySQL 5.6新增的BLGC（binary log group commit），就是二进制日志组提交中Flush阶段中等待的时间，即使之前的一组事务完成提交，当前一组的事务也不马上进入Sync阶段，而是至少需要等待一段时间，这样做的好处是group commit的事务数量更多，然而这也可能会导致事务的响应时间变慢。该参数默认为0表示不等待，且推荐设置依然为0。除非用户的MySQL数据库系统中有大量的连接（如100个连接），并且不断地在进行事务的写入或更新操作。</p>
+<p>MySQL 5.7 Parallel replication实现主备多线程复制基于主库BLGC（Binary Log Group Commit）机制，并在Binary log日志中标识同一组事务的last_commited=N和该组事务内所有的事务提交顺序。为了增加一组事务内的事务数量提高备库组提交时的并发量引入了binlog_group_commit_sync_delay=N和binlog_group_commit_sync_no_delay_count=N</p>
+<p>注：binlog_max_flush_queue_time在MySQL的5.7.9及之后版本不再生效）参数，MySQL等待binlog_group_commit_sync_delay毫秒直到达到binlog_group_commit_sync_no_delay_count事务个数时，将进行一次组提交。</p>
+<h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><ol>
+<li><a href="https://www.cnblogs.com/mao3714/p/8734838.html" target="_blank" rel="noopener">https://www.cnblogs.com/mao3714/p/8734838.html</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Binlog/" rel="tag"># Binlog</a>
+          
+            <a href="/tags/Redo-log/" rel="tag"># Redo log</a>
+          
+            <a href="/tags/Binlog与Redolog一致性/" rel="tag"># Binlog与Redolog一致性</a>
+          
+            <a href="/tags/Mysql/" rel="tag"># Mysql</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/02/19/MySQL表合适容量分析/" rel="next" title="MySQL表合适容量分析">
+                <i class="fa fa-chevron-left"></i> MySQL表合适容量分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpeg" alt="风满楼">
+            
+              <p class="site-author-name" itemprop="name">风满楼</p>
+              <p class="site-description motion-element" itemprop="description">坚持自己的判断，总有一次是对的</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL体系结构"><span class="nav-number">1.</span> <span class="nav-text">MySQL体系结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Binlog与Redolog一致性分析"><span class="nav-number">2.</span> <span class="nav-text">Binlog与Redolog一致性分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL没有开启Binary-log的情况下？"><span class="nav-number">2.1.</span> <span class="nav-text">MySQL没有开启Binary log的情况下？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL开启Binary-log的情况下？"><span class="nav-number">2.2.</span> <span class="nav-text">MySQL开启Binary log的情况下？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#准备阶段（Storage-Engine（InnoDB）-Transaction-Prepare-Phase）"><span class="nav-number">2.2.1.</span> <span class="nav-text">准备阶段（Storage Engine（InnoDB） Transaction Prepare Phase）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#提交阶段-Storage-Engine（InnoDB）Commit-Phase"><span class="nav-number">2.2.2.</span> <span class="nav-text">提交阶段(Storage Engine（InnoDB）Commit Phase)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#记录协调者日志，即Binlog日志。"><span class="nav-number">2.2.2.1.</span> <span class="nav-text">记录协调者日志，即Binlog日志。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#告诉引擎做commit。"><span class="nav-number">2.2.2.2.</span> <span class="nav-text">告诉引擎做commit。</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为了保障主从复制安全，故障恢复是如何做的？"><span class="nav-number">2.2.3.</span> <span class="nav-text">为了保障主从复制安全，故障恢复是如何做的？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么需要保证二进制日志的写入顺序和InnoDB层事务提交顺序一致性呢？"><span class="nav-number">2.2.4.</span> <span class="nav-text">为什么需要保证二进制日志的写入顺序和InnoDB层事务提交顺序一致性呢？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MySQL中Redo与Binlog顺序一致性问题？"><span class="nav-number">2.2.5.</span> <span class="nav-text">MySQL中Redo与Binlog顺序一致性问题？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MySQL中Redo与Binlog顺序一致性问题？-1"><span class="nav-number">2.2.6.</span> <span class="nav-text">MySQL中Redo与Binlog顺序一致性问题？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BLGC（Binary-Log-Group-Commit）"><span class="nav-number">2.2.7.</span> <span class="nav-text">BLGC（Binary Log Group Commit）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#MySQL-Group-Commit"><span class="nav-number">2.2.7.1.</span> <span class="nav-text">MySQL Group Commit</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Flush-Stage"><span class="nav-number">2.2.7.2.</span> <span class="nav-text">Flush Stage</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Sync-Stage"><span class="nav-number">2.2.7.3.</span> <span class="nav-text">Sync Stage</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Commit-Stage"><span class="nav-number">2.2.7.4.</span> <span class="nav-text">Commit Stage</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文档"><span class="nav-number">3.</span> <span class="nav-text">参考文档</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+	  
+		<script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+		<script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+		<div class="widget-wrap">
+		    <h3 class="widget-title">Tag Cloud</h3>
+		    <div id="myCanvasContainer" class="widget tagcloud">
+		        <canvas width="250" height="250" id="resCanvas" style="width=100%">
+		            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/7层/">7层</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Binlog/">Binlog</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Binlog与Redolog一致性/">Binlog与Redolog一致性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/COW/">COW</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cache/">Cache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/InnoDB/">InnoDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL查询/">MySQL查询</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mysql/">Mysql</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Next/">Next</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redo-log/">Redo log</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP/">TCP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UDP/">UDP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/copy-on-write/">copy on write</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fork/">fork</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/博客搭建/">博客搭建</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/四层/">四层</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/查询过程/">查询过程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/缓存一致性/">缓存一致性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/负载均衡/">负载均衡</a><span class="tag-list-count">1</span></li></ul>
+		        </canvas>
+		    </div>
+		</div>
+	   
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">风满楼</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="/js/src/md5.min.js"></script>
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '4abbba92d1956c944d8c',
+      clientSecret: '6cd6a5c5f2cd8fd5ff3c523add22625c73022929',
+      repo: 'discuss',
+      owner: 'loufengman',
+      admin: ['loufengman'],
+      id: md5(location.pathname),
+      distractionFreeMode: 'false'
+    })
+    gitalk.render('gitalk-container')
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
