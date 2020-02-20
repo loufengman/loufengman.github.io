@@ -517,6 +517,18 @@
 <p>那么MySQL到底是先写Binlog呢？还是先写的Redolog? </p>
 <p>在不可靠的环境中怎么保证二者一致的呢？</p>
 <p>我们带着这两个问题开始一探究竟。</p>
+<h2 id="MySQL体系结构"><a href="#MySQL体系结构" class="headerlink" title="MySQL体系结构"></a>MySQL体系结构</h2><p>废话不多说，直接上图。（图片来源于网络）</p>
+<p><img src="/2020/02/19/Binlog与Redolog一致性/MySQL%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E5%9B%BE.jpg" alt></p>
+<ul>
+<li>Binlog是MySQL Server层的日志，一旦开启，任何存储引擎都会写Binlog日志</li>
+<li>Redolog是存储引擎层的日志，即InnoDB的日志</li>
+</ul>
+<p>从这个层次结构上来说，我们可以得出第一个问题的答案：<br><strong><font color="red">Binlog写先于Redolog</font></strong></p>
+<h2 id="Binlog与Redolog一致性分析"><a href="#Binlog与Redolog一致性分析" class="headerlink" title="Binlog与Redolog一致性分析"></a>Binlog与Redolog一致性分析</h2><p>注： 为了避免转述不准确，接下来的内容copy自网络，见参考资料。</p>
+<h3 id="MySQL没有开启Binary-log的情况下？"><a href="#MySQL没有开启Binary-log的情况下？" class="headerlink" title="MySQL没有开启Binary log的情况下？"></a>MySQL没有开启Binary log的情况下？</h3><p>首先看一下什么是CrashSafe？CrashSafe指MySQL服务器宕机重启后，能够保证：</p>
+<p>– 所有已经提交的事务的数据仍然存在。</p>
+<p>– 所有没有提交的事务的数据自动回滚。</p>
+<p>Innodb通过Redo Log和Undo Log可以保证以上两点。为了保证严格的CrashSafe，必须要在每个事务提交的时候，将Redo Log写入硬件存储。这样做会牺牲一些性能，但是可靠性最好。为了平衡两者，InnoDB提供了一个innodb_flush_log_at_trx_commit系统变量，用户可以根据应用的需求自行调整。</p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2020/02/19/Binlog与Redolog一致性/#more" rel="contents">
