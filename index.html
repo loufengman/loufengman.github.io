@@ -1363,6 +1363,17 @@
       
         
           <p>本文主要介绍Copy-On-Write的基本思想已经应用场景。</p>
+<h2 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h2><p>COW是Copy On Write的缩写，意为<strong>写时复制</strong></p>
+<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">//Step 1</span></span><br><span class="line"><span class="keyword">echo</span> memory_get_usage();</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"\n"</span>;</span><br><span class="line"><span class="comment">//输出：352072</span></span><br><span class="line"><span class="comment">//Step 2</span></span><br><span class="line">$a = <span class="string">'fasdfadfadasdfasdfadadafqoweuhfoquhfasjdajdfoquwehfhoqjdfajdnoqwuehfoqwudfadjfnlasjdfqowuefoquwefadbflasjdfoqjfoquwfqofqiuwfqowufdfqijfqjewpqifpqwfqdfn23u9qwey82934r7803yr10423701710374047hfjnvmxcbvbxcvmnxcnvlcnvlamnv.anvlaksdvnaldjavnv.cvnbvbvcnzbv,cnvz.cvncvz.cvn,cv.zv'</span>;</span><br><span class="line"><span class="keyword">echo</span> memory_get_usage();</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"\n"</span>;</span><br><span class="line"><span class="comment">//输出：352104</span></span><br><span class="line"><span class="comment">//Step 3</span></span><br><span class="line">$b = $a;</span><br><span class="line"><span class="keyword">echo</span> memory_get_usage();</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"\n"</span>;</span><br><span class="line"><span class="comment">//输出：352104</span></span><br><span class="line"><span class="comment">//Step 4</span></span><br><span class="line">$a = substr($a, <span class="number">0</span>, strlen($a)<span class="number">-2</span>);</span><br><span class="line"><span class="keyword">echo</span> memory_get_usage();</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"\n"</span>;</span><br><span class="line"><span class="comment">//输出：352424</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="情景分析"><a href="#情景分析" class="headerlink" title="情景分析"></a>情景分析</h2><p>1、<code>$b = $a</code>变量赋值的时候内存占用并没有翻倍 </p>
+<p>2、修改变量<code>$a</code>的值的时候，内存占用升高</p>
+<h2 id="原理解析"><a href="#原理解析" class="headerlink" title="原理解析"></a>原理解析</h2><p>1、创建变量$a，为$a申请内存</p>
+<p><img src="/2019/06/19/Copy-On-Write/img_cow_1.png" alt> </p>
+<p>2、创建变量$b，并将$a的值复制给$b，这时候其实并没有为$b申请新的内存空间</p>
+<p> <img src="/2019/06/19/Copy-On-Write/img_cow_2.png" alt></p>
+<p>3、修改变量$a的值后，这时候会为$a重新申请内存</p>
+<p> <img src="/2019/06/19/Copy-On-Write/img_cow_3.png" alt>&gt;</p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2019/06/19/Copy-On-Write/#more" rel="contents">
