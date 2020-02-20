@@ -263,6 +263,164 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/20/MySQL分库分表研究/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="风满楼">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="西北玄天一片云">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/02/20/MySQL分库分表研究/" itemprop="url">MySQL分表研究</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-20T10:58:00+08:00">
+                2020-02-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>MySQL分库分表是大厂常见的技术方案。</p>
+<p>为什么要做分库分表呢？</p>
+<ol>
+<li>分库有利于服务隔离与解耦，方便单独扩容和故障恢复。</li>
+<li>分表可以解决大表的运维难题，提高并发性能。</li>
+</ol>
+<p>分库大家比较容易理解，一般随着业务粒度的划分进行。</p>
+<p>而分表的形式和用途多种多样，同样达到的目的和效果也各不相同。</p>
+<p>常见的解决大表问题的方案是水平分表。本文重点介绍水平分表的方案以及扩容方式。</p>
+<h2 id="常见水平分表方式"><a href="#常见水平分表方式" class="headerlink" title="常见水平分表方式"></a>常见水平分表方式</h2><h3 id="连续分片"><a href="#连续分片" class="headerlink" title="连续分片"></a>连续分片</h3><p>根据特定字段(比如用户ID、订单时间)的范围，值在该区间的，划分到特定节点。<br>优点：集群扩容后，指定新的范围落在新节点即可，无需进行数据迁移。<br>缺点：如果按时间划分，数据热点分布不均(历史数冷当前数据热)，导致节点负荷不均。</p>
+<h3 id="ID取模分片"><a href="#ID取模分片" class="headerlink" title="ID取模分片"></a>ID取模分片</h3><h3 id="一致性Hash算法"><a href="#一致性Hash算法" class="headerlink" title="一致性Hash算法"></a>一致性Hash算法</h3><h3 id="Snowflake-分片"><a href="#Snowflake-分片" class="headerlink" title="Snowflake 分片"></a>Snowflake 分片</h3><pre><code>Snowflake 是 Twitter 开源的分布式 ID 生成算法，其结果为 long(64bit) 的数值。
+其特性是各节点无需协调、按时间大致有序、且整个集群各节点单不重复。
+该数值的默认组成如下(符号位之外的三部分允许个性化调整)：</code></pre><p><img src="/2020/02/20/MySQL分库分表研究/snowflake.png" alt="Snowflake"></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/02/20/MySQL分库分表研究/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/19/Binlog与Redolog一致性/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -507,6 +665,20 @@
           <p>大家应该都知道 ，MySQL单表过大，查询性能会直线下降，这时候就需要通过分库分表的方式来对单表划分多个小表，依此来提高性能。</p>
 <p>那么问题来了，Mysql单表过大为什么查询性能会下降？MySQL单表过大的标准是多少？500W?2000W？</p>
 <p>本文将来着这些问题来一探究竟。由于大部分业务生产环境的引擎使用的InnoDB，本文所有观点皆基于InnoDB引擎来阐述。</p>
+<p>为了回答这些问题，我们先介绍一些基本概念和过程。</p>
+<h2 id="Mysql查询"><a href="#Mysql查询" class="headerlink" title="Mysql查询"></a>Mysql查询</h2><h3 id="Mysql-SQL查询过程"><a href="#Mysql-SQL查询过程" class="headerlink" title="Mysql SQL查询过程"></a>Mysql SQL查询过程</h3><ol>
+<li><p>客户端发送一条查询给服务器；</p>
+</li>
+<li><p>服务器先会检查查询缓存，如果命中了缓存，则立即返回存储在缓存中的结果。否则进入下一阶段；</p>
+</li>
+<li><p>服务器端进行SQL解析、预处理，再由优化器生成对应的执行计划；</p>
+</li>
+<li><p>MySQL根据优化器生成的执行计划，调用存储引擎的API来执行查询；</p>
+</li>
+<li><p>将结果返回给客户端。</p>
+</li>
+</ol>
+<p><img src="/2020/02/19/MySQL表合适容量分析/MySQL%E6%9F%A5%E8%AF%A2%E8%BF%87%E7%A8%8B.png" alt></p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2020/02/19/MySQL表合适容量分析/#more" rel="contents">
@@ -670,6 +842,20 @@
 </blockquote>
 <blockquote>
 <p>。。。。。。</p>
+</blockquote>
+<p>回家赶快google一下，哦，原来是7层协议的七层啊，不是楼层数啊。泪崩。。。</p>
+<h2 id="协议模型"><a href="#协议模型" class="headerlink" title="协议模型"></a>协议模型</h2><h3 id="OSI"><a href="#OSI" class="headerlink" title="OSI"></a>OSI</h3><p><img src="/2020/02/14/load_balence/%E5%8D%8F%E8%AE%AE%E6%A8%A1%E5%9E%8B.jpeg" alt> </p>
+<h3 id="TCP-IP模型"><a href="#TCP-IP模型" class="headerlink" title="TCP/IP模型"></a>TCP/IP模型</h3><p><img src="/2020/02/14/load_balence/OSI%E4%B8%83%E5%B1%82%E5%8D%8F%E8%AE%AE.jpg" alt></p>
+<h2 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h2><p>常见的负载均衡主要是四层负载均衡和七层负载均衡。</p>
+<blockquote>
+<p>负载均衡器通常称为四层交换机或七层交换机。四层交换机主要分析IP层及TCP/UDP层，实现四层流量负载均衡。七层交换机除了支持四层负载均衡以外，还有分析应用层的信息，如HTTP协议URI或Cookie信息。</p>
+</blockquote>
+<blockquote>
+<p>所谓四层就是基于IP+端口的负载均衡;</p>
+</blockquote>
+<blockquote>
+<p>七层就是基于URL等应用层信息的负载均衡;</p>
+<p>同理，还有基于MAC地址的二层负载均衡和基于IP地址的三层负载均衡。</p>
 </blockquote>
           <!--noindex-->
           <div class="post-button text-center">
@@ -846,6 +1032,8 @@
 
 <p>本文尝试按自己的理解来回答这些问题？</p>
 <p><font color="red">声明：本文不保证答案正确，仅代表个人理解，仅供交流参考。</font></p>
+<p>先来看下正常的三次握手、四次挥手图解。</p>
+<p><img src="/2020/02/12/TCP-UDPQA/TCP%E6%8F%A1%E6%89%8B" alt></p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2020/02/12/TCP-UDPQA/#more" rel="contents">
@@ -992,6 +1180,31 @@
       
         
           <p>缓存是目前解决高并发场景下的主流解决方案必不可少的工具之一。<br>在高并发或者多线程的情况下,如何保证缓存和持久化存储的数据一致是业界面临的一个普遍问题。<br>本文针对几种常见的数据库、缓存更新方式，分析一下并发场景下存在的问题。</p>
+<h2 id="缓存数据库更新的几种常见方式"><a href="#缓存数据库更新的几种常见方式" class="headerlink" title="缓存数据库更新的几种常见方式"></a>缓存数据库更新的几种常见方式</h2><ol>
+<li>先更新缓存，后更新数据库</li>
+<li>先更新数据库，后更新缓存</li>
+<li>先删除缓存，后更新数据库</li>
+<li>先更新数据库，后删除缓存</li>
+</ol>
+<p>我们考虑一下这种场景。假设有并发请求A和B，按一下情况顺序执行。然后我们依次说明。</p>
+<h3 id="第一种情况"><a href="#第一种情况" class="headerlink" title="第一种情况"></a>第一种情况</h3><p><code>先更新缓存，后更新数据库</code></p>
+<p>考虑A/B执行顺序如下：</p>
+<ul>
+<li>A更新缓存</li>
+<li>B更新缓存</li>
+<li>B更新数据库</li>
+<li>A更新数据库</li>
+</ul>
+<p>最终导致的结果就是：缓存里是B的结果，但数据库里是A的结果，二者不一致。</p>
+<h3 id="第二种情况"><a href="#第二种情况" class="headerlink" title="第二种情况"></a>第二种情况</h3><p><code>先更新数据库，后更新缓存</code></p>
+<p>考虑A/B执行顺序如下：</p>
+<ul>
+<li>A更新数据库</li>
+<li>B更新数据库</li>
+<li>B更新缓存</li>
+<li>A更新缓存</li>
+</ul>
+<p>最终导致的结果就是：缓存里是A的结果，但数据库是B的结果，二者不一致。</p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2020/02/10/数据库与缓存一致性分析/#more" rel="contents">
@@ -1284,6 +1497,18 @@
       
         
           <p>本文主要介绍在Mac环境下搭建hexo-theme-next的过程，以及其中遇到的问题的解决方法</p>
+<h2 id="安装环境"><a href="#安装环境" class="headerlink" title="安装环境"></a>安装环境</h2><ol>
+<li>机器：MacBook Air</li>
+<li>OS: macOS HighSierra 10.13.2</li>
+</ol>
+<h2 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h2><h3 id="安装git"><a href="#安装git" class="headerlink" title="安装git"></a>安装git</h3><p><code>brew install git</code></p>
+<h3 id="安装node"><a href="#安装node" class="headerlink" title="安装node"></a>安装node</h3><p><code>brew install node</code></p>
+<h3 id="安装hexo"><a href="#安装hexo" class="headerlink" title="安装hexo"></a>安装hexo</h3><p><code>sudo npm install -g hexo</code><br>安装报错，换个命令<br><code>sudo npm install --unsafe-perm --verbose -g hexo</code><br>验证是否安装成功<br><code>hexo -v</code></p>
+<h3 id="安装Next主题"><a href="#安装Next主题" class="headerlink" title="安装Next主题"></a>安装Next主题</h3><ol>
+<li>cd your-hexo-dir</li>
+<li>git clone <a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">https://github.com/iissnan/hexo-theme-next</a> themes/next</li>
+<li>修改站点_config.yml, <code>theme: next</code></li>
+</ol>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2019/06/17/max-hexo-next/#more" rel="contents">
@@ -1374,7 +1599,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1396,7 +1621,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -1430,7 +1655,7 @@
 		    <h3 class="widget-title">Tag Cloud</h3>
 		    <div id="myCanvasContainer" class="widget tagcloud">
 		        <canvas width="250" height="250" id="resCanvas" style="width=100%">
-		            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Binlog/">Binlog</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Binlog与Redolog一致性/">Binlog与Redolog一致性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/COW/">COW</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cache/">Cache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/InnoDB/">InnoDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL查询/">MySQL查询</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mysql/">Mysql</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Next/">Next</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redo-log/">Redo log</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP/">TCP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UDP/">UDP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/copy-on-write/">copy on write</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fork/">fork</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/七层协议栈/">七层协议栈</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/博客搭建/">博客搭建</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/查询过程/">查询过程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/缓存一致性/">缓存一致性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/负载均衡/">负载均衡</a><span class="tag-list-count">1</span></li></ul>
+		            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Binlog/">Binlog</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Binlog与Redolog一致性/">Binlog与Redolog一致性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/COW/">COW</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cache/">Cache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/InnoDB/">InnoDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL查询/">MySQL查询</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mysql/">Mysql</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Next/">Next</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redo-log/">Redo log</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP/">TCP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UDP/">UDP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/copy-on-write/">copy on write</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fork/">fork</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/七层协议栈/">七层协议栈</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分库/">分库</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分表/">分表</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/博客搭建/">博客搭建</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/扩容/">扩容</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/查询过程/">查询过程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/缓存一致性/">缓存一致性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/负载均衡/">负载均衡</a><span class="tag-list-count">1</span></li></ul>
 		        </canvas>
 		    </div>
 		</div>

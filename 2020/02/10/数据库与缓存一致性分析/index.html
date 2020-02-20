@@ -79,19 +79,19 @@
 
 
 
-<meta name="description" content="缓存是目前解决高并发场景下的主流解决方案必不可少的工具之一。在高并发或者多线程的情况下,如何保证缓存和持久化存储的数据一致是业界面临的一个普遍问题。本文针对几种常见的数据库、缓存更新方式，分析一下并发场景下存在的问题。">
+<meta name="description" content="缓存是目前解决高并发场景下的主流解决方案必不可少的工具之一。在高并发或者多线程的情况下,如何保证缓存和持久化存储的数据一致是业界面临的一个普遍问题。本文针对几种常见的数据库、缓存更新方式，分析一下并发场景下存在的问题。 缓存数据库更新的几种常见方式 先更新缓存，后更新数据库 先更新数据库，后更新缓存 先删除缓存，后更新数据库 先更新数据库，后删除缓存  我们考虑一下这种场景。假设有并发请求A和B，">
 <meta name="keywords" content="Mysql,Cache,缓存一致性">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据库与缓存一致性分析">
 <meta property="og:url" content="http://yoursite.com/2020/02/10/数据库与缓存一致性分析/index.html">
 <meta property="og:site_name" content="西北玄天一片云">
-<meta property="og:description" content="缓存是目前解决高并发场景下的主流解决方案必不可少的工具之一。在高并发或者多线程的情况下,如何保证缓存和持久化存储的数据一致是业界面临的一个普遍问题。本文针对几种常见的数据库、缓存更新方式，分析一下并发场景下存在的问题。">
+<meta property="og:description" content="缓存是目前解决高并发场景下的主流解决方案必不可少的工具之一。在高并发或者多线程的情况下,如何保证缓存和持久化存储的数据一致是业界面临的一个普遍问题。本文针对几种常见的数据库、缓存更新方式，分析一下并发场景下存在的问题。 缓存数据库更新的几种常见方式 先更新缓存，后更新数据库 先更新数据库，后更新缓存 先删除缓存，后更新数据库 先更新数据库，后删除缓存  我们考虑一下这种场景。假设有并发请求A和B，">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2020/02/10/数据库与缓存一致性分析/%E7%BC%93%E5%AD%98%E6%9B%B4%E6%96%B0%E6%96%B9%E6%A1%88.png">
-<meta property="og:updated_time" content="2020-02-12T08:29:11.321Z">
+<meta property="og:updated_time" content="2020-02-20T09:46:14.997Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="数据库与缓存一致性分析">
-<meta name="twitter:description" content="缓存是目前解决高并发场景下的主流解决方案必不可少的工具之一。在高并发或者多线程的情况下,如何保证缓存和持久化存储的数据一致是业界面临的一个普遍问题。本文针对几种常见的数据库、缓存更新方式，分析一下并发场景下存在的问题。">
+<meta name="twitter:description" content="缓存是目前解决高并发场景下的主流解决方案必不可少的工具之一。在高并发或者多线程的情况下,如何保证缓存和持久化存储的数据一致是业界面临的一个普遍问题。本文针对几种常见的数据库、缓存更新方式，分析一下并发场景下存在的问题。 缓存数据库更新的几种常见方式 先更新缓存，后更新数据库 先更新数据库，后更新缓存 先删除缓存，后更新数据库 先更新数据库，后删除缓存  我们考虑一下这种场景。假设有并发请求A和B，">
 <meta name="twitter:image" content="http://yoursite.com/2020/02/10/数据库与缓存一致性分析/%E7%BC%93%E5%AD%98%E6%9B%B4%E6%96%B0%E6%96%B9%E6%A1%88.png">
 
 
@@ -355,8 +355,6 @@
 
       
         <p>缓存是目前解决高并发场景下的主流解决方案必不可少的工具之一。<br>在高并发或者多线程的情况下,如何保证缓存和持久化存储的数据一致是业界面临的一个普遍问题。<br>本文针对几种常见的数据库、缓存更新方式，分析一下并发场景下存在的问题。</p>
-<a id="more"></a>
-
 <h2 id="缓存数据库更新的几种常见方式"><a href="#缓存数据库更新的几种常见方式" class="headerlink" title="缓存数据库更新的几种常见方式"></a>缓存数据库更新的几种常见方式</h2><ol>
 <li>先更新缓存，后更新数据库</li>
 <li>先更新数据库，后更新缓存</li>
@@ -382,6 +380,8 @@
 <li>A更新缓存</li>
 </ul>
 <p>最终导致的结果就是：缓存里是A的结果，但数据库是B的结果，二者不一致。</p>
+<a id="more"></a>
+
 <h3 id="第三种情况"><a href="#第三种情况" class="headerlink" title="第三种情况"></a>第三种情况</h3><p><code>先删除缓存，后更新数据库</code></p>
 <p>考虑A/B执行顺序如下：</p>
 <ul>
@@ -537,7 +537,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -559,7 +559,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -609,7 +609,7 @@
 		    <h3 class="widget-title">Tag Cloud</h3>
 		    <div id="myCanvasContainer" class="widget tagcloud">
 		        <canvas width="250" height="250" id="resCanvas" style="width=100%">
-		            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Binlog/">Binlog</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Binlog与Redolog一致性/">Binlog与Redolog一致性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/COW/">COW</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cache/">Cache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/InnoDB/">InnoDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL查询/">MySQL查询</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mysql/">Mysql</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Next/">Next</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redo-log/">Redo log</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP/">TCP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UDP/">UDP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/copy-on-write/">copy on write</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fork/">fork</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/七层协议栈/">七层协议栈</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/博客搭建/">博客搭建</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/查询过程/">查询过程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/缓存一致性/">缓存一致性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/负载均衡/">负载均衡</a><span class="tag-list-count">1</span></li></ul>
+		            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Binlog/">Binlog</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Binlog与Redolog一致性/">Binlog与Redolog一致性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/COW/">COW</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cache/">Cache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/InnoDB/">InnoDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL查询/">MySQL查询</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mysql/">Mysql</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Next/">Next</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redo-log/">Redo log</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP/">TCP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UDP/">UDP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/copy-on-write/">copy on write</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fork/">fork</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/七层协议栈/">七层协议栈</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分库/">分库</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分表/">分表</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/博客搭建/">博客搭建</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/扩容/">扩容</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/查询过程/">查询过程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/缓存一致性/">缓存一致性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/负载均衡/">负载均衡</a><span class="tag-list-count">1</span></li></ul>
 		        </canvas>
 		    </div>
 		</div>
