@@ -827,9 +827,13 @@ Content-Type: text/html; charset=UTF-8
 <tr>
 <td>机械硬盘</td>
 <td>300M/s</td>
-<td>10ms</td>
+<td>10ms,其中寻道时间在9ms左右</td>
 </tr>
 </tbody></table>
+<p>常见性能数据</p>
+<blockquote>
+<p>Nginx：能轻松的处理c100k问题，内存越大，能处理的并发量越高<br>Redis: <a href="https://redis.io/topics/benchmarks" target="_blank" rel="noopener">https://redis.io/topics/benchmarks</a> 表明，对于GET/SET来说，QPS 10-100k没啥大问题<br>MySQL: <a href="https://www.mysql.com/why-mysql/benchmarks/" target="_blank" rel="noopener">https://www.mysql.com/why-mysql/benchmarks/</a> 表明，对于只读，QPS 几百k没啥问题，对于写，MySQL 5.7 QPS 100k 几乎是上限, TPS基本上10K级别</p>
+</blockquote>
 <p>存储软件对比分析：</p>
 <table>
 <thead>

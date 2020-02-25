@@ -88,7 +88,7 @@
 <meta property="og:description" content="为什么考察系统设计类题目系统设计题是高级工程师面试过程中必不可少的一类题目。这类题目经常能够真正考察面试者的真实综合实力，能够反映面试者的知识广度和深度。 这类题目往往面试官提供的信息非常少，需要面试者自己去思考系统功能、系统难点、设计方案，还要在设计过程中经受面试官的层层盘问和质疑。 然而，这和算法面试和程序面试不同的是，这类题目往往没有标准答案，主要看中的是你思考论述的过程，而不是你最后提出的">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2020/02/21/系统设计/%E5%AD%98%E5%82%A8%E8%BD%AF%E4%BB%B6%E5%AF%B9%E6%AF%94.png">
-<meta property="og:updated_time" content="2020-02-25T08:08:27.948Z">
+<meta property="og:updated_time" content="2020-02-25T14:42:58.675Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="系统设计题套路总结">
 <meta name="twitter:description" content="为什么考察系统设计类题目系统设计题是高级工程师面试过程中必不可少的一类题目。这类题目经常能够真正考察面试者的真实综合实力，能够反映面试者的知识广度和深度。 这类题目往往面试官提供的信息非常少，需要面试者自己去思考系统功能、系统难点、设计方案，还要在设计过程中经受面试官的层层盘问和质疑。 然而，这和算法面试和程序面试不同的是，这类题目往往没有标准答案，主要看中的是你思考论述的过程，而不是你最后提出的">
@@ -433,9 +433,13 @@
 <tr>
 <td>机械硬盘</td>
 <td>300M/s</td>
-<td>10ms</td>
+<td>10ms,其中寻道时间在9ms左右</td>
 </tr>
 </tbody></table>
+<p>常见性能数据</p>
+<blockquote>
+<p>Nginx：能轻松的处理c100k问题，内存越大，能处理的并发量越高<br>Redis: <a href="https://redis.io/topics/benchmarks" target="_blank" rel="noopener">https://redis.io/topics/benchmarks</a> 表明，对于GET/SET来说，QPS 10-100k没啥大问题<br>MySQL: <a href="https://www.mysql.com/why-mysql/benchmarks/" target="_blank" rel="noopener">https://www.mysql.com/why-mysql/benchmarks/</a> 表明，对于只读，QPS 几百k没啥问题，对于写，MySQL 5.7 QPS 100k 几乎是上限, TPS基本上10K级别</p>
+</blockquote>
 <p>存储软件对比分析：</p>
 <table>
 <thead>
