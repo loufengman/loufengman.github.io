@@ -87,13 +87,13 @@
 <meta property="og:site_name" content="西北玄天一片云">
 <meta property="og:description" content="HTTP协议定义Web客户端如何从Web服务器请求Web页面，以及服务器如何把Web页面传送给客户端。HTTP协议采用了请求/响应模型。客户端向服务器发送一个请求报文，请求报文包含请求的方法、URL、协议版本、请求头部和请求数据。服务器以一个状态行作为响应，响应的内容包括协议的版本、成功或者错误代码、服务器信息、响应头部和响应数据。 HTTP Request客户端发送一个HTTP请求到服务器的请求">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/2020/02/25/http协议/http%E5%8D%8F%E8%AE%AE/http%E8%AF%B7%E6%B1%82.png">
-<meta property="og:image" content="http://yoursite.com/2020/02/25/http协议/http%E5%8D%8F%E8%AE%AE/http%E5%93%8D%E5%BA%94.png">
-<meta property="og:updated_time" content="2020-02-25T10:00:33.958Z">
+<meta property="og:image" content="http://yoursite.com/2020/02/25/http协议/request.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/25/http协议/response.png">
+<meta property="og:updated_time" content="2020-02-25T10:21:08.366Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Http 1.0、1.1、2.0比较分析">
 <meta name="twitter:description" content="HTTP协议定义Web客户端如何从Web服务器请求Web页面，以及服务器如何把Web页面传送给客户端。HTTP协议采用了请求/响应模型。客户端向服务器发送一个请求报文，请求报文包含请求的方法、URL、协议版本、请求头部和请求数据。服务器以一个状态行作为响应，响应的内容包括协议的版本、成功或者错误代码、服务器信息、响应头部和响应数据。 HTTP Request客户端发送一个HTTP请求到服务器的请求">
-<meta name="twitter:image" content="http://yoursite.com/2020/02/25/http协议/http%E5%8D%8F%E8%AE%AE/http%E8%AF%B7%E6%B1%82.png">
+<meta name="twitter:image" content="http://yoursite.com/2020/02/25/http协议/request.png">
 
 
 
@@ -374,7 +374,7 @@
         <p>HTTP协议定义Web客户端如何从Web服务器请求Web页面，以及服务器如何把Web页面传送给客户端。HTTP协议采用了请求/响应模型。客户端向服务器发送一个请求报文，请求报文包含请求的方法、URL、协议版本、请求头部和请求数据。服务器以一个状态行作为响应，响应的内容包括协议的版本、成功或者错误代码、服务器信息、响应头部和响应数据。</p>
 <h1 id="HTTP-Request"><a href="#HTTP-Request" class="headerlink" title="HTTP Request"></a>HTTP Request</h1><p>客户端发送一个HTTP请求到服务器的请求消息包括以下格式：</p>
 <p>请求行（request line）、请求头部（header）、空行和请求数据四个部分组成。</p>
-<p><img src="http%E5%8D%8F%E8%AE%AE/http%E8%AF%B7%E6%B1%82.png" alt></p>
+<p><img src="/2020/02/25/http协议/request.png" alt></p>
 <pre><code>GET /562f25980001b1b106000338.jpg HTTP/1.1
 Host    img.mukewang.com
 User-Agent    Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36     (KHTML, like Gecko) Chrome/51.0.2704.106 Safari/537.36
@@ -383,7 +383,7 @@ Referer    http://www.imooc.com/
 Accept-Encoding    gzip, deflate, sdch
 Accept-Language    zh-CN,zh;q=0.8</code></pre><h1 id="HTTP-Response"><a href="#HTTP-Response" class="headerlink" title="HTTP Response"></a>HTTP Response</h1><p>一般情况下，服务器接收并处理客户端发过来的请求后会返回一个HTTP的响应消息。</p>
 <p>HTTP响应也由四个部分组成，分别是：状态行、消息报头、空行和响应正文。</p>
-<p><img src="http%E5%8D%8F%E8%AE%AE/http%E5%93%8D%E5%BA%94.png" alt></p>
+<p><img src="/2020/02/25/http协议/response.png" alt></p>
 <pre><code>HTTP/1.1 200 OK
 Date: Fri, 22 May 2009 06:07:21 GMT
 Content-Type: text/html; charset=UTF-8
