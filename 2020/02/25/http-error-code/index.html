@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Mysql,Cache,缓存一致性,">
+  <meta name="keywords" content="HTTP,499,502,504,">
 
 
 
@@ -79,20 +79,18 @@
 
 
 
-<meta name="description" content="缓存是目前解决高并发场景下的主流解决方案必不可少的工具之一。在高并发或者多线程的情况下,如何保证缓存和持久化存储的数据一致是业界面临的一个普遍问题。本文针对几种常见的数据库、缓存更新方式，分析一下并发场景下存在的问题。 缓存数据库更新的几种常见方式 先更新缓存，后更新数据库 先更新数据库，后更新缓存 先删除缓存，后更新数据库 先更新数据库，后删除缓存  我们考虑一下这种场景。假设有并发请求A和B，">
-<meta name="keywords" content="Mysql,Cache,缓存一致性">
+<meta name="description" content="##常见错误码  We all come across website errors at some point, and every website out there has inevitably experienced their share of 404 and 500 status codes, which are shown when a URL is not found either">
+<meta name="keywords" content="HTTP,499,502,504">
 <meta property="og:type" content="article">
-<meta property="og:title" content="数据库与缓存一致性分析">
-<meta property="og:url" content="http://yoursite.com/2020/02/10/数据库与缓存一致性分析/index.html">
+<meta property="og:title" content="HTTP状态码解析">
+<meta property="og:url" content="http://yoursite.com/2020/02/25/http-error-code/index.html">
 <meta property="og:site_name" content="西北玄天一片云">
-<meta property="og:description" content="缓存是目前解决高并发场景下的主流解决方案必不可少的工具之一。在高并发或者多线程的情况下,如何保证缓存和持久化存储的数据一致是业界面临的一个普遍问题。本文针对几种常见的数据库、缓存更新方式，分析一下并发场景下存在的问题。 缓存数据库更新的几种常见方式 先更新缓存，后更新数据库 先更新数据库，后更新缓存 先删除缓存，后更新数据库 先更新数据库，后删除缓存  我们考虑一下这种场景。假设有并发请求A和B，">
+<meta property="og:description" content="##常见错误码  We all come across website errors at some point, and every website out there has inevitably experienced their share of 404 and 500 status codes, which are shown when a URL is not found either">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/2020/02/10/数据库与缓存一致性分析/%E7%BC%93%E5%AD%98%E6%9B%B4%E6%96%B0%E6%96%B9%E6%A1%88.png">
-<meta property="og:updated_time" content="2020-02-24T02:24:36.154Z">
+<meta property="og:updated_time" content="2020-02-25T08:46:11.193Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="数据库与缓存一致性分析">
-<meta name="twitter:description" content="缓存是目前解决高并发场景下的主流解决方案必不可少的工具之一。在高并发或者多线程的情况下,如何保证缓存和持久化存储的数据一致是业界面临的一个普遍问题。本文针对几种常见的数据库、缓存更新方式，分析一下并发场景下存在的问题。 缓存数据库更新的几种常见方式 先更新缓存，后更新数据库 先更新数据库，后更新缓存 先删除缓存，后更新数据库 先更新数据库，后删除缓存  我们考虑一下这种场景。假设有并发请求A和B，">
-<meta name="twitter:image" content="http://yoursite.com/2020/02/10/数据库与缓存一致性分析/%E7%BC%93%E5%AD%98%E6%9B%B4%E6%96%B0%E6%96%B9%E6%A1%88.png">
+<meta name="twitter:title" content="HTTP状态码解析">
+<meta name="twitter:description" content="##常见错误码  We all come across website errors at some point, and every website out there has inevitably experienced their share of 404 and 500 status codes, which are shown when a URL is not found either">
 
 
 
@@ -122,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2020/02/10/数据库与缓存一致性分析/">
+  <link rel="canonical" href="http://yoursite.com/2020/02/25/http-error-code/">
 
 
 
 
 
-  <title>数据库与缓存一致性分析 | 西北玄天一片云</title>
+  <title>HTTP状态码解析 | 西北玄天一片云</title>
   
 
 
@@ -265,7 +263,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/10/数据库与缓存一致性分析/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/25/http-error-code/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="风满楼">
@@ -282,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">数据库与缓存一致性分析</h1>
+          <h1 class="post-title" itemprop="name headline">HTTP状态码解析</h1>
         
 
         <div class="post-meta">
@@ -294,8 +292,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-10T11:20:00+08:00">
-                2020-02-10
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-25T16:11:00+08:00">
+                2020-02-25
               </time>
             
 
@@ -317,8 +315,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/系统设计/" itemprop="url" rel="index">
-                    <span itemprop="name">系统设计</span>
+                  <a href="/categories/HTTP/" itemprop="url" rel="index">
+                    <span itemprop="name">HTTP</span>
                   </a>
                 </span>
 
@@ -354,64 +352,46 @@
       
 
       
-        <p>缓存是目前解决高并发场景下的主流解决方案必不可少的工具之一。<br>在高并发或者多线程的情况下,如何保证缓存和持久化存储的数据一致是业界面临的一个普遍问题。<br>本文针对几种常见的数据库、缓存更新方式，分析一下并发场景下存在的问题。</p>
-<h2 id="缓存数据库更新的几种常见方式"><a href="#缓存数据库更新的几种常见方式" class="headerlink" title="缓存数据库更新的几种常见方式"></a>缓存数据库更新的几种常见方式</h2><ol>
-<li>先更新缓存，后更新数据库</li>
-<li>先更新数据库，后更新缓存</li>
-<li>先删除缓存，后更新数据库</li>
-<li>先更新数据库，后删除缓存</li>
-</ol>
-<p>我们考虑一下这种场景。假设有并发请求A和B，按一下情况顺序执行。然后我们依次说明。</p>
-<h3 id="第一种情况"><a href="#第一种情况" class="headerlink" title="第一种情况"></a>第一种情况</h3><p><code>先更新缓存，后更新数据库</code></p>
-<p>考虑A/B执行顺序如下：</p>
-<ul>
-<li>A更新缓存</li>
-<li>B更新缓存</li>
-<li>B更新数据库</li>
-<li>A更新数据库</li>
-</ul>
-<p>最终导致的结果就是：缓存里是B的结果，但数据库里是A的结果，二者不一致。</p>
-<h3 id="第二种情况"><a href="#第二种情况" class="headerlink" title="第二种情况"></a>第二种情况</h3><p><code>先更新数据库，后更新缓存</code></p>
-<p>考虑A/B执行顺序如下：</p>
-<ul>
-<li>A更新数据库</li>
-<li>B更新数据库</li>
-<li>B更新缓存</li>
-<li>A更新缓存</li>
-</ul>
-<p>最终导致的结果就是：缓存里是A的结果，但数据库是B的结果，二者不一致。</p>
-<a id="more"></a>
-
-<h3 id="第三种情况"><a href="#第三种情况" class="headerlink" title="第三种情况"></a>第三种情况</h3><p><code>先删除缓存，后更新数据库</code></p>
-<p>考虑A/B执行顺序如下：</p>
-<ul>
-<li>A删除缓存</li>
-<li>B查询不到缓存</li>
-<li>B从数据库中取出旧值</li>
-<li>B将旧值写入缓存</li>
-<li>A更新数据库</li>
-</ul>
-<p>最终导致的结果就是：缓存里是旧值，但数据库是A更新后的新值，二者不一致。</p>
-<p>那么这种情况有没有<strong>解决方案</strong>呢？</p>
-<p>既然最后写入的就是最新的值，那么可以在写入新值后再次删除缓存里的旧值来解决。那再次删除缓存的时机就显得比较重要了，必须得在B将旧值写入缓存之后，可以取一次请求时间加上写入缓存的时间和作为延迟删除缓存的时间。</p>
-<p>如果有数据库主从架构，需要考虑主从同步时间。</p>
-<h3 id="第四种情况"><a href="#第四种情况" class="headerlink" title="第四种情况"></a>第四种情况</h3><p><code>先更新数据库，后删除缓存</code></p>
-<p><strong><font color="red" size="5">大厂推荐</font></strong>(<a href="https://www.usenix.org/system/files/conference/nsdi13/nsdi13-final170_update.pdf" target="_blank" rel="noopener">facebook论文</a>)</p>
-<p>考虑A/B执行顺序如下：</p>
+        <p>##常见错误码</p>
+<blockquote>
+<p>We all come across website errors at some point, and every website out there has inevitably experienced their share of 404 and 500 status codes, which are shown when a URL is not found either due to their typo or a broken link (404), and when there is a general server error (500).</p>
+</blockquote>
+<pre><code>网站日常维护中，我们都不可避免的遇到过404和500状态码，
+其中，404表示找不对对应的URL网页，500是通用服务器错误。</code></pre><blockquote>
+<p>There are many other less well known status codes in the 400 and 500 range: Those HTTP status codes beginning with 4 are errors on the client side, and codes beginning with 5 are errors on the side of the website server.</p>
+</blockquote>
+<pre><code>在4xx-5xx的范围内，还有很多不常为人知道的状态：这些状态中4开头的表示客户端的错误，5开头的表示服务端的错误。</code></pre><p>在这些错误码中，我们经常感到困惑的是499 vs 502 vs 504</p>
+<h2 id="499-vs-502-vs-504对比分析"><a href="#499-vs-502-vs-504对比分析" class="headerlink" title="499 vs 502 vs 504对比分析"></a>499 vs 502 vs 504对比分析</h2><table>
+<thead>
+<tr>
+<th>错误码</th>
+<th>错误内容</th>
+<th>报错端</th>
+<th>出现场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>499</td>
+<td>服务端超时</td>
+<td>客户端代理</td>
+<td>服务端未在客户端设定的时间内响应结果，客户端主动断开连接。比如：服务器接口内SQL超时，导致接口超时。</td>
+</tr>
+<tr>
+<td>502</td>
+<td>网关错误</td>
+<td>服务端代理</td>
+<td>网站服务器返回不能识别的响应结果。比如：服务器防火墙阻断了反向代理的连接请求</td>
+</tr>
+<tr>
+<td>504</td>
+<td>网关超时</td>
+<td>服务端代理</td>
+<td>服务器未在反向代理设置的时间内响应。比如：PHP-FPM连接打满，新连接无法响应</td>
+</tr>
+</tbody></table>
+<p>##参考资料</p>
 <ol>
-<li>缓存刚好失效</li>
-<li>请求A查询数据库，得一个旧值</li>
-<li>请求B将新值写入数据库</li>
-<li>请求B删除缓存</li>
-<li>请求A将查到的旧值写入缓存</li>
-</ol>
-<p>我们发现这种情况下还是会产生数据的不一致。<br>这种情况发生的一个前提就是步骤3比步骤2的执行时间更长，从而导致步骤4比步骤5先执行。<br>但现实情况是，大概率情况下读比写要快，所以这种情况出现的概率较小。</p>
-<p>另外，需要考虑的情况就是，删除缓存失败怎么办？</p>
-<p>答案是：消息队列异步补偿机制，实现最终一致性。</p>
-<h3 id="数据库主从模式下改怎么处理呢？"><a href="#数据库主从模式下改怎么处理呢？" class="headerlink" title="数据库主从模式下改怎么处理呢？"></a>数据库主从模式下改怎么处理呢？</h3><p>推荐方案：<br><img src="/2020/02/10/数据库与缓存一致性分析/%E7%BC%93%E5%AD%98%E6%9B%B4%E6%96%B0%E6%96%B9%E6%A1%88.png" alt></p>
-<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><ol>
-<li><a href="https://www.cnblogs.com/rjzheng/p/9041659.html" target="_blank" rel="noopener">https://www.cnblogs.com/rjzheng/p/9041659.html</a></li>
-<li><a href="https://blog.csdn.net/chenyiminnanjing/article/details/82763928" target="_blank" rel="noopener">https://blog.csdn.net/chenyiminnanjing/article/details/82763928</a></li>
+<li><a href="https://www.section.io/blog/504-503-errors-difference/" target="_blank" rel="noopener">The difference between a 502, 503 and 504 error</a></li>
 </ol>
 
       
@@ -430,11 +410,13 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Mysql/" rel="tag"># Mysql</a>
+            <a href="/tags/HTTP/" rel="tag"># HTTP</a>
           
-            <a href="/tags/Cache/" rel="tag"># Cache</a>
+            <a href="/tags/499/" rel="tag"># 499</a>
           
-            <a href="/tags/缓存一致性/" rel="tag"># 缓存一致性</a>
+            <a href="/tags/502/" rel="tag"># 502</a>
+          
+            <a href="/tags/504/" rel="tag"># 504</a>
           
         </div>
       
@@ -447,8 +429,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/06/19/Copy-On-Write/" rel="next" title="深入理解Copy-On-Write机制">
-                <i class="fa fa-chevron-left"></i> 深入理解Copy-On-Write机制
+              <a href="/2020/02/21/系统设计/" rel="next" title="系统设计题套路总结">
+                <i class="fa fa-chevron-left"></i> 系统设计题套路总结
               </a>
             
           </div>
@@ -456,10 +438,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/02/12/TCP-UDPQA/" rel="prev" title="TCP&UDPQA">
-                TCP&UDPQA <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -594,7 +572,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#缓存数据库更新的几种常见方式"><span class="nav-number">1.</span> <span class="nav-text">缓存数据库更新的几种常见方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一种情况"><span class="nav-number">1.1.</span> <span class="nav-text">第一种情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二种情况"><span class="nav-number">1.2.</span> <span class="nav-text">第二种情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第三种情况"><span class="nav-number">1.3.</span> <span class="nav-text">第三种情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第四种情况"><span class="nav-number">1.4.</span> <span class="nav-text">第四种情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库主从模式下改怎么处理呢？"><span class="nav-number">1.5.</span> <span class="nav-text">数据库主从模式下改怎么处理呢？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考文献"><span class="nav-number">1.6.</span> <span class="nav-text">参考文献</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#499-vs-502-vs-504对比分析"><span class="nav-number">1.</span> <span class="nav-text">499 vs 502 vs 504对比分析</span></a></li></ol></div>
             
 
           </div>
