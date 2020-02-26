@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="高可用,">
 
 
 
@@ -79,17 +79,25 @@
 
 
 
-<meta name="description" content="坚持自己的判断，总有一次是对的">
-<meta name="keywords" content="IT，互联网">
-<meta property="og:type" content="website">
-<meta property="og:title" content="西北玄天一片云">
-<meta property="og:url" content="http://yoursite.com/categories/通讯协议/HTTP/index.html">
+<meta name="description" content="可用性是服务的基石，当前使用面广的大部分开源软件均实现了高可用。 高可用的实现可以归纳为三点： 1、故障发现 2、数据同步 3、故障点切换Mysql 高可用方案MHA全称是Master High Availability，是一种一主多从的数据库高可用解决方案。他的特点是在保障高可用自切换的前提下，最大限度的保障主从数据的一致性。 MHA架构图如下：  一次完整MHA故障切换流程如下： 1. 保存故">
+<meta name="keywords" content="高可用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="高可用案例解析">
+<meta property="og:url" content="http://yoursite.com/2020/02/25/服务高可用原理解析/index.html">
 <meta property="og:site_name" content="西北玄天一片云">
-<meta property="og:description" content="坚持自己的判断，总有一次是对的">
+<meta property="og:description" content="可用性是服务的基石，当前使用面广的大部分开源软件均实现了高可用。 高可用的实现可以归纳为三点： 1、故障发现 2、数据同步 3、故障点切换Mysql 高可用方案MHA全称是Master High Availability，是一种一主多从的数据库高可用解决方案。他的特点是在保障高可用自切换的前提下，最大限度的保障主从数据的一致性。 MHA架构图如下：  一次完整MHA故障切换流程如下： 1. 保存故">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2020/02/25/服务高可用原理解析/mysql.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/02/25/服务高可用原理解析/redis.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/02/25/服务高可用原理解析/kafka1.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/25/服务高可用原理解析/kafka2.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/25/服务高可用原理解析/es.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/25/服务高可用原理解析/mongodb.png">
+<meta property="og:updated_time" content="2020-02-26T03:57:35.075Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="西北玄天一片云">
-<meta name="twitter:description" content="坚持自己的判断，总有一次是对的">
+<meta name="twitter:title" content="高可用案例解析">
+<meta name="twitter:description" content="可用性是服务的基石，当前使用面广的大部分开源软件均实现了高可用。 高可用的实现可以归纳为三点： 1、故障发现 2、数据同步 3、故障点切换Mysql 高可用方案MHA全称是Master High Availability，是一种一主多从的数据库高可用解决方案。他的特点是在保障高可用自切换的前提下，最大限度的保障主从数据的一致性。 MHA架构图如下：  一次完整MHA故障切换流程如下： 1. 保存故">
+<meta name="twitter:image" content="http://yoursite.com/2020/02/25/服务高可用原理解析/mysql.jpg">
 
 
 
@@ -119,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/categories/通讯协议/HTTP/">
+  <link rel="canonical" href="http://yoursite.com/2020/02/25/服务高可用原理解析/">
 
 
 
 
 
-  <title>分类: HTTP | 西北玄天一片云</title>
+  <title>高可用案例解析 | 西北玄天一片云</title>
   
 
 
@@ -144,7 +152,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -248,53 +256,220 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block category">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>HTTP<small>分类</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/25/服务高可用原理解析/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="风满楼">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="西北玄天一片云">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2020/02/25/http协议/" itemprop="url">
-              
-                <span itemprop="name">Http 1.0、1.1、2.0比较分析</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">高可用案例解析</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2020-02-25T17:00:00+08:00" content="2020-02-25">
-          02-25
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-25T18:02:00+08:00">
+                2020-02-25
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/架构/" itemprop="url" rel="index">
+                    <span itemprop="name">架构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o">本文总阅读量</i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>可用性是服务的基石，当前使用面广的大部分开源软件均实现了高可用。</p>
+<p>高可用的实现可以归纳为三点：</p>
+<pre><code>1、故障发现
+2、数据同步
+3、故障点切换</code></pre><h1 id="Mysql-高可用方案"><a href="#Mysql-高可用方案" class="headerlink" title="Mysql 高可用方案"></a>Mysql 高可用方案</h1><p>MHA全称是Master High Availability，是一种一主多从的数据库高可用解决方案。他的特点是在保障高可用自切换的前提下，最大限度的保障主从数据的一致性。</p>
+<p>MHA架构图如下：</p>
+<p><img src="/2020/02/25/服务高可用原理解析/mysql.jpg" alt></p>
+<p>一次完整MHA故障切换流程如下：</p>
+<pre><code>1. 保存故障的master节点的binlog日志;
+2. Manager查找最新更新的slave节点；
+3. 应用差异的relay log日志到其他的slave；
+4. 在slave节点上应用从master保存的binlog日志；
+5. 提升一个slave为新的master；
+6. 使其他的slave连接新的master进行复制。</code></pre><h1 id="Redis-高可用方案"><a href="#Redis-高可用方案" class="headerlink" title="Redis 高可用方案"></a>Redis 高可用方案</h1><p><strong>Redis-Sentinel</strong> 是Redis官方推荐的高可用性(HA)解决方案，当用Redis做Master-slave的高可用方案时，假如master宕机了，Redis本身(包括它的很多客户端)都没有实现自动进行主备切换，而Redis-sentinel本身也是一个独立运行的进程，它能监控多个master-slave集群，发现master宕机后能进行自动切换。</p>
+<p>它的主要功能有以下几点</p>
+<ul>
+<li>不时地监控redis是否按照预期良好地运行;</li>
+<li>如果发现某个redis节点运行出现状况，能够通知另外一个进程(例如它的客户端);</li>
+<li>能够进行自动切换。当一个master节点不可用时，能够选举出master的多个slave(如果有超过一个slave的话)中的一个来作为新的master,其它的slave节点会将它所追随的master的地址改为被提升为master的slave的新地址。</li>
+</ul>
+<p>Redis-Sentinel架构图如下：</p>
+<p><img src="/2020/02/25/服务高可用原理解析/redis.jpg" alt></p>
+<a id="more"></a>
+
+<h1 id="Kafka高可用方案"><a href="#Kafka高可用方案" class="headerlink" title="Kafka高可用方案"></a>Kafka高可用方案</h1><p>实现高可用性的方式一般都是进行replication。</p>
+<p>kafka架构图：</p>
+<p><img src="/2020/02/25/服务高可用原理解析/kafka1.png" alt></p>
+<p>副本数据同步机制ISR(in-sync replicas):</p>
+<ul>
+<li>在所有的Replica中，leader会维护一个与其基本保持同步的Replica列表，该列表称为ISR(in-sync Replica)，每个Partition都会有一个ISR，而且是由leader动态维护。</li>
+<li>如果一个replica落后leader太多，leader会将其剔除。如果另外的replica跟上脚步，leader会将其加入。</li>
+<li>同步：leader向ISR中的所有replica同步消息，当收到所有ISR中replica的ack之后，leader才commit。</li>
+<li>异步：收到同步消息的ISR中的replica，异步将消息同步给ISR集合外的replica。</li>
+</ul>
+<p>ISR同步机制架构图：</p>
+<p><img src="/2020/02/25/服务高可用原理解析/kafka2.png" alt></p>
+<h1 id="ES-高可用方案"><a href="#ES-高可用方案" class="headerlink" title="ES 高可用方案"></a>ES 高可用方案</h1><p>ES通过集群节点、分片和副本实现高可用</p>
+<p><img src="/2020/02/25/服务高可用原理解析/es.png" alt></p>
+<h1 id="MongoDB-高可用方案"><a href="#MongoDB-高可用方案" class="headerlink" title="MongoDB 高可用方案"></a>MongoDB 高可用方案</h1><p>Mongodb的Replica Set即副本集方式主要有两个目的，一个是数据冗余做故障恢复使用，当发生硬件故障或者其它原因造成的宕机时，可以使用副本进行恢复。</p>
+<p>另一个是做读写分离，读的请求分流到副本上，减轻主（Primary）的读压力。</p>
+<p><img src="/2020/02/25/服务高可用原理解析/mongodb.png" alt></p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><ol>
+<li><a href="http://www.yunweipai.com/archives/16089.html" target="_blank" rel="noopener">MySQL高可用在网易的最佳应用与实践</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/34592063" target="_blank" rel="noopener">Redis高可用简要梳理</a></li>
+<li><a href="https://blog.csdn.net/C_J33/article/details/82730041" target="_blank" rel="noopener">Kafka高可用性原理</a></li>
+<li><a href="https://yq.aliyun.com/articles/61516" target="_blank" rel="noopener">MongoDB高可用集群配置的几种方案</a></li>
+</ol>
 
       
     </div>
+    
+    
+    
 
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/高可用/" rel="tag"># 高可用</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/02/25/http协议/" rel="next" title="Http 1.0、1.1、2.0比较分析">
+                <i class="fa fa-chevron-left"></i> Http 1.0、1.1、2.0比较分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -302,6 +477,11 @@
 
 
           
+
+  
+    <div id="gitalk-container"></div>
+  
+
 
         </div>
         
@@ -322,8 +502,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -385,6 +574,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Mysql-高可用方案"><span class="nav-number">1.</span> <span class="nav-text">Mysql 高可用方案</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Redis-高可用方案"><span class="nav-number">2.</span> <span class="nav-text">Redis 高可用方案</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Kafka高可用方案"><span class="nav-number">3.</span> <span class="nav-text">Kafka高可用方案</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ES-高可用方案"><span class="nav-number">4.</span> <span class="nav-text">ES 高可用方案</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MongoDB-高可用方案"><span class="nav-number">5.</span> <span class="nav-text">MongoDB 高可用方案</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文献"><span class="nav-number">6.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -558,6 +763,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
@@ -598,6 +807,23 @@
 
 
 
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="/js/src/md5.min.js"></script>
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '4abbba92d1956c944d8c',
+      clientSecret: '6cd6a5c5f2cd8fd5ff3c523add22625c73022929',
+      repo: 'discuss',
+      owner: 'loufengman',
+      admin: ['loufengman'],
+      id: md5(location.pathname),
+      distractionFreeMode: 'false'
+    })
+    gitalk.render('gitalk-container')
+  </script>
 
 
 
