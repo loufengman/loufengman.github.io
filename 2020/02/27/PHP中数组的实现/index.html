@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="网络协议,TCP,UDP,">
+  <meta name="keywords" content="php,数组源码,">
 
 
 
@@ -79,21 +79,24 @@
 
 
 
-<meta name="description" content="TCP（传输控制协议）提供数据可靠传输，包括数据流传送、可靠性、有效流控、全双工操作和多路复用。通过面向连接、端到端和可靠的数据包发送。只支持1对1的通讯。 UDP（用户数据报协议）是一个简单的面向数据报的传输层协议。提供的是非面向连接的、不可靠的数据流传输。UDP不提供可靠性，也不提供报文到达确认、排序以及流量控制等功能。支持多对多的通讯。 另外，TCP建立连接需要三次握手，断开连接需要四次握手">
-<meta name="keywords" content="网络协议,TCP,UDP">
+<meta name="description" content="PHPer们应该都知道，PHP中无所不能的数组是通过Hashtable+双向链表的形式实现的。 那hash和链表到底是怎么一种组织方式呢？下面我们开始细细研究。 hashtable实现及组织方式php5版本 php7版本Zend/zend_types.h 123456789101112131415161718192021222324252627282930313233343536struct _">
+<meta name="keywords" content="php,数组源码">
 <meta property="og:type" content="article">
-<meta property="og:title" content="TCP&amp;UDPQA">
-<meta property="og:url" content="http://yoursite.com/2020/02/12/TCP-UDPQA/index.html">
+<meta property="og:title" content="PHP中数组的实现">
+<meta property="og:url" content="http://yoursite.com/2020/02/27/PHP中数组的实现/index.html">
 <meta property="og:site_name" content="西北玄天一片云">
-<meta property="og:description" content="TCP（传输控制协议）提供数据可靠传输，包括数据流传送、可靠性、有效流控、全双工操作和多路复用。通过面向连接、端到端和可靠的数据包发送。只支持1对1的通讯。 UDP（用户数据报协议）是一个简单的面向数据报的传输层协议。提供的是非面向连接的、不可靠的数据流传输。UDP不提供可靠性，也不提供报文到达确认、排序以及流量控制等功能。支持多对多的通讯。 另外，TCP建立连接需要三次握手，断开连接需要四次握手">
+<meta property="og:description" content="PHPer们应该都知道，PHP中无所不能的数组是通过Hashtable+双向链表的形式实现的。 那hash和链表到底是怎么一种组织方式呢？下面我们开始细细研究。 hashtable实现及组织方式php5版本 php7版本Zend/zend_types.h 123456789101112131415161718192021222324252627282930313233343536struct _">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/2020/02/12/TCP-UDPQA/TCP%E6%8F%A1%E6%89%8B">
-<meta property="og:image" content="http://yoursite.com/2020/02/12/TCP-UDPQA/tcp%E6%8A%A5%E6%96%87%E8%AF%A6%E8%A7%A3.jpg">
-<meta property="og:updated_time" content="2020-02-27T04:07:22.793Z">
+<meta property="og:image" content="http://yoursite.com/2020/02/27/PHP中数组的实现/phpbest.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/02/27/PHP中数组的实现/php5hashtable.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/27/PHP中数组的实现/php7array.jpeg">
+<meta property="og:image" content="http://yoursite.com/2020/02/27/PHP中数组的实现/arrayfind.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/27/PHP中数组的实现/arraydelete.png">
+<meta property="og:updated_time" content="2020-02-27T09:13:59.324Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="TCP&amp;UDPQA">
-<meta name="twitter:description" content="TCP（传输控制协议）提供数据可靠传输，包括数据流传送、可靠性、有效流控、全双工操作和多路复用。通过面向连接、端到端和可靠的数据包发送。只支持1对1的通讯。 UDP（用户数据报协议）是一个简单的面向数据报的传输层协议。提供的是非面向连接的、不可靠的数据流传输。UDP不提供可靠性，也不提供报文到达确认、排序以及流量控制等功能。支持多对多的通讯。 另外，TCP建立连接需要三次握手，断开连接需要四次握手">
-<meta name="twitter:image" content="http://yoursite.com/2020/02/12/TCP-UDPQA/TCP%E6%8F%A1%E6%89%8B">
+<meta name="twitter:title" content="PHP中数组的实现">
+<meta name="twitter:description" content="PHPer们应该都知道，PHP中无所不能的数组是通过Hashtable+双向链表的形式实现的。 那hash和链表到底是怎么一种组织方式呢？下面我们开始细细研究。 hashtable实现及组织方式php5版本 php7版本Zend/zend_types.h 123456789101112131415161718192021222324252627282930313233343536struct _">
+<meta name="twitter:image" content="http://yoursite.com/2020/02/27/PHP中数组的实现/phpbest.jpg">
 
 
 
@@ -123,13 +126,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2020/02/12/TCP-UDPQA/">
+  <link rel="canonical" href="http://yoursite.com/2020/02/27/PHP中数组的实现/">
 
 
 
 
 
-  <title>TCP&UDPQA | 西北玄天一片云</title>
+  <title>PHP中数组的实现 | 西北玄天一片云</title>
   
 
 
@@ -266,7 +269,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/12/TCP-UDPQA/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/27/PHP中数组的实现/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="风满楼">
@@ -283,7 +286,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">TCP&UDPQA</h1>
+          <h1 class="post-title" itemprop="name headline">PHP中数组的实现</h1>
         
 
         <div class="post-meta">
@@ -295,8 +298,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-12T11:31:00+08:00">
-                2020-02-12
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-27T10:47:00+08:00">
+                2020-02-27
               </time>
             
 
@@ -318,8 +321,19 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/网络/" itemprop="url" rel="index">
-                    <span itemprop="name">网络</span>
+                  <a href="/categories/PHP/" itemprop="url" rel="index">
+                    <span itemprop="name">PHP</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/PHP数组/" itemprop="url" rel="index">
+                    <span itemprop="name">PHP数组</span>
                   </a>
                 </span>
 
@@ -360,91 +374,46 @@
       
 
       
-        <p>TCP（传输控制协议）提供数据可靠传输，包括数据流传送、可靠性、有效流控、全双工操作和多路复用。通过面向连接、端到端和可靠的数据包发送。只支持1对1的通讯。</p>
-<p>UDP（用户数据报协议）是一个简单的面向数据报的传输层协议。提供的是非面向连接的、不可靠的数据流传输。UDP不提供可靠性，也不提供报文到达确认、排序以及流量控制等功能。支持多对多的通讯。</p>
-<p>另外，TCP建立连接需要三次握手，断开连接需要四次握手。</p>
-<p>相信有网络基础的同学都已经掌握了，但对于那些参加面试的同学来说，掌握这些还不够。面试过程中常常遇到一些直击灵魂的问题？比如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. TCP为什么会是三次握手？二次或四次行不行？</span><br><span class="line">2. SYN攻击的原理是什么？</span><br><span class="line">3. Seq序号为什么要随机？</span><br><span class="line">4. TCP如何保证数据有序的？</span><br><span class="line">5. time_wait出现在什么时候？为什么要等待2ML后结束？</span><br></pre></td></tr></table></figure>
+        <p><img src="/2020/02/27/PHP中数组的实现/phpbest.jpg" alt></p>
+<p>PHPer们应该都知道，PHP中无所不能的数组是通过Hashtable+双向链表的形式实现的。</p>
+<p>那hash和链表到底是怎么一种组织方式呢？下面我们开始细细研究。</p>
+<h2 id="hashtable实现及组织方式"><a href="#hashtable实现及组织方式" class="headerlink" title="hashtable实现及组织方式"></a>hashtable实现及组织方式</h2><h3 id="php5版本"><a href="#php5版本" class="headerlink" title="php5版本"></a>php5版本</h3><p><img src="/2020/02/27/PHP中数组的实现/php5hashtable.png" alt></p>
+<h3 id="php7版本"><a href="#php7版本" class="headerlink" title="php7版本"></a>php7版本</h3><p><code>Zend/zend_types.h</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">struct _zend_array &#123;</span><br><span class="line">	zend_refcounted_h gc;</span><br><span class="line">	union &#123;</span><br><span class="line">		struct &#123;</span><br><span class="line">			ZEND_ENDIAN_LOHI_4(</span><br><span class="line">				zend_uchar    flags,</span><br><span class="line">				zend_uchar    _unused,</span><br><span class="line">				zend_uchar    nIteratorsCount,</span><br><span class="line">				zend_uchar    _unused2)</span><br><span class="line">		&#125; v;</span><br><span class="line">		uint32_t flags;</span><br><span class="line">	&#125; u;</span><br><span class="line">	uint32_t          nTableMask;</span><br><span class="line">	Bucket           *arData;</span><br><span class="line">	uint32_t          nNumUsed;</span><br><span class="line">	uint32_t          nNumOfElements;</span><br><span class="line">	uint32_t          nTableSize;</span><br><span class="line">	uint32_t          nInternalPointer;</span><br><span class="line">	zend_long         nNextFreeElement;</span><br><span class="line">	dtor_func_t       pDestructor;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line"> * HashTable Data Layout</span><br><span class="line"> * =====================</span><br><span class="line"> *</span><br><span class="line"> *                 +=============================+</span><br><span class="line"> *                 | HT_HASH(ht, ht-&gt;nTableMask) |</span><br><span class="line"> *                 | ...                         |</span><br><span class="line"> *                 | HT_HASH(ht, -1)             |</span><br><span class="line"> *                 +-----------------------------+</span><br><span class="line"> * ht-&gt;arData ---&gt; | Bucket[0]                   |</span><br><span class="line"> *                 | ...                         |</span><br><span class="line"> *                 | Bucket[ht-&gt;nTableSize-1]    |</span><br><span class="line"> *                 +=============================+</span><br><span class="line"> */</span><br></pre></td></tr></table></figure>
 
-<p>本文尝试按自己的理解来回答这些问题？</p>
-<p><font color="red">声明：本文不保证答案正确，仅代表个人理解，仅供交流参考。</font></p>
-<p>先来看下正常的三次握手、四次挥手图解。</p>
-<p><img src="/2020/02/12/TCP-UDPQA/TCP%E6%8F%A1%E6%89%8B" alt></p>
 <a id="more"></a>
 
-<h3 id="灵魂第一击"><a href="#灵魂第一击" class="headerlink" title="灵魂第一击"></a>灵魂第一击</h3><p><font size="5"><code>建立TCP连接为什么需要三次握手？ 两次或四次是否可行</code></font></p>
-<p>显然四次及以上都是可以的，但三次是达到可靠交互的最小握手次数。超过次数可以通过合并、剔除多余握手来解决。</p>
-<p>那么两次可以吗？会存在什么问题呢？</p>
-<p>从三次握手的交互来看，实质是相互交换Seq序列号并确认的过程。显然第一次和第二次握手不能省略（各自发送自己的序列号，同时服务端还对客户端的请求完成了确认）。</p>
-<p>那么假设没有第三次握手，也就是客户端不对服务端的握手确认，这会导致什么情况呢？</p>
-<p>书本回答是防止已失效连接请求报文段突然到达服务端而产生错误</p>
 <blockquote>
-<p>“已失效的连接请求报文段” 的产生在这样一种情况下：client 发出的第一个连接请求报文段并没有丢失，而是在某个网络结点长时间的滞留了，以致延误到连接释放以后的某个时间才到达 server。本来这是一个早已失效的报文段。但 server 收到此失效的连接请求报文段后，就误认为是 client 再次发出的一个新的连接请求。于是就向 client 发出确认报文段，同意建立连接。假设不采用 “三次握手”，那么只要 server 发出确认，新的连接就建立了。由于现在 client 并没有发出建立连接的请求，因此不会理睬 server 的确认，也不会向 server 发送数据。但 server 却以为新的运输连接已经建立，并一直等待 client 发来数据。这样，server 的很多资源就白白浪费掉了。采用 “三次握手” 的办法可以防止上述现象发生。例如刚才那种情况，client 不会向 server 的确认发出确认。server 由于收不到确认，就知道 client 并没有要求建立连接。”</p>
-</blockquote>
-<p><strong>简单理解就是，客户端发送错误的连接请求，服务端也会确认并简历一个连接，而不需要客户端确认是否有效。</strong></p>
-<h2 id="第二击"><a href="#第二击" class="headerlink" title="第二击"></a>第二击</h2><p><font size="5"><code>SYN洪水攻击的原理？如何预防？</code> </font></p>
-<p>SYN Flood是当前最流行的DoS(拒绝服务攻击)与DDoS(分布式拒绝服务攻击)的方式之一，它是利用TCP协议缺陷，发送大量伪造的TCP连接请求，从而使得被攻击方资源耗尽(CPU满负荷或内存不足)的攻击方式，最终导致系统或服务器宕机。</p>
-<h4 id="原理解析"><a href="#原理解析" class="headerlink" title="原理解析"></a>原理解析</h4><p>要理解SYN洪水攻击还是不得不提建立连接时的三次握手。</p>
-<p>客户端发起连接请求（SYN+Seq)，服务端确认并发送序列号（ACK+Seq),这时形成一个半连接队列在服务端，当客户端第三次握手确认以后，会把连接从半连接队列里删除，移到全连接队列里。</p>
-<p>对于半连接队列里的请求，服务端在规定的时间内收不到ACK，会重试发送ACK+Seq，在设定时间内得不到响应，连接删除。</p>
-<p>那么问题来了，如果攻击者在<code>设定时间内</code>发送大量连接请求，会导致短时间内服务端半连接队列溢出，正常的连接无法建立，服务端不停的重试确认，进而导致宕机。</p>
-<h4 id="预防"><a href="#预防" class="headerlink" title="预防"></a>预防</h4><p>目前业界尚没有很好的监测和防御方法。</p>
-<p>我们可以从攻击的原理方面着手思考：</p>
-<ul>
-<li>增大半连接队列长度</li>
-<li>减少服务端超时重试次数</li>
-<li>合理设置超时时间</li>
-</ul>
-<p>后验防范：</p>
-<ul>
-<li>及时保存现场，提取目标IP，加入黑名单</li>
-</ul>
-<h2 id="第三击"><a href="#第三击" class="headerlink" title="第三击"></a>第三击</h2><p><font size="5"><code>Seq序号的作用是什么？初始值为什么要随机？</code> </font></p>
-<p>理解这个问题，我们先看下一个tcp包都包含哪些字段。<br><img src="/2020/02/12/TCP-UDPQA/tcp%E6%8A%A5%E6%96%87%E8%AF%A6%E8%A7%A3.jpg" alt></p>
-<p>SYN表示建立连接，</p>
-<p>FIN表示关闭连接，</p>
-<p>ACK表示响应，</p>
-<p>PSH表示有 DATA数据传输，</p>
-<p>RST表示连接重置。</p>
-<p>其中，ACK是可能与SYN，FIN等同时使用的，比如SYN和ACK可能同时为1，它表示的就是建立连接之后的响应</p>
-<p>Seq序号的作用是什么？ 我们知道TCP协议保证数据包按顺序接收，在不可靠信道中怎么来保证顺序到达呢，这就是Seq序列号的作用。</p>
-<p>RFC793指出ISN（初始序列号）可以看作是一个32bit的计数器，每4ms加1，这样选择序号的目的在于防止在网络中被延迟的分组在以后被重复传输，而导致某个连接的一端对它作错误的判断。</p>
-<p>TCP握手采用随机序列号（不完全随机，而是随着时间流逝而线性增长，到了2^32尽头再回滚），为的就是让攻击者更难以猜测sequence number，因为伪造的sequence number不在合法范围内，而被接收方丢弃，增加安全性。</p>
-<h2 id="第四问"><a href="#第四问" class="headerlink" title="第四问"></a>第四问</h2><p><font size="5"><code>TCP如何保证数据有序的？</code> </font></p>
-<p>显然，客户端和服务端是通过seq序号来排列数据包的顺序的。</p>
-<blockquote>
-<p>主机每次发送数据时，TCP就给每个数据包分配一个序列号并且在一个特定的时间内等待接收主机对分配的这个序列号进行确认，如果发送主机在一个特定时间内没有收到接收主机的确认，则发送主机会重传此数据包。接收主机利用序列号对接收的数据进行确认，以便检测对方发送的数据是否有丢失或者乱序等，接收主机一旦收到已经顺序化的数据，它就将这些数据按正确的顺序重组成数据流并传递到高层进行处理。</p>
-<p>具体步骤如下：</p>
+<p>这个散列表中有很多成员，我们挑几个比较重要的来讲讲：</p>
 </blockquote>
 <blockquote>
-<p>（1）为了保证数据包的可靠传递，发送方必须把已发送的数据包保留在缓冲区；</p>
+<p>arData：散列表中保存存储元素的数组，其内存是连续的，arData指向数组的起始位置；<br><br>nTableSize：数组的总容量，即可以容纳的元素数，arData 的内存大小就是根据这个值确定的，它的大小的是2的幂次方，最小为8，然后按照 8、16、32…依次递增；<br><br>nTableMask：这个值在散列函数根据 key 的哈希值映射元素的时候用到，它的值实际就是 nTableSize 的负数，即 nTableMask = -nTableSize，用位运算来表示就是 nTableMask = ~nTableSize+1；<br><br>nNumUsed、nNumOfElements：nNumUsed 是指数组当前使用的 Bucket 数，但不是数组有效元素个数，因为某个数组元素被删除后并没有立即从数组中删除，而是将其标记为 IS_UNDEF，只有在数组需要扩容时才会真正删除，nNumOfElements 则表示数组中有效的元素数量，即调用 count 函数返回值，如果没有扩容，nNumUsed 一直递增，无论是否删除元素；<br><br>nNextFreeElement：这个是给自动确定数值索引使用的，默认从 0 开始，比如 $arr[] = 200，这个时候 nNextFreeElement 值会自动加 1；<br><br>pDestructor：当删除或覆盖数组中的某个元素时，如果提供了这个函数句柄，则在删除或覆盖时调用此函数，对旧元素进行清理；<br>u：这个联合体结构主要用于一些辅助作用</p>
 </blockquote>
-<blockquote>
-<p>（2）并为每个已发送的数据包启动一个超时定时器；</p>
+<p>数据会核心保存在arData中，arData是一个Bucket数组，Bucket定义：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">typedef struct _Bucket &#123;</span><br><span class="line">    zval              val; 	/*  数组值 */</span><br><span class="line">    zend_ulong        h; 		/* 哈希值或数值索引   */</span><br><span class="line">    zend_string      *key;  	/* string key or NULL for numerics */</span><br><span class="line">&#125; Bucket</span><br></pre></td></tr></table></figure>
+
+<p>整体看下zend_array的组织图：</p>
+<p><img src="/2020/02/27/PHP中数组的实现/php7array.jpeg" alt></p>
+<h2 id="5和7下对比分析"><a href="#5和7下对比分析" class="headerlink" title="5和7下对比分析"></a>5和7下对比分析</h2><ol>
+<li>现在的冲突拉链被bauck.zval-&gt;u2.next替代（参见<a href="https://www.laruence.com/2018/04/08/3170.html" target="_blank" rel="noopener">PHP7变量的实现之zval</a>）， 于是bucket-&gt;pNext, bucket-&gt;pLast可以去掉了。</li>
+<li>zend_array-&gt;arData是一个数组，所以也就不再需要pListNext, pListLast来保持顺序了, 他们也可以去掉了。 现在数组中元素的先后顺序，完全根据它在arData中的index顺序决定，先加入的元素在低的index中。</li>
+<li>PHP7中的Bucket现在直接保存一个zval, 取代了PHP5时代bucket中的pData和pDataPtr。<br>最后就是PHP7中现在使用zend_string作为数组的字符串key，取代了PHP5时代bucket的*key, nKeylength.</li>
+</ol>
+<h2 id="数组查找过程"><a href="#数组查找过程" class="headerlink" title="数组查找过程"></a>数组查找过程</h2><blockquote>
+<p>清楚了 HashTable 的实现和哈希冲突的解决方式之后，查找的过程就比较简单了：首先根据 key 计算出的散列值与 nTableMask 计算得到最终散列值 nIndex，然后根据散列值从中间映射表中得到存储元素在有序存储数组中的位置 idx，接着根据 idx 从有序存储数组（即 arData）中取出 Bucket，遍历该 Bucket，判断 Bucket 的 key 是否是要查找的 key，如果是则终止遍历，否则继续根据 zval.u2.next 遍历比较。来自：<a href="https://www.cnblogs.com/mzhaox/p/11295445.html" target="_blank" rel="noopener">PHP 数组底层实现原理</a></p>
 </blockquote>
-<blockquote>
-<p>（3）如在定时器超时之前收到了对方发来的应答信息（可能是对本包的应答，也可以是对本包后续包的应答），则释放该数据包占用的缓冲区;</p>
+<p><img src="/2020/02/27/PHP中数组的实现/arrayfind.png" alt></p>
+<h2 id="数组删除过程"><a href="#数组删除过程" class="headerlink" title="数组删除过程"></a>数组删除过程</h2><blockquote>
+<p>关于数组数据删除前面我们在介绍散列表中的 nNumUsed 和 nNumOfElements 字段时已经提及过，从数组中删除元素时，并没有真正移除，并重新 rehash，而是当 arData 满了之后，才会移除无用的数据，从而提高性能。即数组在需要扩容的情况下才会真正删除元素：首先检查数组中已删除元素所占比例，如果比例达到阈值则触发重新构建索引的操作，这个过程会把已删除的 Bucket 移除，然后把后面的 Bucket 往前移动补上空位，如果还没有达到阈值则会分配一个原数组大小 2 倍的新数组，然后把原数组的元素复制到新数组上，最后重建索引，重建索引会将已删除的 Bucket 移除。</p>
 </blockquote>
-<blockquote>
-<p>（4）否则，重传该数据包，直到收到应答或重传次数超过规定的最大次数为止。</p>
-</blockquote>
-<blockquote>
-<p>（5）接收方收到数据包后，先进行CRC循环冗余校验(Cyclic Redundancy Check, CRC)校验，如果正确则把数据交给上层协议，然后给发送方发送一个累计应答包，表明该数据已收到，如果接收方正好也有数据要发给发送方，应答包也可方在数据包中捎带过去。</p>
-</blockquote>
-<h2 id="第五问"><a href="#第五问" class="headerlink" title="第五问"></a>第五问</h2><p><font size="5"><code>time_wait出现在什么时候？为什么要等待2ML后结束？</code> </font></p>
-<p>由图可知，客户端接收到服务端发送的结束信号（FIN）并发送确认信号后进入time_wait状态。</p>
-<p>那为什么客户端要等待2ML后才结束呢？能不能立即结束呢？</p>
-<blockquote>
-<p>注：MSL是指Max Segment Lifetime，即数据包在网络中的最大生存时间。每种TCP协议的实现方法均要指定一个合适的MSL值，如RFC1122给出的建议值为2分钟，又如Berkeley体系的TCP实现通常选择30秒作为MSL值。这意味着TIME_WAIT的典型持续时间为1-4分钟。</p>
-</blockquote>
-<p>个人认为等待2ML结束的原因有两个：<br>1、经过1个ML之后，服务端发送的所有的数据包都已经失效，避免错失延迟包<br>2、服务端在接收不到ACK时，会重新发送FIN，而客户端接收到这个重新发送的FIN的最大时间其实就是2ML（1次ACK到达服务端，1次服务端重试FIN到达客户端）。</p>
-<p>##参考资料</p>
-<ol>
-<li><a href="https://www.zhihu.com/question/24853633" target="_blank" rel="noopener">https://www.zhihu.com/question/24853633</a></li>
-<li><a href="https://blog.csdn.net/u014774781/article/details/48579107" target="_blank" rel="noopener">https://blog.csdn.net/u014774781/article/details/48579107</a></li>
-<li><a href="https://blog.csdn.net/kernel_jim_wu/article/details/7447377" target="_blank" rel="noopener">https://blog.csdn.net/kernel_jim_wu/article/details/7447377</a></li>
-<li><a href="https://www.cnblogs.com/jianqingwang/p/11450992.html" target="_blank" rel="noopener">https://www.cnblogs.com/jianqingwang/p/11450992.html</a></li>
-<li><a href="https://blog.51cto.com/11859650/1917938" target="_blank" rel="noopener">https://blog.51cto.com/11859650/1917938</a></li>
+<p>对应底层代码如下：</p>
+<p><img src="/2020/02/27/PHP中数组的实现/arraydelete.png" alt></p>
+<h2 id="问题解答-数组遍历for和foreach的区别"><a href="#问题解答-数组遍历for和foreach的区别" class="headerlink" title="问题解答 数组遍历for和foreach的区别"></a>问题解答 数组遍历for和foreach的区别</h2><h3 id="for-和-foreach有没有性能差异"><a href="#for-和-foreach有没有性能差异" class="headerlink" title="for 和 foreach有没有性能差异"></a>for 和 foreach有没有性能差异</h3><p><font color="red">注：以下纯属个人瞎猜，还没研究源码。</font></p>
+<p>PHP5中，arData是通过链表组织的，foreach通过从head遍历到tail完成。而for的话，需要先计算hash值，故foreach性能更优。</p>
+<p>PHP7中，arData是一个数组，for和foreach没有多大的差别。</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ol>
+<li><a href="https://www.laruence.com/2020/02/25/3182.html" target="_blank" rel="noopener">深入理解PHP7内核之HashTable</a></li>
+<li><a href="https://www.cnblogs.com/mzhaox/p/11295445.html" target="_blank" rel="noopener">PHP 数组底层实现原理</a></li>
 </ol>
 
       
@@ -463,11 +432,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/网络协议/" rel="tag"># 网络协议</a>
+            <a href="/tags/php/" rel="tag"># php</a>
           
-            <a href="/tags/TCP/" rel="tag"># TCP</a>
-          
-            <a href="/tags/UDP/" rel="tag"># UDP</a>
+            <a href="/tags/数组源码/" rel="tag"># 数组源码</a>
           
         </div>
       
@@ -480,8 +447,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/02/10/数据库与缓存一致性分析/" rel="next" title="数据库与缓存一致性分析">
-                <i class="fa fa-chevron-left"></i> 数据库与缓存一致性分析
+              <a href="/2020/02/26/php如何实现弱类型/" rel="next" title="php如何实现弱类型">
+                <i class="fa fa-chevron-left"></i> php如何实现弱类型
               </a>
             
           </div>
@@ -489,10 +456,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/02/14/load_balence/" rel="prev" title="负载均衡解读">
-                负载均衡解读 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -627,7 +590,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#灵魂第一击"><span class="nav-number">1.</span> <span class="nav-text">灵魂第一击</span></a></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#第二击"><span class="nav-number"></span> <span class="nav-text">第二击</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#原理解析"><span class="nav-number">0.1.</span> <span class="nav-text">原理解析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#预防"><span class="nav-number">0.2.</span> <span class="nav-text">预防</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第三击"><span class="nav-number"></span> <span class="nav-text">第三击</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第四问"><span class="nav-number"></span> <span class="nav-text">第四问</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第五问"><span class="nav-number"></span> <span class="nav-text">第五问</span></a></li></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#hashtable实现及组织方式"><span class="nav-number">1.</span> <span class="nav-text">hashtable实现及组织方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#php5版本"><span class="nav-number">1.1.</span> <span class="nav-text">php5版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#php7版本"><span class="nav-number">1.2.</span> <span class="nav-text">php7版本</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5和7下对比分析"><span class="nav-number">2.</span> <span class="nav-text">5和7下对比分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数组查找过程"><span class="nav-number">3.</span> <span class="nav-text">数组查找过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数组删除过程"><span class="nav-number">4.</span> <span class="nav-text">数组删除过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题解答-数组遍历for和foreach的区别"><span class="nav-number">5.</span> <span class="nav-text">问题解答 数组遍历for和foreach的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#for-和-foreach有没有性能差异"><span class="nav-number">5.1.</span> <span class="nav-text">for 和 foreach有没有性能差异</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-number">6.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
             
 
           </div>
