@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="红黑树,B+树,">
 
 
 
@@ -79,18 +79,24 @@
 
 
 
-<meta name="description" content="坚持自己的判断，总有一次是对的">
-<meta name="keywords" content="IT，互联网">
-<meta property="og:type" content="website">
-<meta property="og:title" content="分类">
-<meta property="og:url" content="http://yoursite.com/categories/index.html">
+<meta name="description" content="红黑树和B+树是两种比较重要的高级数据结构。接下来我们来对二者做一个对比分析。 红黑树1234567红黑树的五个性质：一般的，红黑树(一棵自平衡的排序二叉树)，满足以下性质，即只有满足以下性质的树，我们才称之为红黑树：1）每个结点要么是红的，要么是黑的。2）根结点是黑的。3）每个叶结点，即空结点（NIL）是黑的。4）如果一个结点是红的，那么它的俩个儿子都是黑的。5）对每个结点，从该结点到其子孙结点">
+<meta name="keywords" content="红黑树,B+树">
+<meta property="og:type" content="article">
+<meta property="og:title" content="红黑树与B+树的对比">
+<meta property="og:url" content="http://yoursite.com/2020/02/27/红黑树与B+树的对比/index.html">
 <meta property="og:site_name" content="西北玄天一片云">
-<meta property="og:description" content="坚持自己的判断，总有一次是对的">
+<meta property="og:description" content="红黑树和B+树是两种比较重要的高级数据结构。接下来我们来对二者做一个对比分析。 红黑树1234567红黑树的五个性质：一般的，红黑树(一棵自平衡的排序二叉树)，满足以下性质，即只有满足以下性质的树，我们才称之为红黑树：1）每个结点要么是红的，要么是黑的。2）根结点是黑的。3）每个叶结点，即空结点（NIL）是黑的。4）如果一个结点是红的，那么它的俩个儿子都是黑的。5）对每个结点，从该结点到其子孙结点">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-06-17T13:11:16.002Z">
+<meta property="og:image" content="http://yoursite.com/2020/02/27/红黑树与B+树的对比/redblacktree.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/27/红黑树与B+树的对比/B+tree.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/27/红黑树与B+树的对比/Btree.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/27/红黑树与B+树的对比/b-treefind.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/27/红黑树与B+树的对比/b-treefind.png">
+<meta property="og:updated_time" content="2020-02-27T10:51:17.803Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="分类">
-<meta name="twitter:description" content="坚持自己的判断，总有一次是对的">
+<meta name="twitter:title" content="红黑树与B+树的对比">
+<meta name="twitter:description" content="红黑树和B+树是两种比较重要的高级数据结构。接下来我们来对二者做一个对比分析。 红黑树1234567红黑树的五个性质：一般的，红黑树(一棵自平衡的排序二叉树)，满足以下性质，即只有满足以下性质的树，我们才称之为红黑树：1）每个结点要么是红的，要么是黑的。2）根结点是黑的。3）每个叶结点，即空结点（NIL）是黑的。4）如果一个结点是红的，那么它的俩个儿子都是黑的。5）对每个结点，从该结点到其子孙结点">
+<meta name="twitter:image" content="http://yoursite.com/2020/02/27/红黑树与B+树的对比/redblacktree.png">
 
 
 
@@ -120,13 +126,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/categories/">
+  <link rel="canonical" href="http://yoursite.com/2020/02/27/红黑树与B+树的对比/">
 
 
 
 
 
-  <title>分类 | 西北玄天一片云</title>
+  <title>红黑树与B+树的对比 | 西北玄天一片云</title>
   
 
 
@@ -251,40 +257,235 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/27/红黑树与B+树的对比/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="风满楼">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="西北玄天一片云">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline">分类</h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
-          <div class="category-all-page">
-            <div class="category-all-title">
-                目前共计 13 个分类
-            </div>
-            <div class="category-all">
-              <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP/">HTTP</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/操作系统/">操作系统</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/">PHP</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/PHP变量/">PHP变量</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/PHP数组/">PHP数组</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/">工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/架构/">架构</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/系统设计/">系统设计</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/负载均衡/">负载均衡</a><span class="category-list-count">1</span></li></ul>
-            </div>
-          </div>
+          <h1 class="post-title" itemprop="name headline">红黑树与B+树的对比</h1>
         
-      </div>
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-27T18:13:00+08:00">
+                2020-02-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o">本文总阅读量</i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <p>红黑树和B+树是两种比较重要的高级数据结构。接下来我们来对二者做一个对比分析。</p>
+<h2 id="红黑树"><a href="#红黑树" class="headerlink" title="红黑树"></a>红黑树</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">红黑树的五个性质：</span><br><span class="line">一般的，红黑树(一棵自平衡的排序二叉树)，满足以下性质，即只有满足以下性质的树，我们才称之为红黑树：</span><br><span class="line">1）每个结点要么是红的，要么是黑的。</span><br><span class="line">2）根结点是黑的。</span><br><span class="line">3）每个叶结点，即空结点（NIL）是黑的。</span><br><span class="line">4）如果一个结点是红的，那么它的俩个儿子都是黑的。</span><br><span class="line">5）对每个结点，从该结点到其子孙结点的所有路径上包含相同数目的黑结点。</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/02/27/红黑树与B+树的对比/redblacktree.png" alt></p>
+<h2 id="B-树"><a href="#B-树" class="headerlink" title="B+树"></a>B+树</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">一个m阶的B+树具有如下几个特征：</span><br><span class="line"></span><br><span class="line">1.有k个子树的中间节点包含有k个元素（B树中是k-1个元素），每个元素不保存数据，只用来索引，所有数据都保存在叶子节点。</span><br><span class="line"></span><br><span class="line">2.所有的叶子结点中包含了全部元素的信息，及指向含这些元素记录的指针，且叶子结点本身依关键字的大小自小而大顺序链接。</span><br><span class="line"></span><br><span class="line">3.所有的中间节点元素都同时存在于子节点，在子节点元素中是最大（或最小）元素。</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/02/27/红黑树与B+树的对比/B+tree.png" alt></p>
+<h2 id="B树"><a href="#B树" class="headerlink" title="B树"></a>B树</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">一个m阶的B树具有如下几个特征：</span><br><span class="line"></span><br><span class="line">1.根结点至少有两个子女。</span><br><span class="line"></span><br><span class="line">2.每个中间节点都包含k-1个元素和k个孩子，其中 m/2 &lt;= k &lt;= m</span><br><span class="line"></span><br><span class="line">3.每一个叶子节点都包含k-1个元素，其中 m/2 &lt;= k &lt;= m</span><br><span class="line"></span><br><span class="line">4.所有的叶子结点都位于同一层。</span><br><span class="line"></span><br><span class="line">5.每个节点中的元素从小到大排列，节点当中k-1个元素正好是k个孩子包含的元素的值域分划。</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/02/27/红黑树与B+树的对比/Btree.png" alt></p>
+<h2 id="对比分析"><a href="#对比分析" class="headerlink" title="对比分析"></a>对比分析</h2><table>
+<thead>
+<tr>
+<th>数据结构</th>
+<th>查询性能</th>
+<th>插入性能</th>
+<th>删除性能</th>
+<th>优点</th>
+<th>缺点</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>红黑树</td>
+<td>O(logN)</td>
+<td>O(logN)</td>
+<td>O(logN)</td>
+<td>增删查性能高，相对平衡二叉树简单</td>
+<td>树的深度相对B树高</td>
+<td>用在内部排序，即全放在内存中的，如：STC的map；hashtable冲突到一定程度链表改为红黑树；epoll监听句柄</td>
+</tr>
+<tr>
+<td>平衡二叉树</td>
+<td>O(logN)</td>
+<td>O(logN)</td>
+<td>O(logN)</td>
+<td>增删查性能高</td>
+<td>维护平衡的旋转逻辑复杂</td>
+<td>暂无</td>
+</tr>
+<tr>
+<td>B+树</td>
+<td>与树高有关，不超过节点数<img src="/2020/02/27/红黑树与B+树的对比/b-treefind.png" alt></td>
+<td>同查询</td>
+<td>同查询</td>
+<td>完美支持磁盘预读</td>
+<td>性能相比红黑树差</td>
+<td>数据库索引</td>
+</tr>
+<tr>
+<td>B-树</td>
+<td>与树高有关，不超过节点数<img src="/2020/02/27/红黑树与B+树的对比/b-treefind.png" alt></td>
+<td>同查询</td>
+<td>同查询</td>
+<td>支持磁盘预读</td>
+<td>节点存储数据，相比B+树占用空间大</td>
+<td>数据库索引</td>
+</tr>
+</tbody></table>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li><a href="https://blog.csdn.net/zuochao_2013/article/details/80562092" target="_blank" rel="noopener">红黑树的定义与运用场景</a></li>
+<li><a href="https://www.cnblogs.com/doit8791/p/8757125.html" target="_blank" rel="noopener">平衡二叉树、B树、B+树、B*树、LSM树简介</a></li>
+</ol>
+
       
     </div>
     
     
     
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/红黑树/" rel="tag"># 红黑树</a>
+          
+            <a href="/tags/B-树/" rel="tag"># B+树</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/02/27/PHP中数组的实现/" rel="next" title="PHP中数组的实现">
+                <i class="fa fa-chevron-left"></i> PHP中数组的实现
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -318,8 +519,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -381,6 +591,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#红黑树"><span class="nav-number">1.</span> <span class="nav-text">红黑树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#B-树"><span class="nav-number">2.</span> <span class="nav-text">B+树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#B树"><span class="nav-number">3.</span> <span class="nav-text">B树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对比分析"><span class="nav-number">4.</span> <span class="nav-text">对比分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
