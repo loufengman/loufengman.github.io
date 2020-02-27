@@ -263,6 +263,165 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/27/回溯算法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="风满楼">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="西北玄天一片云">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/02/27/回溯算法/" itemprop="url">回溯算法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-27T19:35:00+08:00">
+                2020-02-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/回溯算法/" itemprop="url" rel="index">
+                    <span itemprop="name">回溯算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="题目一"><a href="#题目一" class="headerlink" title="题目一"></a>题目一</h2><p><a href="https://leetcode-cn.com/problems/permutations/" target="_blank" rel="noopener">全排列</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    private $list_path = [];</span><br><span class="line">    /**</span><br><span class="line">     * @param Integer[] $nums</span><br><span class="line">     * @return Integer[][]</span><br><span class="line">     */</span><br><span class="line">    function permute($nums) &#123;</span><br><span class="line">        if(count($nums) == 0) &#123;</span><br><span class="line">            return [];</span><br><span class="line">        &#125;</span><br><span class="line">        $this-&gt;backtrace($nums, 0);</span><br><span class="line">        return $this-&gt;list_path;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function backtrace($nums, $start) &#123;</span><br><span class="line">        if ($start == count($nums)) &#123;</span><br><span class="line">                $this-&gt;list_path[] = $nums;</span><br><span class="line">        &#125;</span><br><span class="line">        for($i=$start;$i&lt;count($nums);$i++) &#123;</span><br><span class="line">            $this-&gt;swap($nums[$start], $nums[$i]);</span><br><span class="line">            $this-&gt;backtrace($nums, $start+1);</span><br><span class="line">            $this-&gt;swap($nums[$start], $nums[$i]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    function swap(&amp;$i, &amp;$j) &#123;</span><br><span class="line">        $t = $i;</span><br><span class="line">        $i = $j;</span><br><span class="line">        $j = $t;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>##题目二<br><a href="https://leetcode-cn.com/problems/combination-sum/" target="_blank" rel="noopener">组合总数</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public $path = [];</span><br><span class="line">    public $sums = [];</span><br><span class="line">    /**</span><br><span class="line">     * @param Integer[] $candidates</span><br><span class="line">     * @param Integer $target</span><br><span class="line">     * @return Integer[][]</span><br><span class="line">     */</span><br><span class="line">    function combinationSum($candidates, $target) &#123;</span><br><span class="line">        $length = count($candidates);</span><br><span class="line">        if ($length == 0) &#123;</span><br><span class="line">            return [];</span><br><span class="line">        &#125;</span><br><span class="line">        sort($candidates);</span><br><span class="line">        $this-&gt;dfs($candidates, 0, $target);</span><br><span class="line">        return $this-&gt;sums;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function dfs($candidates, $start, $target) &#123;</span><br><span class="line">        if ($target == 0) &#123;</span><br><span class="line">            $this-&gt;sums[] = $this-&gt;path;</span><br><span class="line">        &#125;</span><br><span class="line">        for($i = $start;$i&lt;count($candidates) &amp;&amp; ($target-$candidates[$i]&gt;=0);$i++) &#123;</span><br><span class="line">            $this-&gt;path[] = $candidates[$i];</span><br><span class="line">            $this-&gt;dfs($candidates, $i, $target-$candidates[$i]);</span><br><span class="line">            array_pop($this-&gt;path);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="题目三"><a href="#题目三" class="headerlink" title="题目三"></a>题目三</h2><p><a href="https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number/" target="_blank" rel="noopener">电话号码字母组合</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line"></span><br><span class="line">    const ALPHA = [</span><br><span class="line">        2 =&gt; &apos;abc&apos;,</span><br><span class="line">        3 =&gt; &apos;def&apos;,</span><br><span class="line">        4 =&gt; &apos;ghi&apos;,</span><br><span class="line">        5 =&gt; &apos;jkl&apos;,</span><br><span class="line">        6 =&gt; &apos;mno&apos;,</span><br><span class="line">        7 =&gt; &apos;pqrs&apos;,</span><br><span class="line">        8 =&gt; &apos;tuv&apos;,</span><br><span class="line">        9 =&gt; &apos;wxyz&apos;,</span><br><span class="line">    ];</span><br><span class="line">    private $output = [];</span><br><span class="line">    /**</span><br><span class="line">     * @param String $digits</span><br><span class="line">     * @return String[]</span><br><span class="line">     */</span><br><span class="line">    function letterCombinations($digits) &#123;</span><br><span class="line">        if (strlen($digits) == 0) &#123;</span><br><span class="line">            return [];</span><br><span class="line">        &#125;</span><br><span class="line">        $len = strlen($digits);</span><br><span class="line">        $this-&gt;combine(&quot;&quot;, $digits);</span><br><span class="line">        return $this-&gt;output;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function combine($combine, $digits) &#123;</span><br><span class="line">        if (strlen($digits) == 0) &#123;</span><br><span class="line">            array_push($this-&gt;output, $combine);</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        for($i=0;$i&lt;strlen(self::ALPHA[$digits[0]]);$i++) &#123;</span><br><span class="line">            $letter = self::ALPHA[$digits[0]][$i];</span><br><span class="line">            $this-&gt;combine($combine.$letter, substr($digits, 1));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/27/双指针/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1848,274 +2007,6 @@ Content-Type: text/html; charset=UTF-8
 
 
     
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/21/系统设计/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="风满楼">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="西北玄天一片云">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/02/21/系统设计/" itemprop="url">系统设计题套路总结</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-21T10:11:00+08:00">
-                2020-02-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/系统设计/" itemprop="url" rel="index">
-                    <span itemprop="name">系统设计</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="为什么考察系统设计类题目"><a href="#为什么考察系统设计类题目" class="headerlink" title="为什么考察系统设计类题目"></a>为什么考察系统设计类题目</h2><p>系统设计题是高级工程师面试过程中必不可少的一类题目。这类题目经常能够真正考察面试者的真实综合实力，能够反映面试者的知识广度和深度。</p>
-<p>这类题目往往面试官提供的信息非常少，需要面试者自己去思考系统功能、系统难点、设计方案，还要在设计过程中经受面试官的层层盘问和质疑。</p>
-<p>然而，这和算法面试和程序面试不同的是，这类题目往往没有标准答案，主要看中的是你思考论述的过程，而不是你最后提出的解决方案（当然如果你提出的解决方案实在太挫……）。</p>
-<p>也就是说，系统设计面试最重要的一点是“沟通”（communication）。</p>
-<blockquote>
-<p>我们不会要求工程师一下子就开发出非常完美的功能。相反地，我们的工程师对于这些开放性问题有着充分的自主权。而且，我们的工作就是各自去为这些问题提出最佳的解决方案我们希望寻找的是那些我们可以完全信任的人。这样，他们自己就可以做出非常棒的方案，而不需要我们的监管。也就是说，我们需要的工程师，是那些可以管理一个很大项目，同时保持项目持续朝正确方向发展的人。这意味着，你必须可以高效地与身边的同时进行沟通。因为“闭门造车”在我们的大规模项目中是不可能的。 </p>
-</blockquote>
-<h2 id="面试官考察点梳理"><a href="#面试官考察点梳理" class="headerlink" title="面试官考察点梳理"></a>面试官考察点梳理</h2><ul>
-<li><p>沟通能力</p>
-<ul>
-<li>通过有效提问，了解业务功能和设计要点。</li>
-</ul>
-</li>
-<li><p>技术能力</p>
-<ul>
-<li>全局设计能力和难题解决能力</li>
-</ul>
-</li>
-<li><p>应变能力</p>
-<ul>
-<li>有效回答面试官的提问和质疑，通过不断的博弈，对方案进行改进和优化。</li>
-</ul>
-</li>
-<li><p>知识水平</p>
-<ul>
-<li>需要掌握常用的开源软件，挑选最合适的来使用，并能有效对比各自的优缺点和使用场景。</li>
-</ul>
-</li>
-</ul>
-<h2 id="答题套路"><a href="#答题套路" class="headerlink" title="答题套路"></a>答题套路</h2><h3 id="一、明确问题"><a href="#一、明确问题" class="headerlink" title="一、明确问题"></a>一、明确问题</h3><p><font color="red" size="4"><strong>拿到了问题之后，切记张口就来</strong></font>，我们只有一个大概的方向，即我们要做一个什么。但是并不清楚具体条件，而不同的的业务场景所需要的架构也是不一样的。</p>
-<p>第一步我们需要先问几个问题：</p>
-<ul>
-<li>复述一下系统核心功能点和面试官对齐，看看自己的设想和面试官系统要求点是否一致（遇到自己没接触过过的系统时尤为必要）</li>
-<li>这个系统一天的请求量是多少？</li>
-<li>峰值QPS是多少</li>
-</ul>
-<p>总结：</p>
-<pre><code>1、明确功能点
-2、明确基本数据</code></pre><h3 id="二、模块划分"><a href="#二、模块划分" class="headerlink" title="二、模块划分"></a>二、模块划分</h3><p>一个完整的系统往往包含多个组成部分，每个部分完成独立的工作，最后通过相互交互达成数据流转。</p>
-<p>这一步我们要完成几点设计：</p>
-<pre><code>1、模块划分，每个模块需要完成的功能点，读写分离、动静分离、缓存读、异步写等等？
-2、模块之间的数据交互，HTTP or RPC or MQ?</code></pre><h3 id="三、存储设计"><a href="#三、存储设计" class="headerlink" title="三、存储设计"></a>三、存储设计</h3><p>这一步是涉及的关键，需要对常见存储工具都有一个清晰的认识，包括优缺点对比、适用场景。</p>
-<p>存储硬件性能对比：</p>
-<table>
-<thead>
-<tr>
-<th>存储设备</th>
-<th>吞吐量</th>
-<th>响应时间</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>L1</td>
-<td>Cache</td>
-<td>0.5ns</td>
-</tr>
-<tr>
-<td>L2</td>
-<td>Cache</td>
-<td>7ns</td>
-</tr>
-<tr>
-<td>内存</td>
-<td>800M/s</td>
-<td>100ns</td>
-</tr>
-<tr>
-<td>SSD</td>
-<td>300M/s</td>
-<td>0.1~0.2ms</td>
-</tr>
-<tr>
-<td>机械硬盘</td>
-<td>300M/s</td>
-<td>10ms,其中寻道时间在9ms左右</td>
-</tr>
-</tbody></table>
-<p>常见性能数据</p>
-<blockquote>
-<p>Nginx：能轻松的处理c100k问题，内存越大，能处理的并发量越高<br>Redis: <a href="https://redis.io/topics/benchmarks" target="_blank" rel="noopener">https://redis.io/topics/benchmarks</a> 表明，对于GET/SET来说，QPS 10-100k没啥大问题<br>MySQL: <a href="https://www.mysql.com/why-mysql/benchmarks/" target="_blank" rel="noopener">https://www.mysql.com/why-mysql/benchmarks/</a> 表明，对于只读，QPS 几百k没啥问题，对于写，MySQL 5.7 QPS 100k 几乎是上限, TPS基本上10K级别</p>
-</blockquote>
-<p>存储软件对比分析：</p>
-<table>
-<thead>
-<tr>
-<th>存储软件</th>
-<th>优点</th>
-<th>缺点</th>
-<th>适用场景</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>MySQL</td>
-<td>支持事务，JOIN</td>
-<td>大数据量扩容困难，字段频繁变更操作麻烦</td>
-<td>事务需求，多表JOIN</td>
-</tr>
-<tr>
-<td>Redis</td>
-<td>高性能读写</td>
-<td>内存昂贵，存储容量小</td>
-<td>缓存</td>
-</tr>
-<tr>
-<td>MongoDB</td>
-<td>文档型，字段变更灵活，扩容简单</td>
-<td>不支持事务、JOIN</td>
-<td>字段不确定，变更频繁，性能和MySQL相差无几</td>
-</tr>
-<tr>
-<td>Hbase</td>
-<td>支持海量数据的存储</td>
-<td>读写性能相对差一些</td>
-<td>适用海量数据的存储分析，多版本，数据稀疏</td>
-</tr>
-<tr>
-<td>ES</td>
-<td>支持多维度查询，高可用</td>
-<td>ES没有事务也不适合处理并行更改数据</td>
-<td>适用于检索，全文检索</td>
-</tr>
-</tbody></table>
-<p><img src="/2020/02/21/系统设计/%E5%AD%98%E5%82%A8%E8%BD%AF%E4%BB%B6%E5%AF%B9%E6%AF%94.png" alt></p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/02/21/系统设计/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2168,7 +2059,7 @@ Content-Type: text/html; charset=UTF-8
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2179,7 +2070,7 @@ Content-Type: text/html; charset=UTF-8
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2190,7 +2081,7 @@ Content-Type: text/html; charset=UTF-8
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-count">46</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -2224,7 +2115,7 @@ Content-Type: text/html; charset=UTF-8
 		    <h3 class="widget-title">Tag Cloud</h3>
 		    <div id="myCanvasContainer" class="widget tagcloud">
 		        <canvas width="250" height="250" id="resCanvas" style="width=100%">
-		            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/499/">499</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/502/">502</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/504/">504</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/B-树/">B+树</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Binlog/">Binlog</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Binlog与Redolog一致性/">Binlog与Redolog一致性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/COW/">COW</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cache/">Cache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/">HTTP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/InnoDB/">InnoDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL查询/">MySQL查询</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mysql/">Mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Next/">Next</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redo-log/">Redo log</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP/">TCP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UDP/">UDP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WAL/">WAL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/copy-on-write/">copy on write</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fork/">fork</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http1-1/">http1.1</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http1-2/">http1.2</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http协议/">http协议</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php源码/">php源码</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/一致性/">一致性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/七层协议栈/">七层协议栈</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/二分查找/">二分查找</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分库/">分库</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分表/">分表</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分表扩容/">分表扩容</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/博客搭建/">博客搭建</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/双指针/">双指针</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/弱类型/">弱类型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/持久化/">持久化</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数组源码/">数组源码</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/架构/">架构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/查询过程/">查询过程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/系统设计/">系统设计</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/红黑树/">红黑树</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络协议/">网络协议</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/负载均衡/">负载均衡</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试算法/">面试算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高可用/">高可用</a><span class="tag-list-count">1</span></li></ul>
+		            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/499/">499</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/502/">502</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/504/">504</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/B-树/">B+树</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Binlog/">Binlog</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Binlog与Redolog一致性/">Binlog与Redolog一致性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/COW/">COW</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cache/">Cache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/">HTTP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/InnoDB/">InnoDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL查询/">MySQL查询</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mysql/">Mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Next/">Next</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redo-log/">Redo log</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP/">TCP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UDP/">UDP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WAL/">WAL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/copy-on-write/">copy on write</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fork/">fork</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http1-1/">http1.1</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http1-2/">http1.2</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http协议/">http协议</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php源码/">php源码</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/一致性/">一致性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/七层协议栈/">七层协议栈</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/二分查找/">二分查找</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分库/">分库</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分表/">分表</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分表扩容/">分表扩容</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/博客搭建/">博客搭建</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/双指针/">双指针</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/回溯算法/">回溯算法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/弱类型/">弱类型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/持久化/">持久化</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数组源码/">数组源码</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/架构/">架构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/查询过程/">查询过程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/系统设计/">系统设计</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/红黑树/">红黑树</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络协议/">网络协议</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/负载均衡/">负载均衡</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试算法/">面试算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高可用/">高可用</a><span class="tag-list-count">1</span></li></ul>
 		        </canvas>
 		    </div>
 		</div>
