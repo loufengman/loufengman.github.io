@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="WAL,持久化,">
+  <meta name="keywords" content="Hexo, NexT">
 
 
 
@@ -79,21 +79,17 @@
 
 
 
-<meta name="description" content="WAL即 Write Ahead Log，WAL的主要意思是说在将元数据的变更操作写入磁盘之前，先预先写入到一个log文件中。为什么要先写日志文件呢，我们一步一步的来探索。 基础数据了解首先，我们需要了解一下几个数据。  从上图可以看出两点：  内存的读写速度比随机读写磁盘高出几个数量级。 磁盘顺序读写效率堪比内存  数据写入磁盘过程那用户进程是怎么把数据写入磁盘的呢？我们来看下Redis之父An">
-<meta name="keywords" content="WAL,持久化">
-<meta property="og:type" content="article">
-<meta property="og:title" content="WAL(Write Ahead Log)机制解析">
-<meta property="og:url" content="http://yoursite.com/2020/02/26/WAL机制解析/index.html">
+<meta name="description" content="坚持自己的判断，总有一次是对的">
+<meta name="keywords" content="IT，互联网">
+<meta property="og:type" content="website">
+<meta property="og:title" content="西北玄天一片云">
+<meta property="og:url" content="http://yoursite.com/tags/双指针/index.html">
 <meta property="og:site_name" content="西北玄天一片云">
-<meta property="og:description" content="WAL即 Write Ahead Log，WAL的主要意思是说在将元数据的变更操作写入磁盘之前，先预先写入到一个log文件中。为什么要先写日志文件呢，我们一步一步的来探索。 基础数据了解首先，我们需要了解一下几个数据。  从上图可以看出两点：  内存的读写速度比随机读写磁盘高出几个数量级。 磁盘顺序读写效率堪比内存  数据写入磁盘过程那用户进程是怎么把数据写入磁盘的呢？我们来看下Redis之父An">
+<meta property="og:description" content="坚持自己的判断，总有一次是对的">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/2020/02/26/WAL机制解析/data.png">
-<meta property="og:image" content="http://yoursite.com/2020/02/26/WAL机制解析/hbase.png">
-<meta property="og:updated_time" content="2020-02-27T04:09:37.540Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="WAL(Write Ahead Log)机制解析">
-<meta name="twitter:description" content="WAL即 Write Ahead Log，WAL的主要意思是说在将元数据的变更操作写入磁盘之前，先预先写入到一个log文件中。为什么要先写日志文件呢，我们一步一步的来探索。 基础数据了解首先，我们需要了解一下几个数据。  从上图可以看出两点：  内存的读写速度比随机读写磁盘高出几个数量级。 磁盘顺序读写效率堪比内存  数据写入磁盘过程那用户进程是怎么把数据写入磁盘的呢？我们来看下Redis之父An">
-<meta name="twitter:image" content="http://yoursite.com/2020/02/26/WAL机制解析/data.png">
+<meta name="twitter:title" content="西北玄天一片云">
+<meta name="twitter:description" content="坚持自己的判断，总有一次是对的">
 
 
 
@@ -123,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2020/02/26/WAL机制解析/">
+  <link rel="canonical" href="http://yoursite.com/tags/双指针/">
 
 
 
 
 
-  <title>WAL(Write Ahead Log)机制解析 | 西北玄天一片云</title>
+  <title>标签: 双指针 | 西北玄天一片云</title>
   
 
 
@@ -148,7 +144,7 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -252,219 +248,52 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-expand">
-    
+  
+  
+  
+  <div class="post-block tag">
 
-  
+    <div id="posts" class="posts-collapse">
+      <div class="collection-title">
+        <h1>双指针<small>标签</small>
+        </h1>
+      </div>
 
-  
-  
-  
+      
+        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/26/WAL机制解析/">
+    <header class="post-header">
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="风满楼">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="西北玄天一片云">
-    </span>
-
-    
-      <header class="post-header">
-
+      <h2 class="post-title">
         
+            <a class="post-title-link" href="/2020/02/27/双指针/" itemprop="url">
+              
+                <span itemprop="name">双指针</span>
+              
+            </a>
         
-          <h1 class="post-title" itemprop="name headline">WAL(Write Ahead Log)机制解析</h1>
-        
+      </h2>
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-26T12:01:00+08:00">
-                2020-02-26
-              </time>
-            
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated" datetime="2020-02-27T19:23:00+08:00" content="2020-02-27">
+          02-27
+        </time>
+      </div>
 
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index">
-                    <span itemprop="name">Linux</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/操作系统/" itemprop="url" rel="index">
-                    <span itemprop="name">操作系统</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-            <span class="post-meta-divider">|</span>
-            <span class="page-pv"><i class="fa fa-file-o">本文总阅读量</i>
-            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
-            </span>
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <p>WAL即 Write Ahead Log，WAL的主要意思是说在将元数据的变更操作写入磁盘之前，先预先写入到一个log文件中。为什么要先写日志文件呢，我们一步一步的来探索。</p>
-<h2 id="基础数据了解"><a href="#基础数据了解" class="headerlink" title="基础数据了解"></a>基础数据了解</h2><p>首先，我们需要了解一下几个数据。</p>
-<p><img src="/2020/02/26/WAL机制解析/data.png" alt></p>
-<p>从上图可以看出两点：</p>
-<ol>
-<li>内存的读写速度比随机读写磁盘高出几个数量级。</li>
-<li>磁盘顺序读写效率堪比内存</li>
-</ol>
-<h2 id="数据写入磁盘过程"><a href="#数据写入磁盘过程" class="headerlink" title="数据写入磁盘过程"></a>数据写入磁盘过程</h2><p>那用户进程是怎么把数据写入磁盘的呢？我们来看下Redis之父Antires是怎么说的：</p>
-<blockquote>
-<p>1: The client sends a write command to the database (data is in client’s memory).<br><br>2: The database receives the write (data is in server’s memory).<br><br>3: The database calls the system call that writes the data on disk (data is in the kernel’s buffer).<br><br>4: The operating system transfers the write buffer to the disk controller (data is in the disk cache).<br><br>5: The disk controller actually writes the data into a physical media (a magnetic disk, a Nand chip, …).</p>
-</blockquote>
-<p>翻译如下：</p>
-<ol>
-<li>客户端向数据库发送写命令。</li>
-<li>数据库收到写命令。</li>
-<li>数据库通过系统调用将数据写入内核缓冲区（page cache)。</li>
-<li>操作系统将缓冲区数据传输至磁盘控制器，暂存在磁盘缓冲区。</li>
-<li>磁盘控制器将数据精准的写入物理磁盘。</li>
-</ol>
-<p>我们考虑如下异常情况：</p>
-<h3 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h3><h4 id="1、数据库挂了"><a href="#1、数据库挂了" class="headerlink" title="1、数据库挂了"></a>1、数据库挂了</h4><p>如果只是数据库挂了，这时候其实操作系统是正常工作的，</p>
-<p>只有当第3步完成之后，才能保证数据安全写入。因为剩下的都可以由操作系统来完成。</p>
-<h4 id="2、机器断电"><a href="#2、机器断电" class="headerlink" title="2、机器断电"></a>2、机器断电</h4><p>机器断电之后，数据库、操作系统、磁盘均不能正常工作。只有完成这5步才算真正的写入磁盘。</p>
-<h2 id="WAL原理"><a href="#WAL原理" class="headerlink" title="WAL原理"></a>WAL原理</h2><ul>
-<li>通过cache合并多条写操作为一条，减少IO次数</li>
-<li>日志顺序追加性能远高于数据随机写。</li>
-</ul>
-<h2 id="WAL的应用"><a href="#WAL的应用" class="headerlink" title="WAL的应用"></a>WAL的应用</h2><h3 id="MySQL-WAL应用"><a href="#MySQL-WAL应用" class="headerlink" title="MySQL WAL应用"></a>MySQL WAL应用</h3><pre><code>MySQL通过redolog、undolog实现事务的原子性和持久化。</code></pre><h3 id="Hbase-WAL应用"><a href="#Hbase-WAL应用" class="headerlink" title="Hbase WAL应用"></a>Hbase WAL应用</h3><p><img src="/2020/02/26/WAL机制解析/hbase.png" alt></p>
-
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/WAL/" rel="tag"># WAL</a>
-          
-            <a href="/tags/持久化/" rel="tag"># 持久化</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2020/02/25/服务高可用原理解析/" rel="next" title="高可用架构案例解析">
-                <i class="fa fa-chevron-left"></i> 高可用架构案例解析
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/02/26/php如何实现弱类型/" rel="prev" title="php如何实现弱类型">
-                php如何实现弱类型 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
+    </header>
   </article>
 
 
-
-    <div class="post-spread">
       
     </div>
+
   </div>
+  
+  
+  
+
+  
 
 
           </div>
@@ -472,11 +301,6 @@
 
 
           
-
-  
-    <div id="gitalk-container"></div>
-  
-
 
         </div>
         
@@ -497,17 +321,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -569,22 +384,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基础数据了解"><span class="nav-number">1.</span> <span class="nav-text">基础数据了解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据写入磁盘过程"><span class="nav-number">2.</span> <span class="nav-text">数据写入磁盘过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#异常处理"><span class="nav-number">2.1.</span> <span class="nav-text">异常处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、数据库挂了"><span class="nav-number">2.1.1.</span> <span class="nav-text">1、数据库挂了</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、机器断电"><span class="nav-number">2.1.2.</span> <span class="nav-text">2、机器断电</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WAL原理"><span class="nav-number">3.</span> <span class="nav-text">WAL原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WAL的应用"><span class="nav-number">4.</span> <span class="nav-text">WAL的应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL-WAL应用"><span class="nav-number">4.1.</span> <span class="nav-text">MySQL WAL应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hbase-WAL应用"><span class="nav-number">4.2.</span> <span class="nav-text">Hbase WAL应用</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
@@ -758,10 +557,6 @@
 
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
-
 
   
 
@@ -802,23 +597,6 @@
 
 
 
-
-  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
-  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
-  <script src="/js/src/md5.min.js"></script>
-  <div id="gitalk-container"></div>
-  <script type="text/javascript">
-    var gitalk = new Gitalk({
-      clientID: '4abbba92d1956c944d8c',
-      clientSecret: '6cd6a5c5f2cd8fd5ff3c523add22625c73022929',
-      repo: 'discuss',
-      owner: 'loufengman',
-      admin: ['loufengman'],
-      id: md5(location.pathname),
-      distractionFreeMode: 'false'
-    })
-    gitalk.render('gitalk-container')
-  </script>
 
 
 
