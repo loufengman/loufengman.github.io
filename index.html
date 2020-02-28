@@ -259,6 +259,202 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/28/分布式锁的实现/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="西北玄天一片云">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/02/28/分布式锁的实现/" itemprop="url">分布式锁的实现</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-28T09:43:00+08:00">
+                2020-02-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/系统设计/" itemprop="url" rel="index">
+                    <span itemprop="name">系统设计</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/系统设计/分布式/" itemprop="url" rel="index">
+                    <span itemprop="name">分布式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在分布式环境中，经常遇到多台机器上的多个进程对同一数据的操作，如果这些进程不做互斥处理的话，往往会出现不符合预期的错误，比如商品超卖、红包超发、账号多扣款等。</p>
+<p>多台机器上的进程的互斥，可以通过锁来达成。接下来我们介绍几种分布式锁的实现方式。</p>
+<h2 id="方式一、Redis-setnx"><a href="#方式一、Redis-setnx" class="headerlink" title="方式一、Redis setnx"></a>方式一、Redis setnx</h2><p>这是比较常见的一种简单实现方式</p>
+<p>我们先来看一下Redis setnx的文档介绍：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">SETNX key value</span><br><span class="line"></span><br><span class="line">将 key 的值设为 value ，当且仅当 key 不存在。</span><br><span class="line"></span><br><span class="line">若给定的 key 已经存在，则 SETNX 不做任何动作。</span><br><span class="line"></span><br><span class="line">SETNX 是『SET if Not eXists』(如果不存在，则 SET)的简写。</span><br><span class="line"></span><br><span class="line">可用版本：</span><br><span class="line">&gt;= 1.0.0</span><br><span class="line">时间复杂度：</span><br><span class="line">O(1)</span><br><span class="line">返回值：</span><br><span class="line">设置成功，返回 1 。</span><br><span class="line">设置失败，返回 0 。</span><br></pre></td></tr></table></figure>
+
+<p>带过期时间的分布式锁实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class DistributeLock &#123;</span><br><span class="line">	private $redis;</span><br><span class="line">	</span><br><span class="line">	public function __construct() &#123;</span><br><span class="line">		$this-&gt;redis = new Redis(); </span><br><span class="line">   		$this-&gt;redis-&gt;connect(&apos;127.0.0.1&apos;, 6379); </span><br><span class="line">   &#125;</span><br><span class="line">   </span><br><span class="line">   /**</span><br><span class="line">   	 * @param $key string 锁的key</span><br><span class="line">   	 * @param $expire int 锁定的时长，单位秒</span><br><span class="line">   	 * @return bool true：锁定成功；false：锁定失败</span><br><span class="line">   	 */</span><br><span class="line">	function lock($key, $expire) &#123;</span><br><span class="line">		try &#123;</span><br><span class="line">			if ($this-&gt;redis-&gt;setnx($key, 1) &#123;</span><br><span class="line">				$this-&gt;redis-&gt;expire($key, $expire);</span><br><span class="line">				return true;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125; catch (Exception $e) &#123;</span><br><span class="line">			$this-&gt;redis-&gt;del($key);</span><br><span class="line">		&#125;</span><br><span class="line">		return false;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	function unlock($key) &#123;</span><br><span class="line">		$this-&gt;redis-&gt;del($key);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>看似没问题，想一下这种情况，setnx成功之后，expire操作执行失败了，进程crash，则该key设置的锁永远得不到释放。</p>
+<p>这种实现方式的问题在于，setnx与expire操作不是原子操作，存在单点故障时锁无法释放的问题。</p>
+<h2 id="方式二、RedLock"><a href="#方式二、RedLock" class="headerlink" title="方式二、RedLock"></a>方式二、RedLock</h2><p>这是redis之父antirez提出的分布式锁实现方式。</p>
+<p>Redlock获取锁的过程。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. 获取开始时间</span><br><span class="line">2. 去各个节点获取锁</span><br><span class="line">3. 再次获取时间。</span><br><span class="line">4. 计算获取锁的时间，检查获取锁的时间是否小于获取锁的时间。</span><br><span class="line">5. 持有锁。</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://github.com/antirez/redlock-rb" target="_blank" rel="noopener">antirez版redlock-rb</a></p>
+<p><a href="https://github.com/ronnylt/redlock-php" target="_blank" rel="noopener">PHP版redlock-php</a></p>
+<p>Redlock获取锁的过程。</p>
+<p><code>向各个节点发送del命令，删除锁</code>。</p>
+<h3 id="存在的问题"><a href="#存在的问题" class="headerlink" title="存在的问题"></a>存在的问题</h3><pre><code>依赖于分布式机器时钟的同步。</code></pre><p>这个问题曾引起分布式专家martin与Redis之父Antirez之间的论战。参见参考文档。</p>
+<p>Martin 对 RedLock的指控：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 分布式的锁具有一个自动释放的功能。锁的互斥性，只在过期时间之内有效，锁过期释放以后就会造成多个Client 持有锁。</span><br><span class="line"></span><br><span class="line">2. RedLock 整个系统是建立在，一个在实际系统无法保证的系统模型上的。在这个例子中就是系统假设时间是同步且可信的。</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/02/28/分布式锁的实现/unsafe-lock.png" alt></p>
+<p>Martin对锁的改进，增加了token，实际是利用了CAS的乐观锁实现：</p>
+<p><img src="/2020/02/28/分布式锁的实现/fencing-tokens.png" alt></p>
+<p>最后，martin推荐Zookeeper实现分布式锁。</p>
+<p>Antirez的回应：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">首先在实际的系统中，从两个方面来看：</span><br><span class="line"></span><br><span class="line">1. 系统暂停，网络延迟。</span><br><span class="line">2. 系统的时间发生阶跃。</span><br><span class="line">对于第一个问题。上文已经提到了，RedLock做了一些微小的工作，但是没办法完全避免。其他带有自动释放的分布式锁也没有办法。</span><br><span class="line"></span><br><span class="line">第二个问题，Martin认为系统时间的阶跃主要来自两个方面：</span><br><span class="line"></span><br><span class="line">1. 人为修改。</span><br><span class="line">2. 从NTP服务收到了一个跳跃时时钟更新。</span><br><span class="line"></span><br><span class="line">对于人为修改，能说啥呢？人要搞破坏没办法避免。</span><br><span class="line"></span><br><span class="line">NTP受到一个阶跃时钟更新，对于这个问题，需要通过运维来保证。需要将阶跃的时间更新到服务器的时候，应当采取小步快跑的方式。多次修改，每次更新时间尽量小。</span><br></pre></td></tr></table></figure>
+
+<h2 id="方式三、基于ZooKeeper实现"><a href="#方式三、基于ZooKeeper实现" class="headerlink" title="方式三、基于ZooKeeper实现"></a>方式三、基于ZooKeeper实现</h2><p>原理分析：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. 锁即Zookeeper上的一个节点</span><br><span class="line">2. 客户端A发起一个加锁请求，先会在你要加锁的node下搞一个临时顺序节点。</span><br><span class="line">3. 如果创建的几点序号是1，则获得锁</span><br><span class="line">4. 序号不是1，则监听上一个序号释放锁。</span><br><span class="line">5. 释放锁即删除临时节点。</span><br></pre></td></tr></table></figure>
+
+<p>初始状态：<br><img src="/2020/02/28/分布式锁的实现/zk-node.png" alt></p>
+<p>获取锁的流程<br><img src="/2020/02/28/分布式锁的实现/zk-lock.png" alt></p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ol>
+<li><a href="http://doc.redisfans.com/string/setnx.html" target="_blank" rel="noopener">SETNX</a></li>
+<li><a href="https://redis.io/commands/setnx" target="_blank" rel="noopener">SETNX key value</a></li>
+<li><a href="https://github.com/ronnylt/redlock-php" target="_blank" rel="noopener">PHP版redlock-php</a></li>
+<li><a href="https://www.jianshu.com/p/dc3175eefe65" target="_blank" rel="noopener">Redis RedLock 完美的分布式锁么？</a></li>
+<li><a href="http://antirez.com/news/101" target="_blank" rel="noopener">Is Redlock Safe?</a></li>
+<li><a href="http://martin.kleppmann.com/2016/02/08/how-to-do-distributed-locking.html" target="_blank" rel="noopener">Martin 和 antirez关于RedLock的论战</a></li>
+<li><a href="https://juejin.im/post/5c01532ef265da61362232ed" target="_blank" rel="noopener">七张图彻底讲清楚ZooKeeper分布式锁的实现原理【石杉的架构笔记】</a></li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/27/回溯算法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1822,187 +2018,6 @@ Content-Type: text/html; charset=UTF-8
 
 
     
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/25/http-error-code/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="西北玄天一片云">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/02/25/http-error-code/" itemprop="url">易混淆错误码解析</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-25T16:11:00+08:00">
-                2020-02-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/HTTP/" itemprop="url" rel="index">
-                    <span itemprop="name">HTTP</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>易混淆错误码解析</p>
-<h2 id="常见错误码"><a href="#常见错误码" class="headerlink" title="常见错误码"></a>常见错误码</h2><blockquote>
-<p>We all come across website errors at some point, and every website out there has inevitably experienced their share of 404 and 500 status codes, which are shown when a URL is not found either due to their typo or a broken link (404), and when there is a general server error (500).</p>
-</blockquote>
-<pre><code>网站日常维护中，我们都不可避免的遇到过404和500状态码，
-其中，404表示找不对对应的URL网页，500是通用服务器错误。</code></pre><blockquote>
-<p>There are many other less well known status codes in the 400 and 500 range: Those HTTP status codes beginning with 4 are errors on the client side, and codes beginning with 5 are errors on the side of the website server.</p>
-</blockquote>
-<pre><code>在4xx-5xx的范围内，还有很多不常为人知道的状态：这些状态中4开头的表示客户端的错误，5开头的表示服务端的错误。</code></pre><p>在这些错误码中，我们经常感到困惑的是499 vs 502 vs 504</p>
-<h2 id="499-vs-502-vs-504对比分析"><a href="#499-vs-502-vs-504对比分析" class="headerlink" title="499 vs 502 vs 504对比分析"></a>499 vs 502 vs 504对比分析</h2><table>
-<thead>
-<tr>
-<th>错误码</th>
-<th>错误内容</th>
-<th>报错端</th>
-<th>出现场景</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>499</td>
-<td>服务端超时</td>
-<td>客户端代理</td>
-<td>服务端未在客户端设定的时间内响应结果，客户端主动断开连接。比如：服务器接口内SQL超时，导致接口超时。</td>
-</tr>
-<tr>
-<td>502</td>
-<td>网关错误</td>
-<td>服务端代理</td>
-<td>网站服务器返回不能识别的响应结果。比如：服务器防火墙阻断了反向代理的连接请求</td>
-</tr>
-<tr>
-<td>504</td>
-<td>网关超时</td>
-<td>服务端代理</td>
-<td>服务器未在反向代理设置的时间内响应。比如：PHP-FPM连接打满，新连接无法响应</td>
-</tr>
-</tbody></table>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
-<li><a href="https://www.section.io/blog/504-503-errors-difference/" target="_blank" rel="noopener">The difference between a 502, 503 and 504 error</a></li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2055,7 +2070,7 @@ Content-Type: text/html; charset=UTF-8
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">20</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2111,7 +2126,7 @@ Content-Type: text/html; charset=UTF-8
 		    <h3 class="widget-title">Tag Cloud</h3>
 		    <div id="myCanvasContainer" class="widget tagcloud">
 		        <canvas width="250" height="250" id="resCanvas" style="width=100%">
-		            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/499/">499</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/502/">502</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/504/">504</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/B-树/">B+树</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Binlog/">Binlog</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Binlog与Redolog一致性/">Binlog与Redolog一致性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/COW/">COW</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cache/">Cache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/">HTTP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/InnoDB/">InnoDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL查询/">MySQL查询</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mysql/">Mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Next/">Next</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redo-log/">Redo log</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP/">TCP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UDP/">UDP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WAL/">WAL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/copy-on-write/">copy on write</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fork/">fork</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http1-1/">http1.1</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http1-2/">http1.2</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http协议/">http协议</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php源码/">php源码</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/一致性/">一致性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/七层协议栈/">七层协议栈</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/二分查找/">二分查找</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分库/">分库</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分表/">分表</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分表扩容/">分表扩容</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/博客搭建/">博客搭建</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/双指针/">双指针</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/回溯算法/">回溯算法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/弱类型/">弱类型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/持久化/">持久化</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数组源码/">数组源码</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/架构/">架构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/查询过程/">查询过程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/系统设计/">系统设计</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/红黑树/">红黑树</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络协议/">网络协议</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/负载均衡/">负载均衡</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试算法/">面试算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高可用/">高可用</a><span class="tag-list-count">1</span></li></ul>
+		            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/499/">499</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/502/">502</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/504/">504</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/B-树/">B+树</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Binlog/">Binlog</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Binlog与Redolog一致性/">Binlog与Redolog一致性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/COW/">COW</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cache/">Cache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/">HTTP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/InnoDB/">InnoDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL查询/">MySQL查询</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mysql/">Mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Next/">Next</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redo-log/">Redo log</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP/">TCP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UDP/">UDP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WAL/">WAL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/copy-on-write/">copy on write</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fork/">fork</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http1-1/">http1.1</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http1-2/">http1.2</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http协议/">http协议</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php源码/">php源码</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/一致性/">一致性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/七层协议栈/">七层协议栈</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/二分查找/">二分查找</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式锁/">分布式锁</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分库/">分库</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分表/">分表</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分表扩容/">分表扩容</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/博客搭建/">博客搭建</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/双指针/">双指针</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/回溯算法/">回溯算法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/弱类型/">弱类型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/持久化/">持久化</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数组源码/">数组源码</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/架构/">架构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/查询过程/">查询过程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/系统设计/">系统设计</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/红黑树/">红黑树</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络协议/">网络协议</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/负载均衡/">负载均衡</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试算法/">面试算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高可用/">高可用</a><span class="tag-list-count">1</span></li></ul>
 		        </canvas>
 		    </div>
 		</div>

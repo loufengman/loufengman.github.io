@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="分布式锁,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="在分布式环境中，经常遇到多台机器上的多个进程对同一数据的操作，如果这些进程不做互斥处理的话，往往会出现不符合预期的错误，比如商品超卖、红包超发、账号多扣款等。 多台机器上的进程的互斥，可以通过锁来达成。接下来我们介绍几种分布式锁的实现方式。 方式一、Redis setnx这是比较常见的一种简单实现方式 我们先来看一下Redis setnx的文档介绍： 123456789101112131415SE">
+<meta name="keywords" content="分布式锁">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分布式锁的实现">
+<meta property="og:url" content="http://yoursite.com/2020/02/28/分布式锁的实现/index.html">
+<meta property="og:site_name" content="西北玄天一片云">
+<meta property="og:description" content="在分布式环境中，经常遇到多台机器上的多个进程对同一数据的操作，如果这些进程不做互斥处理的话，往往会出现不符合预期的错误，比如商品超卖、红包超发、账号多扣款等。 多台机器上的进程的互斥，可以通过锁来达成。接下来我们介绍几种分布式锁的实现方式。 方式一、Redis setnx这是比较常见的一种简单实现方式 我们先来看一下Redis setnx的文档介绍： 123456789101112131415SE">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2020/02/28/分布式锁的实现/unsafe-lock.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/28/分布式锁的实现/fencing-tokens.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/28/分布式锁的实现/zk-node.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/28/分布式锁的实现/zk-lock.png">
+<meta property="og:updated_time" content="2020-02-28T03:37:51.047Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="分布式锁的实现">
+<meta name="twitter:description" content="在分布式环境中，经常遇到多台机器上的多个进程对同一数据的操作，如果这些进程不做互斥处理的话，往往会出现不符合预期的错误，比如商品超卖、红包超发、账号多扣款等。 多台机器上的进程的互斥，可以通过锁来达成。接下来我们介绍几种分布式锁的实现方式。 方式一、Redis setnx这是比较常见的一种简单实现方式 我们先来看一下Redis setnx的文档介绍： 123456789101112131415SE">
+<meta name="twitter:image" content="http://yoursite.com/2020/02/28/分布式锁的实现/unsafe-lock.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/02/28/分布式锁的实现/">
+
+
+
+
+
+  <title>分布式锁的实现 | 西北玄天一片云</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">西北玄天一片云</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Ctl+C, Ctl+V</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tag"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-about"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/28/分布式锁的实现/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="西北玄天一片云">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">分布式锁的实现</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-28T09:43:00+08:00">
+                2020-02-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/系统设计/" itemprop="url" rel="index">
+                    <span itemprop="name">系统设计</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/系统设计/分布式/" itemprop="url" rel="index">
+                    <span itemprop="name">分布式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o">本文总阅读量</i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在分布式环境中，经常遇到多台机器上的多个进程对同一数据的操作，如果这些进程不做互斥处理的话，往往会出现不符合预期的错误，比如商品超卖、红包超发、账号多扣款等。</p>
+<p>多台机器上的进程的互斥，可以通过锁来达成。接下来我们介绍几种分布式锁的实现方式。</p>
+<h2 id="方式一、Redis-setnx"><a href="#方式一、Redis-setnx" class="headerlink" title="方式一、Redis setnx"></a>方式一、Redis setnx</h2><p>这是比较常见的一种简单实现方式</p>
+<p>我们先来看一下Redis setnx的文档介绍：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">SETNX key value</span><br><span class="line"></span><br><span class="line">将 key 的值设为 value ，当且仅当 key 不存在。</span><br><span class="line"></span><br><span class="line">若给定的 key 已经存在，则 SETNX 不做任何动作。</span><br><span class="line"></span><br><span class="line">SETNX 是『SET if Not eXists』(如果不存在，则 SET)的简写。</span><br><span class="line"></span><br><span class="line">可用版本：</span><br><span class="line">&gt;= 1.0.0</span><br><span class="line">时间复杂度：</span><br><span class="line">O(1)</span><br><span class="line">返回值：</span><br><span class="line">设置成功，返回 1 。</span><br><span class="line">设置失败，返回 0 。</span><br></pre></td></tr></table></figure>
+
+<p>带过期时间的分布式锁实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class DistributeLock &#123;</span><br><span class="line">	private $redis;</span><br><span class="line">	</span><br><span class="line">	public function __construct() &#123;</span><br><span class="line">		$this-&gt;redis = new Redis(); </span><br><span class="line">   		$this-&gt;redis-&gt;connect(&apos;127.0.0.1&apos;, 6379); </span><br><span class="line">   &#125;</span><br><span class="line">   </span><br><span class="line">   /**</span><br><span class="line">   	 * @param $key string 锁的key</span><br><span class="line">   	 * @param $expire int 锁定的时长，单位秒</span><br><span class="line">   	 * @return bool true：锁定成功；false：锁定失败</span><br><span class="line">   	 */</span><br><span class="line">	function lock($key, $expire) &#123;</span><br><span class="line">		try &#123;</span><br><span class="line">			if ($this-&gt;redis-&gt;setnx($key, 1) &#123;</span><br><span class="line">				$this-&gt;redis-&gt;expire($key, $expire);</span><br><span class="line">				return true;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125; catch (Exception $e) &#123;</span><br><span class="line">			$this-&gt;redis-&gt;del($key);</span><br><span class="line">		&#125;</span><br><span class="line">		return false;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	function unlock($key) &#123;</span><br><span class="line">		$this-&gt;redis-&gt;del($key);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>看似没问题，想一下这种情况，setnx成功之后，expire操作执行失败了，进程crash，则该key设置的锁永远得不到释放。</p>
+<p>这种实现方式的问题在于，setnx与expire操作不是原子操作，存在单点故障时锁无法释放的问题。</p>
+<h2 id="方式二、RedLock"><a href="#方式二、RedLock" class="headerlink" title="方式二、RedLock"></a>方式二、RedLock</h2><p>这是redis之父antirez提出的分布式锁实现方式。</p>
+<p>Redlock获取锁的过程。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. 获取开始时间</span><br><span class="line">2. 去各个节点获取锁</span><br><span class="line">3. 再次获取时间。</span><br><span class="line">4. 计算获取锁的时间，检查获取锁的时间是否小于获取锁的时间。</span><br><span class="line">5. 持有锁。</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://github.com/antirez/redlock-rb" target="_blank" rel="noopener">antirez版redlock-rb</a></p>
+<p><a href="https://github.com/ronnylt/redlock-php" target="_blank" rel="noopener">PHP版redlock-php</a></p>
+<p>Redlock获取锁的过程。</p>
+<p><code>向各个节点发送del命令，删除锁</code>。</p>
+<h3 id="存在的问题"><a href="#存在的问题" class="headerlink" title="存在的问题"></a>存在的问题</h3><pre><code>依赖于分布式机器时钟的同步。</code></pre><p>这个问题曾引起分布式专家martin与Redis之父Antirez之间的论战。参见参考文档。</p>
+<p>Martin 对 RedLock的指控：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 分布式的锁具有一个自动释放的功能。锁的互斥性，只在过期时间之内有效，锁过期释放以后就会造成多个Client 持有锁。</span><br><span class="line"></span><br><span class="line">2. RedLock 整个系统是建立在，一个在实际系统无法保证的系统模型上的。在这个例子中就是系统假设时间是同步且可信的。</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/02/28/分布式锁的实现/unsafe-lock.png" alt></p>
+<p>Martin对锁的改进，增加了token，实际是利用了CAS的乐观锁实现：</p>
+<p><img src="/2020/02/28/分布式锁的实现/fencing-tokens.png" alt></p>
+<p>最后，martin推荐Zookeeper实现分布式锁。</p>
+<p>Antirez的回应：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">首先在实际的系统中，从两个方面来看：</span><br><span class="line"></span><br><span class="line">1. 系统暂停，网络延迟。</span><br><span class="line">2. 系统的时间发生阶跃。</span><br><span class="line">对于第一个问题。上文已经提到了，RedLock做了一些微小的工作，但是没办法完全避免。其他带有自动释放的分布式锁也没有办法。</span><br><span class="line"></span><br><span class="line">第二个问题，Martin认为系统时间的阶跃主要来自两个方面：</span><br><span class="line"></span><br><span class="line">1. 人为修改。</span><br><span class="line">2. 从NTP服务收到了一个跳跃时时钟更新。</span><br><span class="line"></span><br><span class="line">对于人为修改，能说啥呢？人要搞破坏没办法避免。</span><br><span class="line"></span><br><span class="line">NTP受到一个阶跃时钟更新，对于这个问题，需要通过运维来保证。需要将阶跃的时间更新到服务器的时候，应当采取小步快跑的方式。多次修改，每次更新时间尽量小。</span><br></pre></td></tr></table></figure>
+
+<h2 id="方式三、基于ZooKeeper实现"><a href="#方式三、基于ZooKeeper实现" class="headerlink" title="方式三、基于ZooKeeper实现"></a>方式三、基于ZooKeeper实现</h2><p>原理分析：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. 锁即Zookeeper上的一个节点</span><br><span class="line">2. 客户端A发起一个加锁请求，先会在你要加锁的node下搞一个临时顺序节点。</span><br><span class="line">3. 如果创建的几点序号是1，则获得锁</span><br><span class="line">4. 序号不是1，则监听上一个序号释放锁。</span><br><span class="line">5. 释放锁即删除临时节点。</span><br></pre></td></tr></table></figure>
+
+<p>初始状态：<br><img src="/2020/02/28/分布式锁的实现/zk-node.png" alt></p>
+<p>获取锁的流程<br><img src="/2020/02/28/分布式锁的实现/zk-lock.png" alt></p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ol>
+<li><a href="http://doc.redisfans.com/string/setnx.html" target="_blank" rel="noopener">SETNX</a></li>
+<li><a href="https://redis.io/commands/setnx" target="_blank" rel="noopener">SETNX key value</a></li>
+<li><a href="https://github.com/ronnylt/redlock-php" target="_blank" rel="noopener">PHP版redlock-php</a></li>
+<li><a href="https://www.jianshu.com/p/dc3175eefe65" target="_blank" rel="noopener">Redis RedLock 完美的分布式锁么？</a></li>
+<li><a href="http://antirez.com/news/101" target="_blank" rel="noopener">Is Redlock Safe?</a></li>
+<li><a href="http://martin.kleppmann.com/2016/02/08/how-to-do-distributed-locking.html" target="_blank" rel="noopener">Martin 和 antirez关于RedLock的论战</a></li>
+<li><a href="https://juejin.im/post/5c01532ef265da61362232ed" target="_blank" rel="noopener">七张图彻底讲清楚ZooKeeper分布式锁的实现原理【石杉的架构笔记】</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/分布式锁/" rel="tag"># 分布式锁</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/02/27/回溯算法/" rel="next" title="回溯算法">
+                <i class="fa fa-chevron-left"></i> 回溯算法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div id="gitalk-container"></div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpeg" alt="John Doe">
+            
+              <p class="site-author-name" itemprop="name">John Doe</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">47</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#方式一、Redis-setnx"><span class="nav-number">1.</span> <span class="nav-text">方式一、Redis setnx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方式二、RedLock"><span class="nav-number">2.</span> <span class="nav-text">方式二、RedLock</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#存在的问题"><span class="nav-number">2.1.</span> <span class="nav-text">存在的问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方式三、基于ZooKeeper实现"><span class="nav-number">3.</span> <span class="nav-text">方式三、基于ZooKeeper实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-number">4.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+	  
+		<script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+		<script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+		<div class="widget-wrap">
+		    <h3 class="widget-title">Tag Cloud</h3>
+		    <div id="myCanvasContainer" class="widget tagcloud">
+		        <canvas width="250" height="250" id="resCanvas" style="width=100%">
+		            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/499/">499</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/502/">502</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/504/">504</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/B-树/">B+树</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Binlog/">Binlog</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Binlog与Redolog一致性/">Binlog与Redolog一致性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/COW/">COW</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cache/">Cache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/">HTTP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/InnoDB/">InnoDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL查询/">MySQL查询</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mysql/">Mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Next/">Next</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redo-log/">Redo log</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP/">TCP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UDP/">UDP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WAL/">WAL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/copy-on-write/">copy on write</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fork/">fork</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http1-1/">http1.1</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http1-2/">http1.2</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http协议/">http协议</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php源码/">php源码</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/一致性/">一致性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/七层协议栈/">七层协议栈</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/二分查找/">二分查找</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式锁/">分布式锁</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分库/">分库</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分表/">分表</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分表扩容/">分表扩容</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/博客搭建/">博客搭建</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/双指针/">双指针</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/回溯算法/">回溯算法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/弱类型/">弱类型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/持久化/">持久化</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数组源码/">数组源码</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/架构/">架构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/查询过程/">查询过程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/系统设计/">系统设计</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/红黑树/">红黑树</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络协议/">网络协议</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/负载均衡/">负载均衡</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试算法/">面试算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高可用/">高可用</a><span class="tag-list-count">1</span></li></ul>
+		        </canvas>
+		    </div>
+		</div>
+	   
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">本站访问数</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">本站总访问量</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="/js/src/md5.min.js"></script>
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '4abbba92d1956c944d8c',
+      clientSecret: '6cd6a5c5f2cd8fd5ff3c523add22625c73022929',
+      repo: 'discuss',
+      owner: 'loufengman',
+      admin: ['loufengman'],
+      id: md5(location.pathname),
+      distractionFreeMode: 'false'
+    })
+    gitalk.render('gitalk-container')
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
