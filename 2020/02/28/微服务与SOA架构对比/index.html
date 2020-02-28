@@ -89,7 +89,8 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2020/02/28/微服务与SOA架构对比/%E5%AF%B9%E6%AF%94%E8%A1%A8%E6%A0%BC.png">
 <meta property="og:image" content="http://yoursite.com/2020/02/28/微服务与SOA架构对比/%E5%AF%B9%E6%AF%94%E5%9B%BE.png">
-<meta property="og:updated_time" content="2020-02-28T05:40:54.650Z">
+<meta property="og:image" content="http://yoursite.com/2020/02/28/微服务与SOA架构对比/%E5%85%B8%E5%9E%8B%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E5%9B%BE.jpg">
+<meta property="og:updated_time" content="2020-02-28T08:33:57.526Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="微服务与SOA架构对比">
 <meta name="twitter:description" content="面向服务架构（SOA， Service-oriented architecture）已经存在有些年头了，这是一种用于设计软件的伟大原则。在SOA中，所有组件都是独立自主的，并能为其他组件提供服务。   1234567891011下面进一步解释上表所述的不同之处：开发方面 - 在这两种体系结构中，可以使用不同的编程语言和工具开发服务，从而将技术多样性带入开发团队。开发可以在多个团队中组织，但是在SO">
@@ -325,6 +326,17 @@
 
                 
                 
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/架构/微服务/" itemprop="url" rel="index">
+                    <span itemprop="name">微服务</span>
+                  </a>
+                </span>
+
+                
+                
               
             </span>
           
@@ -365,6 +377,8 @@
 <p><img src="/2020/02/28/微服务与SOA架构对比/%E5%AF%B9%E6%AF%94%E5%9B%BE.png" alt></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">下面进一步解释上表所述的不同之处：</span><br><span class="line"></span><br><span class="line">开发方面 - 在这两种体系结构中，可以使用不同的编程语言和工具开发服务，从而将技术多样性带入开发团队。开发可以在多个团队中组织，但是在SOA中，每个团队都需要了解常见的通信机制。另一方面，使用微服务，服务可以独立于其他服务运行和部署。因此，频繁部署新版本的微服务或独立扩展服务会更容易。您可以在这里进一步阅读有关微服务的这些好处。</span><br><span class="line"></span><br><span class="line">“上下文边界” - SOA鼓励组件的共享，而微服务尝试通过“上下文边界”来最小化共享。上下文边界是指以最小的依赖关系将组件及其数据耦合为单个单元。由于SOA依靠多个服务来完成业务请求，构建在SOA上的系统可能比微服务要慢。</span><br><span class="line"></span><br><span class="line">通信 - 在SOA中，ESB可能成为影响整个系统的单一故障点。由于每个服务都通过ESB进行通信，如果其中一个服务变慢，可能会阻塞ESB并请求该服务。另一方面，微服务在容错方面要好得多。例如，如果一个微服务存在内存错误，那么只有该微服务会受到影响。所有其他微服务将继续定期处理请求。</span><br><span class="line"></span><br><span class="line">互操作性 - SOA通过消息中间件组件促进了多种异构协议的使用。微服务试图通过减少集成选择的数量来简化架构模式。因此，如果您想要在异构环境中使用不同协议来集成多个系统，则需要考虑SOA。如果您的所有服务都可以通过相同的远程访问协议访问，那么微服务对您来说是一个更好的选择。</span><br><span class="line"></span><br><span class="line">大小Size - 最后一点但并非最不重要的一点，SOA和微服务的主要区别在于规模和范围。微服务架构中的前缀“微”是指内部组件的粒度，意味着它们必须比SOA架构的服务往往要小得多。微服务中的服务组件通常有一个单一的目的，他们做得很好。另一方面，在SOA服务中通​​常包含更多的业务功能，并且通常将它们实现为完整的子系统。</span><br></pre></td></tr></table></figure>
 
+<p>典型微服务架构图，当然还要配合服务发现、服务治理、服务监控</p>
+<p><img src="/2020/02/28/微服务与SOA架构对比/%E5%85%B8%E5%9E%8B%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E5%9B%BE.jpg" alt></p>
 <h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ol>
 <li><a href="https://www.cnblogs.com/jiangzhaowei/p/9168837.html" target="_blank" rel="noopener">微服务架构 vs. SOA架构</a></li>
 </ol>
@@ -499,7 +513,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">20</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
