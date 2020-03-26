@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2020/02/28/Redis%E5%AE%B9%E9%87%8F%E8%AF%84%E4%BC%B0/</loc>
+    
+    <lastmod>2020-03-26T04:18:58.045Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2020/02/25/http-error-code/</loc>
+    
+    <lastmod>2020-03-03T09:17:13.862Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2020/02/28/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E4%B8%8ESOA%E6%9E%B6%E6%9E%84%E5%AF%B9%E6%AF%94/</loc>
     
     <lastmod>2020-02-28T08:33:57.526Z</lastmod>
@@ -110,13 +124,6 @@
     <loc>http://yoursite.com/2020/02/12/TCP-UDPQA/</loc>
     
     <lastmod>2020-02-27T04:07:22.793Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2020/02/25/http-error-code/</loc>
-    
-    <lastmod>2020-02-27T04:06:46.630Z</lastmod>
     
   </url>
   

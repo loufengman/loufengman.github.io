@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://yoursite.com/2020/02/28/Redis%E5%AE%B9%E9%87%8F%E8%AF%84%E4%BC%B0/</loc>
+    <lastmod>2020-03-26</lastmod>
+  </url>  <url>
+    <loc>http://yoursite.com/2020/02/25/http-error-code/</loc>
+    <lastmod>2020-03-03</lastmod>
+  </url>  <url>
     <loc>http://yoursite.com/2020/02/28/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E4%B8%8ESOA%E6%9E%B6%E6%9E%84%E5%AF%B9%E6%AF%94/</loc>
     <lastmod>2020-02-28</lastmod>
   </url>  <url>
@@ -44,9 +50,6 @@
     <lastmod>2020-02-27</lastmod>
   </url>  <url>
     <loc>http://yoursite.com/2020/02/12/TCP-UDPQA/</loc>
-    <lastmod>2020-02-27</lastmod>
-  </url>  <url>
-    <loc>http://yoursite.com/2020/02/25/http-error-code/</loc>
     <lastmod>2020-02-27</lastmod>
   </url>  <url>
     <loc>http://yoursite.com/2020/02/21/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/</loc>
